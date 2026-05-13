@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格图鉴 - 结局与报告原型</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .prototype-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .screen-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .screen-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .phone-mockup {
+            width: 375px;
+            height: 667px;
+            background: white;
+            border-radius: 30px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        /* ==================== 屏幕1: 通关成功页 ==================== */
+        .success-screen {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            height: 100%;
+            padding: 40px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .success-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .success-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .success-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .success-stats {
+            background: rgba(255,255,255,0.2);
+            border-radius: 16px;
+            padding: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: white;
+            color: #f5576c;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ==================== 屏幕2: 失败结局页 ==================== */
+        .fail-screen {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            height: 100%;
+            padding: 40px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .fail-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .fail-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fc8181;
+        }
+
+        .fail-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .fail-reason {
+            background: rgba(252,129,129,0.1);
+            border: 1px solid rgba(252,129,129,0.3);
+            border-radius: 12px;
+            padding: 15px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .fail-reason-title {
+            font-size: 14px;
+            color: #fc8181;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .fail-reason-text {
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(245,101,101,0.4);
+            margin-bottom: 15px;
+        }
+
+        .home-btn {
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* ==================== 屏幕3: 复盘报告页 ==================== */
+        .report-screen {
+            background: #f5f7fa;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .report-badge {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .report-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .report-subtitle {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .report-content {
+            padding: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .radar-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radar-chart-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .radar-visual {
+            width: 180px;
+            height: 180px;
+            position: relative;
+        }
+
+        .radar-polygon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+        }
+
+        .radar-labels {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .radar-label {
+            position: absolute;
+            font-size: 11px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .advice-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .advice-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .learnings-list {
+            list-style: none;
+        }
+
+        .learnings-list li {
+            font-size: 13px;
+            color: #666;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .learnings-list li:last-child {
+            border-bottom: none;
+        }
+
+        .learning-icon {
+            color: #667eea;
+            flex-shrink: 0;
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .report-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-restart {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        @media (max-width: 1200px) {
+            .screens-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .phone-mockup {
+                transform: scale(0.9);
+            }
+        }
+
+        .screen-description {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .screen-description strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <h1>🎯 结局与报告 - UI原型图</h1>
+        
+        <div class="screens-grid">
+            <!-- 屏幕1: 通关成功页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">1. 通关成功页</div>
+                <div class="phone-mockup">
+                    <div class="success-screen">
+                        <div class="success-icon">🎉</div>
+                        <div class="success-title">恭喜通关！</div>
+                        <div class="success-subtitle">你成功识破了NPD+INTJ的所有陷阱</div>
+
+                        <div class="success-stats">
+                            <div class="stat-row">
+                                <div class="stat-item">
+                                    <span class="stat-value">92</span>
+                                    <span class="stat-label">最终得分</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">85%</span>
+                                    <span class="stat-label">正确率</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">4</span>
+                                    <span class="stat-label">闯关阶段</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-primary">查看报告 📊</button>
+                            <button class="btn-secondary">再来一局 🔄</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>设计说明：</strong><br>
+                    • 粉色渐变营造庆祝氛围<br>
+                    • 弹跳动画增强成就感<br>
+                    • 核心数据一目了然<br>
+                    • 双按钮引导下一步操作
+                </div>
+            </div>
+
+            <!-- 屏幕2: 失败结局页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">2. 失败结局页</div>
+                <div class="phone-mockup">
+                    <div class="fail-screen">
+                        <div class="fail-icon">💔</div>
+                        <div class="fail-title">挑战失败</div>
+                        <div class="fail-subtitle">
+                            你的情绪能量已耗尽<br>
+                            在第三阶段触发了红线选项
+                        </div>
+
+                        <div class="fail-reason">
+                            <div class="fail-reason-title">⚠️ 失败原因</div>
+                            <div class="fail-reason-text">
+                                你选择了"继续容忍对方的情感操控"，这是NPD最喜欢的反应模式。建议重新学习"边界意识"相关知识点。
+                            </div>
+                        </div>
+
+                        <button class="retry-btn">重新挑战 💪</button>
+                        <button class="home-btn">返回首页</button>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>设计说明：</strong><br>
+                    • 深色背景传达挫败感<br>
+                    • 红色警示突出失败原因<br>
+                    • 明确告知触发红线的具体选项<br>
+                    • 鼓励重新挑战而非放弃
+                </div>
+            </div>
+
+            <!-- 屏幕3: 复盘报告页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">3. 复盘报告页</div>
+                <div class="phone-mockup">
+                    <div class="report-screen">
+                        <div class="report-header">
+                            <div class="report-badge"></div>
+                            <div class="report-title">生存报告</div>
+                            <div class="report-subtitle">NPD + INTJ 闯关记录</div>
+                        </div>
+
+                        <div class="report-content">
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <span class="value">92</span>
+                                    <span class="label">最终得分</span>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="value">85%</span>
+                                    <span class="label">正确率</span>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="value">14</span>
+                                    <span class="label">答题总数</span>
+                                </div>
+                            </div>
+
+                            <div class="radar-section">
+                                <div class="section-title">
+                                    📊 能力雷达图
+                                </div>
+                                <div class="radar-chart-placeholder">
+                                    <div class="radar-visual">
+                                        <svg viewBox="0 0 200 200" style="width: 100%; height: 100%;">
+                                            <!-- 雷达图背景 -->
+                                            <polygon points="100,20 170,60 170,140 100,180 30,140 30,60" 
+                                                     fill="#f0f0ff" stroke="#e0e0ff" stroke-width="1"/>
+                                            <polygon points="100,40 150,70 150,130 100,160 50,130 50,70" 
+                                                     fill="#f8f8ff" stroke="#e8e8ff" stroke-width="1"/>
+                                            <polygon points="100,60 130,80 130,120 100,140 70,120 70,80" 
+                                                     fill="#fefefe" stroke="#f0f0f0" stroke-width="1"/>
+                                            
+                                            <!-- 数据多边形 -->
+                                            <polygon points="100,35 155,72 152,128 100,155 48,128 45,72" 
+                                                     fill="rgba(102,126,234,0.3)" stroke="#667eea" stroke-width="2"/>
+                                            
+                                            <!-- 标签 -->
+                                            <text x="100" y="15" text-anchor="middle" font-size="11" fill="#666" font-weight="bold">共情能力</text>
+                                            <text x="180" y="58" text-anchor="middle" font-size="11" fill="#666" font-weight="bold">边界意识</text>
+                                            <text x="180" y="148" text-anchor="middle" font-size="11" fill="#666" font-weight="bold">沟通技巧</text>
+                                            <text x="100" y="195" text-anchor="middle" font-size="11" fill="#666" font-weight="bold">自我觉察</text>
+                                            <text x="20" y="148" text-anchor="middle" font-size="11" fill="#666" font-weight="bold">风险识别</text>
+                                            <text x="20" y="58" text-anchor="middle" font-size="11" fill="#666" font-weight="bold">情绪管理</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="advice-section">
+                                <div class="section-title">
+                                    💡 心理学建议
+                                </div>
+                                <div class="advice-text">
+                                    你在边界意识方面表现优秀，能够准确识别NPD的操控手段。但在情绪管理上还有提升空间，建议在现实生活中练习"暂停反应"技巧。
+                                </div>
+                            </div>
+
+                            <div class="advice-section">
+                                <div class="section-title">
+                                    📚 核心知识点
+                                </div>
+                                <ul class="learnings-list">
+                                    <li>
+                                        <span class="learning-icon">✓</span>
+                                        <span>NPD的"爱情轰炸"阶段特征与应对</span>
+                                    </li>
+                                    <li>
+                                        <span class="learning-icon">✓</span>
+                                        <span>如何建立健康的情感边界</span>
+                                    </li>
+                                    <li>
+                                        <span class="learning-icon">✓</span>
+                                        <span>识别煤气灯操控的3个关键信号</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="report-actions">
+                                <button class="btn-save">保存海报 📸</button>
+                                <button class="btn-restart">再来一局 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>设计说明：</strong><br>
+                    • SVG雷达图直观展示能力分布<br>
+                    • 卡片式布局层次清晰<br>
+                    • 建议与知识点分栏展示<br>
+                    • 支持保存海报分享
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格图鉴 - 核心业务流程原型</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .prototype-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .screen-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .screen-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        /* 手机模拟器 */
+        .phone-mockup {
+            width: 375px;
+            height: 667px;
+            background: white;
+            border-radius: 30px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        /* ==================== 屏幕1: 首页/词条选择（两步选择） ==================== */
+        .home-screen {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            height: 100%;
+            padding: 0;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        /* 赛博朋克网格背景 */
+        .home-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .app-logo {
+            text-align: center;
+            padding: 30px 20px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-logo .icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
+        }
+
+        .app-logo h2 {
+            color: #38bdf8;
+            font-size: 22px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .app-logo p {
+            color: rgba(192, 132, 252, 0.8);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        /* 步骤指示器 */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .step-item.active {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+        }
+
+        .step-item.completed {
+            background: rgba(192, 132, 252, 0.15);
+            border: 1px solid rgba(192, 132, 252, 0.4);
+            color: #c084fc;
+        }
+
+        .step-item.pending {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.3);
+        }
+
+        .step-number {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        .step-item.active .step-number {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .step-item.completed .step-number {
+            background: #c084fc;
+            color: #0f172a;
+        }
+
+        /* 选择区域 */
+        .selection-area {
+            padding: 10px 15px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .selection-title {
+            color: #f472b6;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(244, 114, 182, 0.4);
+        }
+
+        /* 第一步：性格障碍类型 */
+        .disorder-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .disorder-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .disorder-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .disorder-card:hover::before {
+            left: 100%;
+        }
+
+        .disorder-card:hover {
+            border-color: #38bdf8;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .disorder-card.selected {
+            border-color: #c084fc;
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.15) 0%, rgba(244, 114, 182, 0.15) 100%);
+            box-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
+        }
+
+        .disorder-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.5));
+        }
+
+        .disorder-name {
+            color: #f472b6;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .disorder-desc {
+            color: rgba(255,255,255,0.6);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* 第二步：MBTI类型（4x4网格） */
+        .mbti-section {
+            margin-top: 15px;
+        }
+
+        .mbti-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .mbti-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.8) 100%);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 10px 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .mbti-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+
+        .mbti-card.selected {
+            border-color: #38bdf8;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(192, 132, 252, 0.15) 100%);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .mbti-character {
+            font-size: 28px;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.5));
+        }
+
+        .mbti-type {
+            color: #38bdf8;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .mbti-name {
+            color: rgba(255,255,255,0.7);
+            font-size: 9px;
+            line-height: 1.2;
+        }
+
+        /* 四色系标签 */
+        .mbti-nt { border-left: 2px solid #6366f1; }
+        .mbti-nf { border-left: 2px solid #10b981; }
+        .mbti-sj { border-left: 2px solid #f59e0b; }
+        .mbti-sp { border-left: 2px solid #ef4444; }
+
+        .start-btn {
+            margin: 15px;
+            background: linear-gradient(135deg, #38bdf8 0%, #c084fc 100%);
+            color: #0f172a;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            position: relative;
+            z-index: 1;
+            letter-spacing: 1px;
+        }
+
+        .start-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* ==================== 屏幕2: 游戏闯关页 ==================== */
+        .game-screen {
+            background: #f5f7fa;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stage-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            color: white;
+        }
+
+        .stage-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .stage-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .question-counter {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* 情绪能量条 */
+        .energy-bar-container {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 3px;
+        }
+
+        .energy-bar {
+            height: 8px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #10b981, #a8e063);
+            transition: all 0.5s ease;
+            width: 85%;
+        }
+
+        .energy-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .scene-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+
+        .question-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .question-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .option-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-item:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option-item.selected {
+            border-color: #667eea;
+            background: #eef2ff;
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+            flex-shrink: 0;
+        }
+
+        .option-item.selected .option-letter {
+            background: #667eea;
+            color: white;
+        }
+
+        .option-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .submit-btn {
+            margin: 15px 20px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+        }
+
+        /* ==================== 屏幕3: 即时反馈页 ==================== */
+        .feedback-screen {
+            background: #f5f7fa;
+            height: 100%;
+            position: relative;
+        }
+
+        .feedback-bg {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+        }
+
+        .feedback-content {
+            position: relative;
+            z-index: 1;
+            padding: 30px 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feedback-icon {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .feedback-icon.success {
+            font-size: 80px;
+        }
+
+        .feedback-icon.fail {
+            font-size: 80px;
+        }
+
+        .feedback-result {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .feedback-result h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .feedback-result.success h3 {
+            color: #10b981;
+        }
+
+        .feedback-result.fail h3 {
+            color: #ef4444;
+        }
+
+        .score-change {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .score-change.positive {
+            color: #10b981;
+        }
+
+        .score-change.negative {
+            color: #ef4444;
+        }
+
+        .explanation-box {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .explanation-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .explanation-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .knowledge-tag {
+            display: inline-block;
+            background: #f0f0ff;
+            color: #667eea;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        .continue-btn {
+            margin-top: auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+        }
+
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .screens-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .phone-mockup {
+                transform: scale(0.9);
+            }
+        }
+
+        .screen-description {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .screen-description strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <h1>📱 核心业务流程 - UI原型图</h1>
+        
+        <div class="screens-grid">
+            <!-- 屏幕1: 首页/词条选择 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">1. 首页 / 词条选择页</div>
+                <div class="phone-mockup">
+                    <div class="home-screen">
+                        <div class="app-logo">
+                            <div class="icon">🎭</div>
+                            <h2>人格图鉴</h2>
+                            <p>沉浸式关系生存模拟器</p>
+                        </div>
+
+                        <div class="category-section">
+                            <div class="category-title">
+                                <span>🔮</span>
+                                <span>NPD 人格障碍</span>
+                            </div>
+                            <div class="preset-grid">
+                                <div class="preset-card preset-nt">
+                                    <div class="emoji">🧠</div>
+                                    <div class="label">NPD+INTJ</div>
+                                </div>
+                                <div class="preset-card preset-nf">
+                                    <div class="emoji">💚</div>
+                                    <div class="label">NPD+ENFP</div>
+                                </div>
+                                <div class="preset-card preset-sj">
+                                    <div class="emoji">⭐</div>
+                                    <div class="label">NPD+ESTJ</div>
+                                </div>
+                                <div class="preset-card preset-sp">
+                                    <div class="emoji">🔥</div>
+                                    <div class="label">NPD+ESFP</div>
+                                </div>
+                                <div class="preset-card preset-nt">
+                                    <div class="emoji">🎯</div>
+                                    <div class="label">NPD+ENTJ</div>
+                                </div>
+                                <div class="preset-card preset-nf">
+                                    <div class="emoji">🌈</div>
+                                    <div class="label">NPD+INFJ</div>
+                                </div>
+                                <div class="preset-card preset-sj">
+                                    <div class="emoji">📋</div>
+                                    <div class="label">NPD+ISTJ</div>
+                                </div>
+                                <div class="preset-card preset-sp">
+                                    <div class="emoji">🎨</div>
+                                    <div class="label">NPD+ISFP</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="category-section">
+                            <div class="category-title">
+                                <span>🌊</span>
+                                <span>双向/抑郁情绪</span>
+                            </div>
+                            <div class="preset-grid">
+                                <div class="preset-card preset-nt">
+                                    <div class="emoji">🧊</div>
+                                    <div class="label">双向+INTP</div>
+                                </div>
+                                <div class="preset-card preset-nf">
+                                    <div class="emoji">🌙</div>
+                                    <div class="label">双向+INFP</div>
+                                </div>
+                                <div class="preset-card preset-sj">
+                                    <div class="emoji">️</div>
+                                    <div class="label">双向+ISFJ</div>
+                                </div>
+                                <div class="preset-card preset-sp">
+                                    <div class="emoji"></div>
+                                    <div class="label">双向+ESTP</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="start-btn">开始挑战 🚀</button>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>设计说明：</strong><br>
+                    • 紫色渐变背景营造神秘感<br>
+                    • 四色系边框标识不同MBTI类型<br>
+                    • Emoji图标增强视觉记忆<br>
+                    • 卡片悬浮效果提升交互体验
+                </div>
+            </div>
+
+            <!-- 屏幕2: 游戏闯关页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">2. 游戏闯关页（答题中）</div>
+                <div class="phone-mockup">
+                    <div class="game-screen">
+                        <div class="stage-header">
+                            <div class="stage-info">
+                                <span class="stage-name">💕 第一阶段：相识破冰</span>
+                                <span class="question-counter">1/3</span>
+                            </div>
+                            <div class="energy-bar-container">
+                                <div class="energy-bar"></div>
+                            </div>
+                            <div class="energy-label">
+                                <span>情绪能量</span>
+                                <span>85/100</span>
+                            </div>
+                        </div>
+
+                        <div class="scene-image">🎭</div>
+
+                        <div class="question-content">
+                            <div class="question-text">
+                                你和INTJ在咖啡厅第一次约会，他全程面无表情地分析你的MBTI测试结果，让你感到有些压力。此时你会：
+                            </div>
+
+                            <div class="option-list">
+                                <div class="option-item selected">
+                                    <div class="option-letter">A</div>
+                                    <div class="option-text">耐心倾听，并分享自己对MBTI的理解</div>
+                                </div>
+                                <div class="option-item">
+                                    <div class="option-letter">B</div>
+                                    <div class="option-text">直接打断他，说"别分析了，聊聊别的"</div>
+                                </div>
+                                <div class="option-item">
+                                    <div class="option-letter">C</div>
+                                    <div class="option-text">沉默不语，内心感到不适但不敢表达</div>
+                                </div>
+                                <div class="option-item">
+                                    <div class="option-letter">D</div>
+                                    <div class="option-text">反问他："你是不是有NPD倾向？"</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="submit-btn">提交选择 ✓</button>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>设计说明：</strong><br>
+                    • 顶部显示当前阶段和进度<br>
+                    • 情绪能量条实时可视化<br>
+                    • 动漫风格场景图增强沉浸感<br>
+                    • 选项点击反馈明确
+                </div>
+            </div>
+
+            <!-- 屏幕3: 即时反馈页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">3. 即时反馈页</div>
+                <div class="phone-mockup">
+                    <div class="feedback-screen">
+                        <div class="feedback-bg"></div>
+                        <div class="feedback-content">
+                            <div class="feedback-icon success">✅</div>
+                            
+                            <div class="feedback-result success">
+                                <h3>回答正确！</h3>
+                            </div>
+
+                            <div class="score-change positive">+15</div>
+
+                            <div class="explanation-box">
+                                <div class="explanation-title">
+                                    💡 心理学解析
+                                </div>
+                                <div class="explanation-text">
+                                    NPD+INTJ组合常通过"理性分析"建立优越感。选择A展现了你的边界意识——既能共情对方的表达方式，又不失自我立场。这是应对NPD操控的有效策略。
+                                </div>
+                                <div class="knowledge-tag">#边界意识 #共情沟通</div>
+                            </div>
+
+                            <div class="explanation-box">
+                                <div class="explanation-title">
+                                    ⚠️ 避雷建议
+                                </div>
+                                <div class="explanation-text">
+                                    选项C（沉默忍受）是NPD最喜欢的反应，会让对方变本加厉。选项D（直接质疑）可能触发对方防御机制，导致关系破裂。
+                                </div>
+                            </div>
+
+                            <button class="continue-btn">继续闯关 →</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>设计说明：</strong><br>
+                    • 大图标+色彩强化正确/错误感知<br>
+                    • 分数变化动画突出数值系统<br>
+                    • 双栏知识讲解提升学习价值<br>
+                    • 知识标签便于后续复习
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

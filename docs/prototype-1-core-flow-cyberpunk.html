@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格图鉴 - 核心业务流程（赛博朋克风）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .prototype-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #38bdf8;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            letter-spacing: 2px;
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .screen-wrapper {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .screen-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #38bdf8;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        .phone-mockup {
+            width: 375px;
+            height: 667px;
+            background: #0f172a;
+            border-radius: 30px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
+            border: 2px solid rgba(56, 189, 248, 0.3);
+        }
+
+        /* ==================== 屏幕2: 游戏闯关页（赛博朋克风） ==================== */
+        .game-screen {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .game-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .stage-header {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(192, 132, 252, 0.2) 100%);
+            padding: 15px;
+            color: #38bdf8;
+            border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .stage-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .stage-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #f472b6;
+            text-shadow: 0 0 8px rgba(244, 114, 182, 0.5);
+        }
+
+        .question-counter {
+            font-size: 12px;
+            color: #38bdf8;
+        }
+
+        .energy-bar-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 3px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .energy-bar {
+            height: 8px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #10b981, #a8e063);
+            transition: all 0.5s ease;
+            width: 85%;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .energy-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-top: 5px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .scene-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+            z-index: 1;
+            border-bottom: 2px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .scene-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.3) 100%);
+        }
+
+        .question-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .question-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .option-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            background: rgba(30, 41, 59, 0.6);
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-item:hover {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .option-item.selected {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.15);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            background: rgba(56, 189, 248, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #38bdf8;
+            flex-shrink: 0;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .option-item.selected .option-letter {
+            background: #38bdf8;
+            color: #0f172a;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        .option-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.4;
+        }
+
+        .submit-btn {
+            margin: 15px 20px 20px;
+            background: linear-gradient(135deg, #38bdf8 0%, #c084fc 100%);
+            color: #0f172a;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            position: relative;
+            z-index: 1;
+            letter-spacing: 1px;
+        }
+
+        /* ==================== 屏幕3: 即时反馈页（赛博朋克风） ==================== */
+        .feedback-screen {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feedback-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .feedback-content {
+            position: relative;
+            z-index: 1;
+            padding: 30px 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feedback-icon {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .feedback-icon.success {
+            font-size: 80px;
+            filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.8));
+            animation: bounce 1s infinite;
+        }
+
+        .feedback-icon.fail {
+            font-size: 80px;
+            filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.8));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .feedback-result {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .feedback-result h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .feedback-result.success h3 {
+            color: #10b981;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+        }
+
+        .feedback-result.fail h3 {
+            color: #ef4444;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+        }
+
+        .score-change {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px currentColor;
+        }
+
+        .score-change.positive {
+            color: #10b981;
+        }
+
+        .score-change.negative {
+            color: #ef4444;
+        }
+
+        .explanation-box {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .explanation-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #38bdf8;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+
+        .explanation-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .knowledge-tag {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-top: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .continue-btn {
+            margin-top: auto;
+            background: linear-gradient(135deg, #38bdf8 0%, #c084fc 100%);
+            color: #0f172a;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            letter-spacing: 1px;
+        }
+
+        .screen-description {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 8px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .screen-description strong {
+            color: #38bdf8;
+        }
+
+        @media (max-width: 1200px) {
+            .screens-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .phone-mockup {
+                transform: scale(0.9);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <h1>🎮 核心业务流程 - 赛博朋克风</h1>
+        
+        <div class="screens-grid">
+            <!-- 屏幕1占位：引用赛博朋克首页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">1. 首页（赛博朋克风）</div>
+                <div class="phone-mockup" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+                    <div style="text-align: center; color: #38bdf8; padding: 20px;">
+                        <div style="font-size: 60px; margin-bottom: 15px;">📱</div>
+                        <div style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">查看独立文件</div>
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.6);">prototype-cyberpunk-home.html</div>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>两步选择流程：</strong><br>
+                    • 障碍类型 → MBTI类型<br>
+                    • 霓虹配色 + 网格背景<br>
+                    • 详见首页原型文件
+                </div>
+            </div>
+
+            <!-- 屏幕2: 游戏闯关页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">2. 游戏闯关页</div>
+                <div class="phone-mockup">
+                    <div class="game-screen">
+                        <div class="stage-header">
+                            <div class="stage-info">
+                                <span class="stage-name">💕 第一阶段：相识破冰</span>
+                                <span class="question-counter">1/3</span>
+                            </div>
+                            <div class="energy-bar-container">
+                                <div class="energy-bar"></div>
+                            </div>
+                            <div class="energy-label">
+                                <span>情绪能量</span>
+                                <span style="color: #10b981;">85/100</span>
+                            </div>
+                        </div>
+
+                        <div class="scene-image">🎭</div>
+
+                        <div class="question-content">
+                            <div class="question-text">
+                                你和INTJ在咖啡厅第一次约会，他全程面无表情地分析你的MBTI测试结果，让你感到有些压力。此时你会：
+                            </div>
+
+                            <div class="option-list">
+                                <div class="option-item selected">
+                                    <div class="option-letter">A</div>
+                                    <div class="option-text">耐心倾听，并分享自己对MBTI的理解</div>
+                                </div>
+                                <div class="option-item">
+                                    <div class="option-letter">B</div>
+                                    <div class="option-text">直接打断他，说"别分析了，聊聊别的"</div>
+                                </div>
+                                <div class="option-item">
+                                    <div class="option-letter">C</div>
+                                    <div class="option-text">沉默不语，内心感到不适但不敢表达</div>
+                                </div>
+                                <div class="option-item">
+                                    <div class="option-letter">D</div>
+                                    <div class="option-text">反问他："你是不是有NPD倾向？"</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="submit-btn">提交选择 ✓</button>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>赛博朋克设计：</strong><br>
+                    • 深色背景 + 网格线<br>
+                    • 霓虹蓝边框 + 光晕效果<br>
+                    • 情绪能量条绿色发光<br>
+                    • 选项选中态蓝色高亮
+                </div>
+            </div>
+
+            <!-- 屏幕3: 即时反馈页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">3. 即时反馈页</div>
+                <div class="phone-mockup">
+                    <div class="feedback-screen">
+                        <div class="feedback-content">
+                            <div class="feedback-icon success">✅</div>
+                            
+                            <div class="feedback-result success">
+                                <h3>回答正确！</h3>
+                            </div>
+
+                            <div class="score-change positive">+15</div>
+
+                            <div class="explanation-box">
+                                <div class="explanation-title">
+                                    💡 心理学解析
+                                </div>
+                                <div class="explanation-text">
+                                    NPD+INTJ组合常通过"理性分析"建立优越感。选择A展现了你的边界意识——既能共情对方的表达方式，又不失自我立场。这是应对NPD操控的有效策略。
+                                </div>
+                                <div class="knowledge-tag">#边界意识 #共情沟通</div>
+                            </div>
+
+                            <div class="explanation-box">
+                                <div class="explanation-title">
+                                    ⚠️ 避雷建议
+                                </div>
+                                <div class="explanation-text">
+                                    选项C（沉默忍受）是NPD最喜欢的反应，会让对方变本加厉。选项D（直接质疑）可能触发对方防御机制，导致关系破裂。
+                                </div>
+                            </div>
+
+                            <button class="continue-btn">继续闯关 →</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>赛博朋克设计：</strong><br>
+                    • 大图标发光动画<br>
+                    • 分数变化霓虹色<br>
+                    • 知识卡片深色背景<br>
+                    • 标签蓝色边框高亮
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

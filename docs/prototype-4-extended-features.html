@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格图鉴 - 扩展功能原型</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .prototype-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .screen-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .screen-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .phone-mockup {
+            width: 375px;
+            height: 667px;
+            background: white;
+            border-radius: 30px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        /* 屏幕1: 自定义输入页 */
+        .custom-input-screen {
+            background: #f5f7fa;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .custom-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: white;
+        }
+
+        .custom-header h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .custom-header p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .input-methods {
+            padding: 20px;
+        }
+
+        .method-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .method-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .method-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .method-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .method-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .text-input-area {
+            padding: 0 20px 20px;
+        }
+
+        .input-box {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            min-height: 120px;
+            border: 2px solid #e5e7eb;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .input-placeholder {
+            color: #999;
+        }
+
+        .generate-btn {
+            margin: 0 20px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* 屏幕2: AI导师指导页 */
+        .mentor-screen {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mentor-header {
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .mentor-avatar {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        .mentor-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .mentor-title {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .mentor-content {
+            flex: 1;
+            background: white;
+            border-radius: 30px 30px 0 0;
+            padding: 25px 20px;
+            overflow-y: auto;
+        }
+
+        .chat-bubble {
+            background: #f0f0ff;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .chat-bubble::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #f0f0ff;
+        }
+
+        .bubble-label {
+            font-size: 12px;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .bubble-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .token-cost {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-top: 8px;
+        }
+
+        .mentor-actions {
+            padding: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .mentor-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-ask {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        /* 屏幕3: 阶段过渡动画页 */
+        .transition-screen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .transition-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .transition-stage {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .transition-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .transition-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        .dot.completed {
+            background: rgba(255,255,255,0.6);
+        }
+
+        .continue-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1200px) {
+            .screens-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .phone-mockup {
+                transform: scale(0.9);
+            }
+        }
+
+        .screen-description {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .screen-description strong {
+            color: #333;
+        }
+
+        .future-tag {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <h1>🚀 扩展功能预留 - UI原型图</h1>
+        
+        <div class="screens-grid">
+            <!-- 屏幕1: 自定义输入页（RAG模式） -->
+            <div class="screen-wrapper">
+                <div class="screen-title">
+                    1. 自定义输入页
+                    <span class="future-tag">P1扩展</span>
+                </div>
+                <div class="phone-mockup">
+                    <div class="custom-input-screen">
+                        <div class="custom-header">
+                            <h3>自定义挑战</h3>
+                            <p>上传真实场景，AI为你生成专属题目</p>
+                        </div>
+
+                        <div class="input-methods">
+                            <div class="method-card">
+                                <div class="method-icon"></div>
+                                <div class="method-title">粘贴聊天记录</div>
+                                <div class="method-desc">直接粘贴你与对方的真实对话，AI将分析沟通模式</div>
+                            </div>
+
+                            <div class="method-card">
+                                <div class="method-icon"></div>
+                                <div class="method-title">上传文档</div>
+                                <div class="method-desc">支持TXT、PDF格式，提取关键信息进行场景还原</div>
+                            </div>
+
+                            <div class="method-card">
+                                <div class="method-icon">🔗</div>
+                                <div class="method-title">网页链接</div>
+                                <div class="method-desc">输入知乎/小红书等链接，AI自动解析内容生成题目</div>
+                            </div>
+                        </div>
+
+                        <div class="text-input-area">
+                            <div class="input-box">
+                                <div class="input-placeholder">
+                                    在这里输入你的情况描述...<br><br>
+                                    例如：我和INTJ男友约会时，他总是滔滔不绝地分析我的MBTI测试结果，让我感到有些压力。请帮我分析这种场景。
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="generate-btn">AI生成题目 </button>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>设计说明：</strong><br>
+                    • 卡片式布局展示多种输入方式<br>
+                    • 预留RAG模式接口（后期实现）<br>
+                    • 示例文本引导用户输入<br>
+                    • 与预设词条流程独立
+                </div>
+            </div>
+
+            <!-- 屏幕2: AI导师指导页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">
+                    2. AI导师指导页
+                    <span class="future-tag">P2扩展</span>
+                </div>
+                <div class="phone-mockup">
+                    <div class="mentor-screen">
+                        <div class="mentor-header">
+                            <div class="mentor-avatar">‍♀️</div>
+                            <div class="mentor-name">心理学导师</div>
+                            <div class="mentor-title">AI场外指导</div>
+                        </div>
+
+                        <div class="mentor-content">
+                            <div class="chat-bubble">
+                                <div class="bubble-label">你的问题</div>
+                                <div class="bubble-text">
+                                    这道题我不确定该怎么选，选项C和D看起来都有道理...
+                                </div>
+                            </div>
+
+                            <div class="chat-bubble">
+                                <div class="bubble-label">导师建议</div>
+                                <div class="bubble-text">
+                                    从心理学角度来看，选项C（沉默忍受）会强化对方的操控行为。建议选择D，温和但坚定地表达你的感受。记住，健康的边界是关系的基础。
+                                </div>
+                                <div class="token-cost">消耗 5 代币</div>
+                            </div>
+
+                            <div class="chat-bubble">
+                                <div class="bubble-label">导师建议</div>
+                                <div class="bubble-text">
+                                     <strong>核心知识点：</strong><br>
+                                    NPD最喜欢"沉默"的反应，这会让对方认为操控手段有效。建立边界需要"温和而坚定"的态度。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mentor-actions">
+                            <button class="btn-ask">继续提问</button>
+                            <button class="btn-cancel">关闭</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>设计说明：</strong><br>
+                    • 聊天式交互降低使用门槛<br>
+                    • 代币系统支持商业化<br>
+                    • 建议与知识点分层展示<br>
+                    • 粉色渐变区分主游戏流程
+                </div>
+            </div>
+
+            <!-- 屏幕3: 阶段过渡动画页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">3. 阶段过渡动画页</div>
+                <div class="phone-mockup">
+                    <div class="transition-screen">
+                        <div class="transition-icon">💕</div>
+                        <div class="transition-stage">第一阶段完成</div>
+                        <div class="transition-title">进入第二阶段</div>
+                        <div class="transition-desc">
+                            恭喜！你成功通过了相识考验。<br>
+                            接下来将进入更加复杂的<br>
+                            <strong>"热恋博弈"</strong>阶段
+                        </div>
+
+                        <div class="progress-dots">
+                            <div class="dot completed"></div>
+                            <div class="dot active"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+
+                        <button class="continue-btn">开始挑战 </button>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>设计说明：</strong><br>
+                    • 脉冲动画增强仪式感<br>
+                    • 进度点清晰展示当前阶段<br>
+                    • 文案激励用户继续挑战<br>
+                    • 渐变背景保持视觉统一
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

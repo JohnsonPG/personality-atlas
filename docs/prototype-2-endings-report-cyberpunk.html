@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格图鉴 - 结局与报告（赛博朋克风）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .prototype-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #38bdf8;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            letter-spacing: 2px;
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .screen-wrapper {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .screen-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #38bdf8;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        .phone-mockup {
+            width: 375px;
+            height: 667px;
+            background: #0f172a;
+            border-radius: 30px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
+            border: 2px solid rgba(56, 189, 248, 0.3);
+        }
+
+        /* ==================== 屏幕1: 通关成功页 ==================== */
+        .success-screen {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            height: 100%;
+            padding: 40px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .success-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .success-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.8));
+            animation: bounce 1s infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .success-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #10b981;
+            text-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+            position: relative;
+            z-index: 1;
+        }
+
+        .success-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .success-stats {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #10b981;
+            display: block;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, #10b981 0%, #a8e063 100%);
+            color: #0f172a;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 2px solid rgba(56, 189, 248, 0.4);
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ==================== 屏幕2: 失败结局页 ==================== */
+        .fail-screen {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            height: 100%;
+            padding: 40px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .fail-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(239, 68, 68, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(239, 68, 68, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .fail-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.8));
+            position: relative;
+            z-index: 1;
+        }
+
+        .fail-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ef4444;
+            text-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+            position: relative;
+            z-index: 1;
+        }
+
+        .fail-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .fail-reason {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            width: 100%;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .fail-reason-title {
+            font-size: 14px;
+            color: #ef4444;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+        }
+
+        .fail-reason-text {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            color: #0f172a;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .home-btn {
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ==================== 屏幕3: 复盘报告页 ==================== */
+        .report-screen {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            height: 100%;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .report-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(192, 132, 252, 0.2) 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-badge {
+            font-size: 50px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.6));
+        }
+
+        .report-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #38bdf8;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        .report-subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .report-content {
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #38bdf8;
+            display: block;
+            margin-bottom: 5px;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .radar-section {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #38bdf8;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+
+        .radar-chart-placeholder {
+            width: 100%;
+            height: 200px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .advice-section {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .advice-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .learnings-list {
+            list-style: none;
+        }
+
+        .learnings-list li {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .learnings-list li:last-child {
+            border-bottom: none;
+        }
+
+        .learning-icon {
+            color: #10b981;
+            flex-shrink: 0;
+            text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .report-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #38bdf8 0%, #c084fc 100%);
+            color: #0f172a;
+        }
+
+        .btn-restart {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 2px solid rgba(56, 189, 248, 0.4);
+        }
+
+        @media (max-width: 1200px) {
+            .screens-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .phone-mockup {
+                transform: scale(0.9);
+            }
+        }
+
+        .screen-description {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 8px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .screen-description strong {
+            color: #38bdf8;
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <h1>🎯 结局与报告 - 赛博朋克风</h1>
+        
+        <div class="screens-grid">
+            <!-- 屏幕1: 通关成功页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">1. 通关成功页</div>
+                <div class="phone-mockup">
+                    <div class="success-screen">
+                        <div class="success-icon"></div>
+                        <div class="success-title">恭喜通关！</div>
+                        <div class="success-subtitle">你成功识破了NPD+INTJ的所有陷阱</div>
+
+                        <div class="success-stats">
+                            <div class="stat-row">
+                                <div class="stat-item">
+                                    <span class="stat-value">92</span>
+                                    <span class="stat-label">最终得分</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">85%</span>
+                                    <span class="stat-label">正确率</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">4</span>
+                                    <span class="stat-label">闯关阶段</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-primary">查看报告 📊</button>
+                            <button class="btn-secondary">再来一局 </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>赛博朋克设计：</strong><br>
+                    • 绿色网格背景庆祝氛围<br>
+                    • 图标弹跳动画+发光<br>
+                    • 数据卡片霓虹边框<br>
+                    • 双按钮引导下一步
+                </div>
+            </div>
+
+            <!-- 屏幕2: 失败结局页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">2. 失败结局页</div>
+                <div class="phone-mockup">
+                    <div class="fail-screen">
+                        <div class="fail-icon"></div>
+                        <div class="fail-title">挑战失败</div>
+                        <div class="fail-subtitle">
+                            你的情绪能量已耗尽<br>
+                            在第三阶段触发了红线选项
+                        </div>
+
+                        <div class="fail-reason">
+                            <div class="fail-reason-title">⚠️ 失败原因</div>
+                            <div class="fail-reason-text">
+                                你选择了"继续容忍对方的情感操控"，这是NPD最喜欢的反应模式。建议重新学习"边界意识"相关知识点。
+                            </div>
+                        </div>
+
+                        <button class="retry-btn">重新挑战 💪</button>
+                        <button class="home-btn">返回首页</button>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>赛博朋克设计：</strong><br>
+                    • 红色网格背景传达挫败<br>
+                    • 失败原因红色警示框<br>
+                    • 明确告知红线选项<br>
+                    • 鼓励重新挑战
+                </div>
+            </div>
+
+            <!-- 屏幕3: 复盘报告页 -->
+            <div class="screen-wrapper">
+                <div class="screen-title">3. 复盘报告页</div>
+                <div class="phone-mockup">
+                    <div class="report-screen">
+                        <div class="report-header">
+                            <div class="report-badge"></div>
+                            <div class="report-title">生存报告</div>
+                            <div class="report-subtitle">NPD + INTJ 闯关记录</div>
+                        </div>
+
+                        <div class="report-content">
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <span class="value">92</span>
+                                    <span class="label">最终得分</span>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="value">85%</span>
+                                    <span class="label">正确率</span>
+                                </div>
+                                <div class="stat-card">
+                                    <span class="value">14</span>
+                                    <span class="label">答题总数</span>
+                                </div>
+                            </div>
+
+                            <div class="radar-section">
+                                <div class="section-title">
+                                    📊 能力雷达图
+                                </div>
+                                <div class="radar-chart-placeholder">
+                                    <svg viewBox="0 0 200 200" style="width: 180px; height: 180px;">
+                                        <polygon points="100,20 170,60 170,140 100,180 30,140 30,60" 
+                                                 fill="rgba(56,189,248,0.1)" stroke="rgba(56,189,248,0.3)" stroke-width="1"/>
+                                        <polygon points="100,35 155,72 152,128 100,155 48,128 45,72" 
+                                                 fill="rgba(56,189,248,0.2)" stroke="#38bdf8" stroke-width="2"/>
+                                        <text x="100" y="15" text-anchor="middle" font-size="11" fill="#38bdf8" font-weight="bold">共情</text>
+                                        <text x="180" y="58" text-anchor="middle" font-size="11" fill="#38bdf8" font-weight="bold">边界</text>
+                                        <text x="180" y="148" text-anchor="middle" font-size="11" fill="#38bdf8" font-weight="bold">沟通</text>
+                                        <text x="100" y="195" text-anchor="middle" font-size="11" fill="#38bdf8" font-weight="bold">觉察</text>
+                                        <text x="20" y="148" text-anchor="middle" font-size="11" fill="#38bdf8" font-weight="bold">风险</text>
+                                        <text x="20" y="58" text-anchor="middle" font-size="11" fill="#38bdf8" font-weight="bold">情绪</text>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="advice-section">
+                                <div class="section-title">
+                                    💡 心理学建议
+                                </div>
+                                <div class="advice-text">
+                                    你在边界意识方面表现优秀，能够准确识别NPD的操控手段。但在情绪管理上还有提升空间，建议在现实生活中练习"暂停反应"技巧。
+                                </div>
+                            </div>
+
+                            <div class="advice-section">
+                                <div class="section-title">
+                                    📚 核心知识点
+                                </div>
+                                <ul class="learnings-list">
+                                    <li>
+                                        <span class="learning-icon">✓</span>
+                                        <span>NPD的"爱情轰炸"阶段特征与应对</span>
+                                    </li>
+                                    <li>
+                                        <span class="learning-icon">✓</span>
+                                        <span>如何建立健康的情感边界</span>
+                                    </li>
+                                    <li>
+                                        <span class="learning-icon">✓</span>
+                                        <span>识别煤气灯操控的3个关键信号</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="report-actions">
+                                <button class="btn-save">保存海报 📸</button>
+                                <button class="btn-restart">再来一局 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-description">
+                    <strong>赛博朋克设计：</strong><br>
+                    • SVG雷达图霓虹蓝配色<br>
+                    • 卡片深色背景+边框<br>
+                    • 知识点绿色勾选图标<br>
+                    • 按钮渐变霓虹色
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

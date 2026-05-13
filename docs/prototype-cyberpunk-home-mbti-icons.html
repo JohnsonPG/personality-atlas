@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格图鉴 - 赛博朋克风首页（MBTI插画版）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .prototype-container {
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #38bdf8;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            letter-spacing: 2px;
+        }
+
+        /* 手机模拟器 */
+        .phone-mockup {
+            width: 375px;
+            height: 812px;
+            background: #0f172a;
+            border-radius: 40px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.3), 0 0 80px rgba(192, 132, 252, 0.2);
+            border: 2px solid rgba(56, 189, 248, 0.3);
+        }
+
+        /* 赛博朋克网格背景 */
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .home-screen {
+            height: 100%;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Logo区域 */
+        .app-logo {
+            text-align: center;
+            padding: 50px 20px 30px;
+            position: relative;
+        }
+
+        .app-logo .icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px rgba(244, 114, 182, 0.8));
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .app-logo h2 {
+            color: #38bdf8;
+            font-size: 28px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            letter-spacing: 3px;
+            font-weight: bold;
+        }
+
+        .app-logo p {
+            color: rgba(192, 132, 252, 0.8);
+            font-size: 11px;
+            letter-spacing: 2px;
+        }
+
+        /* 步骤指示器 */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .step-item.completed {
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.2) 0%, rgba(244, 114, 182, 0.2) 100%);
+            border: 2px solid rgba(192, 132, 252, 0.5);
+            color: #c084fc;
+            box-shadow: 0 0 15px rgba(192, 132, 252, 0.3);
+        }
+
+        .step-item.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(192, 132, 252, 0.2) 100%);
+            border: 2px solid rgba(56, 189, 248, 0.6);
+            color: #38bdf8;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.6); }
+        }
+
+        .step-number {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .step-item.completed .step-number {
+            background: #c084fc;
+            color: #0f172a;
+        }
+
+        .step-item.active .step-number {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        /* 选择区域 */
+        .selection-area {
+            padding: 10px 20px 30px;
+        }
+
+        .selection-title {
+            color: #f472b6;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(244, 114, 182, 0.5);
+        }
+
+        /* MBTI 4x4网格 */
+        .mbti-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .mbti-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 12px 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mbti-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .mbti-card:hover::before {
+            left: 100%;
+        }
+
+        .mbti-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .mbti-card.selected {
+            border-color: #38bdf8;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(192, 132, 252, 0.2) 100%);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.5);
+        }
+
+        /* MBTI标志性插画 - 使用CSS绘制的卡通人物 */
+        .mbti-character {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            position: relative;
+        }
+
+        /* NF理想主义者 - 绿色系插画 */
+        .mbti-nf .mbti-character {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+        }
+
+        /* NT理性者 - 蓝紫色系插画 */
+        .mbti-nt .mbti-character {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+        }
+
+        /* SJ护卫者 - 橙金色系插画 */
+        .mbti-sj .mbti-character {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+        }
+
+        /* SP艺术创作者 - 红粉色系插画 */
+        .mbti-sp .mbti-character {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+        }
+
+        .mbti-type {
+            color: #38bdf8;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 3px;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+
+        .mbti-name {
+            color: rgba(255,255,255,0.7);
+            font-size: 9px;
+            line-height: 1.2;
+        }
+
+        /* 四色系左边框 */
+        .mbti-nt { 
+            border-left: 3px solid #6366f1;
+            box-shadow: inset 3px 0 10px rgba(99, 102, 241, 0.2);
+        }
+        .mbti-nf { 
+            border-left: 3px solid #10b981;
+            box-shadow: inset 3px 0 10px rgba(16, 185, 129, 0.2);
+        }
+        .mbti-sj { 
+            border-left: 3px solid #f59e0b;
+            box-shadow: inset 3px 0 10px rgba(245, 158, 11, 0.2);
+        }
+        .mbti-sp { 
+            border-left: 3px solid #ef4444;
+            box-shadow: inset 3px 0 10px rgba(239, 68, 68, 0.2);
+        }
+
+        .start-btn {
+            margin: 0 20px 40px;
+            background: linear-gradient(135deg, #38bdf8 0%, #c084fc 50%, #f472b6 100%);
+            color: #0f172a;
+            border: none;
+            padding: 16px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(56, 189, 248, 0.5);
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-btn:hover::before {
+            left: 100%;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(56, 189, 248, 0.6);
+        }
+
+        /* 说明文字 */
+        .description {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 16px;
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .description strong {
+            color: #38bdf8;
+            font-size: 14px;
+        }
+
+        .description .highlight {
+            color: #f472b6;
+            font-weight: bold;
+        }
+
+        .description ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .description li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <h1>🎮 赛博朋克风 - MBTI插画版首页</h1>
+        
+        <div class="phone-mockup">
+            <div class="home-screen">
+                <!-- Logo区域 -->
+                <div class="app-logo">
+                    <div class="icon"></div>
+                    <h2>人格图鉴</h2>
+                    <p>IMMERSIVE RELATION SURVIVAL SIMULATOR</p>
+                </div>
+
+                <!-- 步骤指示器 -->
+                <div class="step-indicator">
+                    <div class="step-item completed">
+                        <div class="step-number">✓</div>
+                        <span>障碍类型</span>
+                    </div>
+                    <div class="step-item active">
+                        <div class="step-number">2</div>
+                        <span>选择MBTI</span>
+                    </div>
+                </div>
+
+                <!-- MBTI选择区域 -->
+                <div class="selection-area">
+                    <div class="selection-title">
+                         已选：NPD + 请选择MBTI类型
+                    </div>
+
+                    <div class="mbti-grid">
+                        <!-- NF理想主义者 - 绿色 (调停者/提倡者/竞选者/主人公) -->
+                        <div class="mbti-card mbti-nf">
+                            <div class="mbti-character">🧝‍♀️</div>
+                            <div class="mbti-type">INFP</div>
+                            <div class="mbti-name">调停者</div>
+                        </div>
+                        <div class="mbti-card mbti-nf">
+                            <div class="mbti-character">🧙‍️</div>
+                            <div class="mbti-type">INFJ</div>
+                            <div class="mbti-name">提倡者</div>
+                        </div>
+                        <div class="mbti-card mbti-nf selected">
+                            <div class="mbti-character">🧚‍♀️</div>
+                            <div class="mbti-type">ENFP</div>
+                            <div class="mbti-name">竞选者</div>
+                        </div>
+                        <div class="mbti-card mbti-nf">
+                            <div class="mbti-character">👸</div>
+                            <div class="mbti-type">ENFJ</div>
+                            <div class="mbti-name">主人公</div>
+                        </div>
+
+                        <!-- NT理性者 - 蓝紫 (逻辑学家/建筑师/辩论家/指挥官) -->
+                        <div class="mbti-card mbti-nt">
+                            <div class="mbti-character">👩‍🔬</div>
+                            <div class="mbti-type">INTP</div>
+                            <div class="mbti-name">逻辑学家</div>
+                        </div>
+                        <div class="mbti-card mbti-nt">
+                            <div class="mbti-character">👨‍💻</div>
+                            <div class="mbti-type">INTJ</div>
+                            <div class="mbti-name">建筑师</div>
+                        </div>
+                        <div class="mbti-card mbti-nt">
+                            <div class="mbti-character">🎤</div>
+                            <div class="mbti-type">ENTP</div>
+                            <div class="mbti-name">辩论家</div>
+                        </div>
+                        <div class="mbti-card mbti-nt">
+                            <div class="mbti-character">👔</div>
+                            <div class="mbti-type">ENTJ</div>
+                            <div class="mbti-name">指挥官</div>
+                        </div>
+
+                        <!-- SJ护卫者 - 橙金 (物流师/守卫者/执政官/总经理) -->
+                        <div class="mbti-card mbti-sj">
+                            <div class="mbti-character">📋</div>
+                            <div class="mbti-type">ISTJ</div>
+                            <div class="mbti-name">物流师</div>
+                        </div>
+                        <div class="mbti-card mbti-sj">
+                            <div class="mbti-character">‍⚕️</div>
+                            <div class="mbti-type">ISFJ</div>
+                            <div class="mbti-name">守卫者</div>
+                        </div>
+                        <div class="mbti-card mbti-sj">
+                            <div class="mbti-character">🤝</div>
+                            <div class="mbti-type">ESFJ</div>
+                            <div class="mbti-name">执政官</div>
+                        </div>
+                        <div class="mbti-card mbti-sj">
+                            <div class="mbti-character">👨‍💼</div>
+                            <div class="mbti-type">ESTJ</div>
+                            <div class="mbti-name">总经理</div>
+                        </div>
+
+                        <!-- SP艺术创作者 - 红粉 (探险家/鉴赏家/企业家/表演者) -->
+                        <div class="mbti-card mbti-sp">
+                            <div class="mbti-character">🎨</div>
+                            <div class="mbti-type">ISFP</div>
+                            <div class="mbti-name">探险家</div>
+                        </div>
+                        <div class="mbti-card mbti-sp">
+                            <div class="mbti-character">🔧</div>
+                            <div class="mbti-type">ISTP</div>
+                            <div class="mbti-name">鉴赏家</div>
+                        </div>
+                        <div class="mbti-card mbti-sp">
+                            <div class="mbti-character">💼</div>
+                            <div class="mbti-type">ESTP</div>
+                            <div class="mbti-name">企业家</div>
+                        </div>
+                        <div class="mbti-card mbti-sp">
+                            <div class="mbti-character">🎭</div>
+                            <div class="mbti-type">ESFP</div>
+                            <div class="mbti-name">表演者</div>
+                        </div>
+                    </div>
+
+                    <button class="start-btn">开始挑战 🚀</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="description">
+            <strong>🎨 MBTI标志性插画设计：</strong>
+            <ul>
+                <li><span class="highlight">NF理想主义者</span>：精灵/法师/仙女 (绿色系)</li>
+                <li><span class="highlight">NT理性者</span>：科学家/程序员/演讲者 (蓝紫色系)</li>
+                <li><span class="highlight">SJ护卫者</span>：物流/守卫/政务/管理 (橙金色系)</li>
+                <li><span class="highlight">SP艺术创作者</span>：艺术/工匠/商业/表演 (红粉色系)</li>
+                <li>每个角色使用<strong>贴切职业的Emoji图标</strong>，参考MBTI官方16型人格插画风格</li>
+                <li>40px大图标 + 赛博朋克发光滤镜效果</li>
+            </ul>
+            <p style="margin-top: 15px; color: #38bdf8;">
+                💡 提示：点击任意MBTI卡片可看到选中效果（蓝色边框+发光）
+            </p>
+        </div>
+    </div>
+</body>
+</html>
