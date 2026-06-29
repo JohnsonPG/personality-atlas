@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人格图鉴 · 闯关体验系统原型</title>
+<style>
+  :root {
+    --bg-deep: #0f0f23;
+    --bg-card: #1a1a2e;
+    --bg-elevated: #16213e;
+    --cyber-purple: #7c3aed;
+    --cyber-purple-glow: rgba(124, 58, 237, 0.3);
+    --neon-cyan: #22d3ee;
+    --neon-cyan-glow: rgba(34, 211, 238, 0.25);
+    --emerald: #10b981;
+    --emerald-glow: rgba(16, 185, 129, 0.25);
+    --rose: #f43f5e;
+    --rose-glow: rgba(244, 63, 94, 0.25);
+    --amber: #f59e0b;
+    --amber-glow: rgba(245, 158, 11, 0.25);
+    --frost: #e2e8f0;
+    --frost-dim: #94a3b8;
+    --border-subtle: rgba(124, 58, 237, 0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: #06060f;
+    color: var(--frost);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .page-header { text-align: center; margin-bottom: 48px; }
+  .page-header .badge {
+    display: inline-block; padding: 6px 16px;
+    background: rgba(124, 58, 237, 0.15);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: 100px; font-size: 12px;
+    color: var(--cyber-purple); letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .page-header h1 {
+    font-size: 28px; font-weight: 700;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--cyber-purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 8px;
+  }
+  .page-header .subtitle { font-size: 14px; color: var(--frost-dim); }
+  .mockup-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 32px; max-width: 1400px; margin: 0 auto;
+  }
+  @media (max-width: 1200px) { .mockup-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 800px)  { .mockup-grid { grid-template-columns: 1fr; } }
+  .mockup-col { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .mockup-label {
+    font-size: 13px; font-weight: 600; color: var(--frost-dim);
+    letter-spacing: 1px; text-align: center;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .mockup-label .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--cyber-purple); color: #fff;
+    font-size: 11px; font-weight: 700;
+  }
+  .phone-frame {
+    width: 100%; max-width: 375px; aspect-ratio: 375 / 812;
+    background: var(--bg-deep); border-radius: 32px;
+    border: 2px solid var(--border-subtle); overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 40px rgba(124, 58, 237, 0.1), 0 20px 60px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .phone-frame:hover { transform: translateY(-4px); box-shadow: 0 0 60px rgba(124, 58, 237, 0.2), 0 30px 80px rgba(0,0,0,0.6); }
+  .phone-frame .notch {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 28px; background: #000;
+    border-radius: 0 0 18px 18px; z-index: 10;
+  }
+  .phone-content {
+    width: 100%; height: 100%; padding: 40px 20px 20px;
+    display: flex; flex-direction: column; overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .phone-content::-webkit-scrollbar { display: none; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--cyber-purple), #6d28d9);
+    color: #fff; border: none; border-radius: var(--radius-lg);
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 0 20px var(--cyber-purple-glow);
+    transition: all 0.3s ease;
+  }
+  .btn-secondary {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 10px 24px; background: transparent;
+    color: var(--neon-cyan);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    border-radius: var(--radius-lg); font-size: 14px; font-weight: 500; cursor: pointer;
+  }
+  .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border-radius: 100px;
+    font-size: 11px; font-weight: 600;
+  }
+  .tag-purple { background: rgba(124, 58, 237, 0.15); color: #a78bfa; border: 1px solid rgba(124, 58, 237, 0.3); }
+  .tag-cyan   { background: rgba(34, 211, 238, 0.1); color: #67e8f9; border: 1px solid rgba(34, 211, 238, 0.25); }
+  .tag-rose   { background: rgba(244, 63, 94, 0.1); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.25); }
+  .tag-amber  { background: rgba(245, 158, 11, 0.1); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.25); }
+  .tag-green  { background: rgba(16, 185, 129, 0.1); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.25); }
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md); padding: 16px;
+  }
+  .card-glass {
+    background: rgba(26, 26, 46, 0.6); backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;
+  }
+  .divider { width: 100%; height: 1px; background: var(--border-subtle); margin: 12px 0; }
+  .progress-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+  .fill-purple { background: linear-gradient(90deg, var(--cyber-purple), var(--neon-cyan)); }
+  .fill-green  { background: var(--emerald); }
+  .fill-rose   { background: var(--rose); }
+  .fill-amber  { background: var(--amber); }
+
+  .status-bar { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--frost-dim); padding: 6px 0; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .dot-green { background: var(--emerald); box-shadow: 0 0 6px var(--emerald-glow); }
+  .dot-red   { background: var(--rose); box-shadow: 0 0 6px var(--rose-glow); }
+  .dot-amber { background: var(--amber); box-shadow: 0 0 6px var(--amber-glow); }
+  .dot-cyan  { background: var(--neon-cyan); box-shadow: 0 0 6px var(--neon-cyan-glow); }
+
+  /* ── Page 1: 关卡进度地图 ── */
+  .map-header { text-align: center; margin-bottom: 12px; }
+  .map-title { font-size: 17px; font-weight: 700; }
+  .map-sub { font-size: 12px; color: var(--frost-dim); }
+  .stage-line {
+    display: flex; align-items: center; gap: 0;
+    position: relative; padding: 0 20px;
+  }
+  .stage-line::before {
+    content: ''; position: absolute; left: 34px; top: 30px; bottom: 30px;
+    width: 2px; background: var(--border-subtle); z-index: 0;
+  }
+  .stage-node {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; position: relative; z-index: 1;
+  }
+  .stage-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+    border: 2px solid var(--border-subtle);
+    background: var(--bg-card);
+  }
+  .stage-icon.done { border-color: var(--emerald); background: rgba(16,185,129,0.1); }
+  .stage-icon.current { border-color: var(--cyber-purple); background: rgba(124,58,237,0.2); box-shadow: 0 0 16px var(--cyber-purple-glow); }
+  .stage-icon.locked { opacity: 0.4; }
+  .stage-info { flex: 1; }
+  .stage-info .name { font-size: 13px; font-weight: 600; }
+  .stage-info .desc { font-size: 11px; color: var(--frost-dim); }
+  .stage-info .score { font-size: 11px; color: var(--emerald); margin-top: 2px; }
+
+  /* ── Page 2: 闯关失败 ── */
+  .fail-screen {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; gap: 16px;
+  }
+  .fail-icon { font-size: 56px; animation: shake 0.5s ease-in-out; }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  .fail-title { font-size: 22px; font-weight: 700; color: var(--rose); }
+  .fail-desc { font-size: 13px; color: var(--frost-dim); line-height: 1.6; }
+  .fail-lessons {
+    width: 100%; text-align: left;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .fail-lesson {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 12px; color: var(--frost-dim); line-height: 1.5;
+    padding: 8px 12px;
+    background: rgba(244, 63, 94, 0.05);
+    border-radius: var(--radius-sm);
+    border-left: 2px solid rgba(244, 63, 94, 0.3);
+  }
+  .fail-lesson .lesson-icon { font-size: 16px; flex-shrink: 0; }
+
+  /* ── Page 3: 通关成功 ── */
+  .win-screen {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; gap: 14px;
+  }
+  .win-badge {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber), var(--emerald));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.3);
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .win-title { font-size: 22px; font-weight: 700; background: linear-gradient(135deg, var(--amber), var(--emerald)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .win-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; margin-top: 4px; }
+  .win-stat {
+    text-align: center; padding: 12px;
+    background: var(--bg-card); border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+  }
+  .win-stat-val { font-size: 18px; font-weight: 700; }
+  .win-stat-lbl { font-size: 10px; color: var(--frost-dim); margin-top: 2px; }
+
+  /* ── Page 4: 平行宇宙对比 ── */
+  .compare-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1; }
+  .compare-col {
+    border-radius: var(--radius-md); padding: 14px;
+    display: flex; flex-direction: column; gap: 8px;
+    border: 1px solid;
+  }
+  .compare-col.current { border-color: rgba(124, 58, 237, 0.3); background: rgba(124, 58, 237, 0.05); }
+  .compare-col.worst { border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.05); }
+  .compare-col.best { border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.05); }
+  .compare-label { font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+  .compare-metric { display: flex; justify-content: space-between; font-size: 11px; }
+  .compare-metric .lbl { color: var(--frost-dim); }
+
+  /* ── Page 5: 自尊值系统 ── */
+  .esteem-gauge {
+    position: relative;
+    width: 140px; height: 140px;
+    margin: 8px auto;
+  }
+  .gauge-ring {
+    transform: rotate(-90deg);
+    width: 140px; height: 140px;
+  }
+  .gauge-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
+  .gauge-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.8s ease; }
+  .esteem-chart { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .esteem-event { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 12px; }
+  .esteem-event .delta { font-weight: 700; font-size: 13px; min-width: 36px; }
+  .delta-up { color: var(--emerald); }
+  .delta-down { color: var(--rose); }
+
+  /* ── Page 6: 海报分享 ── */
+  .poster-preview {
+    width: 100%; aspect-ratio: 3/4;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(160deg, #1a0533 0%, #0f0f23 40%, #1a1a2e 70%, #0a0a1a 100%);
+    border: 2px solid rgba(124, 58, 237, 0.3);
+    padding: 20px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; gap: 12px;
+    position: relative; overflow: hidden;
+  }
+  .poster-preview::before {
+    content: ''; position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 20%, rgba(124,58,237,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(34,211,238,0.06) 0%, transparent 50%);
+  }
+  .poster-preview > * { position: relative; z-index: 1; }
+  .poster-grade { font-size: 36px; font-weight: 800; color: var(--amber); text-shadow: 0 0 20px var(--amber-glow); }
+  .poster-label { font-size: 12px; color: var(--frost-dim); letter-spacing: 2px; text-transform: uppercase; }
+  .poster-watermark { font-size: 10px; color: rgba(255,255,255,0.15); position: absolute; bottom: 16px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="badge">Experience System · Prototype v1.0</div>
+  <h1>人格图鉴 · 闯关体验系统</h1>
+  <p class="subtitle">从冒险到觉醒 — 完整的闯关反馈与成长可视化</p>
+</div>
+
+<div class="mockup-grid">
+
+  <!-- ═══════ 1. 关卡进度地图 ═══════ -->
+  <div class="mockup-col">
+    <div class="mockup-label"><span class="step-num">1</span> 关卡进度地图</div>
+    <div class="phone-frame">
+      <div class="notch"></div>
+      <div class="phone-content">
+        <div class="status-bar">
+          <span>← 返回</span><span style="flex:1"></span>
+          <span class="tag tag-cyan">NPD 探索线</span>
+        </div>
+        <div class="map-header">
+          <div class="map-title">🗺️ 人格探索地图</div>
+          <div class="map-sub">NPD 自恋型人格 · 关系生存模拟</div>
+        </div>
+        <div class="progress-bar" style="margin-bottom:12px;"><div class="progress-fill fill-purple" style="width:45%;"></div></div>
+        <div class="stage-line">
+          <div>
+            <div class="stage-node">
+              <div class="stage-icon done">☕</div>
+              <div class="stage-info"><div class="name">第一幕：初见</div><div class="desc">咖啡馆偶遇</div><div class="score">⭐ 85分</div></div>
+            </div>
+            <div class="stage-node">
+              <div class="stage-icon done">💕</div>
+              <div class="stage-info"><div class="name">第二幕：热恋期</div><div class="desc">理想化阶段</div><div class="score">⭐ 72分</div></div>
+            </div>
+            <div class="stage-node">
+              <div class="stage-icon current">🌪️</div>
+              <div class="stage-info"><div class="name" style="color:var(--cyber-purple);">第三幕：危机期</div><div class="desc">贬低 · 正在进行</div></div>
+            </div>
+            <div class="stage-node">
+              <div class="stage-icon locked">🔒</div>
+              <div class="stage-info"><div class="name" style="opacity:0.4;">第四幕：觉醒</div><div class="desc" style="opacity:0.4;">自我重建</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-glass" style="margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--frost-dim);">🎯 当前目标</span>
+            <span class="tag tag-purple">进行中</span>
+          </div>
+          <div style="font-size:13px;font-weight:600;margin-top:4px;">在贬低阶段保持自尊</div>
+          <div style="font-size:11px;color:var(--frost-dim);margin-top:2px;">识别 gaslighting、维护边界、不内化批判</div>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:8px;">继续闯关 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ 2. 闯关失败 · 红线触犯 ═══════ -->
+  <div class="mockup-col">
+    <div class="mockup-label"><span class="step-num">2</span> 闯关失败 · 红线触犯</div>
+    <div class="phone-frame">
+      <div class="notch"></div>
+      <div class="phone-content">
+        <div class="quiz-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="color:var(--rose);font-weight:600;">🚨 关系崩溃</span>
+          <span>❤️ 0</span>
+        </div>
+        <div class="fail-screen">
+          <div class="fail-icon">💔</div>
+          <div class="fail-title">你触碰了致命红线</div>
+          <div class="fail-desc">
+            在第三幕「危机期」，自尊值降为 <b style="color:var(--rose);">0</b><br>
+            你陷入了 NPD 关系的<b>「抛弃」</b>阶段
+          </div>
+
+          <div class="fail-lessons">
+            <div class="fail-lesson">
+              <span class="lesson-icon">📌</span>
+              <span><b>致命选择：</b>在贬低阶段没有及时设立边界，持续自我怀疑并讨好对方</span>
+            </div>
+            <div class="fail-lesson">
+              <span class="lesson-icon">💡</span>
+              <span><b>关键教训：</b>NPD 关系中，妥协不会换来尊重，只会加速价值耗尽</span>
+            </div>
+            <div class="fail-lesson">
+              <span class="lesson-icon">🛡️</span>
+              <span><b>生存法则：</b>在 Gaslighting 首次出现时，应立即激活「灰岩法」策略</span>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <div style="display:flex;gap:10px;">
+            <div style="text-align:center;flex:1;">
+              <div style="font-size:18px;font-weight:700;color:var(--rose);">0</div>
+              <div style="font-size:10px;color:var(--frost-dim);">自尊值</div>
+            </div>
+            <div style="text-align:center;flex:1;">
+              <div style="font-size:18px;font-weight:700;color:var(--amber);">3/4</div>
+              <div style="font-size:10px;color:var(--frost-dim);">到达幕数</div>
+            </div>
+            <div style="text-align:center;flex:1;">
+              <div style="font-size:18px;font-weight:700;color:var(--neon-cyan);">58</div>
+              <div style="font-size:10px;color:var(--frost-dim);">总分</div>
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%;background:linear-gradient(135deg,var(--rose),#be123c);">🔄 从本幕重来</button>
+          <button class="btn-secondary" style="width:100%;">📖 学习教训后重试</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ 3. 通关成功 ═══════ -->
+  <div class="mockup-col">
+    <div class="mockup-label"><span class="step-num">3</span> 通关成功 · 觉醒时刻</div>
+    <div class="phone-frame">
+      <div class="notch"></div>
+      <div class="phone-content">
+        <div class="win-screen">
+          <div class="win-badge">🏆</div>
+          <div class="win-title">恭喜通关！人格觉醒者</div>
+          <div style="font-size:12px;color:var(--frost-dim);">
+            你成功穿越了 NPD 关系的完整周期<br>
+            从<b style="color:var(--neon-cyan);">理想化</b> → <b style="color:var(--amber);">贬低</b> → <b style="color:var(--rose);">抛弃</b> → <b style="color:var(--emerald);">觉醒</b>
+          </div>
+          <div class="win-stats">
+            <div class="win-stat">
+              <div class="win-stat-val" style="color:var(--emerald);">92</div>
+              <div class="win-stat-lbl">自尊值</div>
+            </div>
+            <div class="win-stat">
+              <div class="win-stat-val" style="color:var(--neon-cyan);">88</div>
+              <div class="win-stat-lbl">洞察力</div>
+            </div>
+            <div class="win-stat">
+              <div class="win-stat-val" style="color:var(--amber);">85</div>
+              <div class="win-stat-lbl">边界感</div>
+            </div>
+            <div class="win-stat">
+              <div class="win-stat-val" style="color:#c4b5fd;">❤️❤️❤️</div>
+              <div class="win-stat-lbl">剩余生命</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div style="font-size:18px;font-weight:700;color:var(--amber);">🎖️ 获得称号</div>
+          <div style="font-size:14px;color:var(--frost);">「赤诚觉醒 · 边界建筑师」</div>
+          <div style="display:flex;gap:8px;width:100%;">
+            <button class="btn-secondary" style="flex:1;">📊 详细报告</button>
+            <button class="btn-primary" style="flex:1;background:linear-gradient(135deg,var(--amber),#d97706);">📤 分享成就</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ 4. 平行宇宙数据对比 ═══════ -->
+  <div class="mockup-col">
+    <div class="mockup-label"><span class="step-num">4</span> 平行宇宙 · 数据对比</div>
+    <div class="phone-frame">
+      <div class="notch"></div>
+      <div class="phone-content">
+        <div class="status-bar">
+          <span>← 返回</span><span style="flex:1"></span>
+          <span class="tag tag-cyan">多元宇宙</span>
+        </div>
+        <div style="text-align:center;margin-bottom:12px;">
+          <div style="font-size:16px;font-weight:700;">🌌 平行宇宙对比</div>
+          <div style="font-size:11px;color:var(--frost-dim);">同样的 NPD 关系，不同的选择走向</div>
+        </div>
+
+        <div class="compare-cols">
+          <div class="compare-col worst">
+            <div class="compare-label" style="color:var(--rose);">⚠️ 最差宇宙</div>
+            <div style="font-size:11px;color:var(--frost-dim);">全程迎合 · 丧失自我</div>
+            <div class="compare-metric"><span class="lbl">自尊值</span><span style="color:var(--rose);">12</span></div>
+            <div class="compare-metric"><span class="lbl">边界感</span><span style="color:var(--rose);">8</span></div>
+            <div class="compare-metric"><span class="lbl">结局</span><span style="color:var(--rose);">深渊</span></div>
+          </div>
+          <div class="compare-col best">
+            <div class="compare-label" style="color:var(--emerald);">🌟 最优宇宙</div>
+            <div style="font-size:11px;color:var(--frost-dim);">及时觉醒 · 果断离开</div>
+            <div class="compare-metric"><span class="lbl">自尊值</span><span style="color:var(--emerald);">95</span></div>
+            <div class="compare-metric"><span class="lbl">边界感</span><span style="color:var(--emerald);">92</span></div>
+            <div class="compare-metric"><span class="lbl">结局</span><span style="color:var(--emerald);">自由</span></div>
+          </div>
+        </div>
+
+        <div class="compare-col current" style="margin-top:10px;">
+          <div class="compare-label" style="color:var(--cyber-purple);">🫵 你的宇宙</div>
+          <div style="font-size:11px;color:var(--frost-dim);">适度边界 · 逐步成长</div>
+          <div style="display:flex;gap:16px;margin-top:4px;">
+            <div class="compare-metric" style="flex-direction:column;gap:0;"><span class="lbl">自尊值</span><span style="color:var(--emerald);font-weight:700;">75</span></div>
+            <div class="compare-metric" style="flex-direction:column;gap:0;"><span class="lbl">边界感</span><span style="color:var(--amber);font-weight:700;">48</span></div>
+            <div class="compare-metric" style="flex-direction:column;gap:0;"><span class="lbl">结局</span><span style="color:var(--neon-cyan);font-weight:700;">成长中</span></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:8px;">
+          <div style="font-size:12px;font-weight:600;">📊 同类型玩家对比</div>
+          <div style="font-size:11px;color:var(--frost-dim);margin-top:4px;">
+            在选择了 <b>INTP × NPD</b> 的 12,847 名探索者中<br>
+            你的排名：<b style="color:var(--amber);">前 35%</b> — 优于大多数理性分析型玩家
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ 5. 自尊值系统展示 ═══════ -->
+  <div class="mockup-col">
+    <div class="mockup-label"><span class="step-num">5</span> 自尊值系统 · 实时追踪</div>
+    <div class="phone-frame">
+      <div class="notch"></div>
+      <div class="phone-content">
+        <div class="status-bar">
+          <span>← 返回</span><span style="flex:1"></span>
+          <span class="tag tag-green">实时监控</span>
+        </div>
+        <div style="text-align:center;margin-bottom:4px;">
+          <div style="font-size:16px;font-weight:700;">🧠 自尊值仪表盘</div>
+          <div style="font-size:11px;color:var(--frost-dim);">你的心理韧性实时追踪</div>
+        </div>
+
+        <div class="esteem-gauge">
+          <svg viewBox="0 0 140 140" style="position:absolute;top:0;left:0;">
+            <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+            <circle cx="70" cy="70" r="60" fill="none" stroke="url(#gaugeGrad)" stroke-width="10" stroke-linecap="round"
+              stroke-dasharray="377" stroke-dashoffset="94" transform="rotate(-90 70 70)"/>
+            <defs><linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#10b981"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#f43f5e"/></linearGradient></defs>
+            <text x="70" y="65" text-anchor="middle" fill="#e2e8f0" font-size="24" font-weight="700">75</text>
+            <text x="70" y="82" text-anchor="middle" fill="#94a3b8" font-size="10">自尊值</text>
+          </svg>
+        </div>
+
+        <div style="display:flex;justify-content:space-around;margin-top:8px;">
+          <div style="text-align:center;"><div style="font-size:11px;color:var(--emerald);">● 安全</div><div style="font-size:10px;color:var(--frost-dim);">60-100</div></div>
+          <div style="text-align:center;"><div style="font-size:11px;color:var(--amber);">● 警戒</div><div style="font-size:10px;color:var(--frost-dim);">30-60</div></div>
+          <div style="text-align:center;"><div style="font-size:11px;color:var(--rose);">● 红线</div><div style="font-size:10px;color:var(--frost-dim);">0-30</div></div>
+        </div>
+
+        <div class="divider"></div>
+        <div style="font-size:13px;font-weight:600;">📈 变动记录</div>
+        <div class="esteem-chart">
+          <div class="esteem-event"><span class="delta delta-up">+15</span><span style="flex:1;font-size:11px;">第一幕：设立初次边界</span><span style="font-size:10px;color:var(--frost-dim);">03:21</span></div>
+          <div class="esteem-event"><span class="delta delta-down">-8</span><span style="flex:1;font-size:11px;">被对方贬低后自我怀疑</span><span style="font-size:10px;color:var(--frost-dim);">05:44</span></div>
+          <div class="esteem-event"><span class="delta delta-up">+12</span><span style="flex:1;font-size:11px;">成功识别 Gaslighting</span><span style="font-size:10px;color:var(--frost-dim);">08:12</span></div>
+          <div class="esteem-event"><span class="delta delta-down">-5</span><span style="flex:1;font-size:11px;">短暂妥协于情感勒索</span><span style="font-size:10px;color:var(--frost-dim);">11:30</span></div>
+          <div class="esteem-event"><span class="delta delta-up">+20</span><span style="flex:1;font-size:11px;">果断拒绝不合理要求</span><span style="font-size:10px;color:var(--frost-dim);">14:05</span></div>
+        </div>
+        <div class="card-glass" style="margin-top:auto;text-align:center;">
+          <span style="font-size:11px;color:var(--frost-dim);">🔥 趋势：<b style="color:var(--emerald);">上升中</b> · 较初始值 +15</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ 6. 保存海报分享 ═══════ -->
+  <div class="mockup-col">
+    <div class="mockup-label"><span class="step-num">6</span> 生成海报 · 社交分享</div>
+    <div class="phone-frame">
+      <div class="notch"></div>
+      <div class="phone-content">
+        <div class="status-bar">
+          <span>← 返回</span><span style="flex:1"></span>
+          <span class="tag tag-amber">分享</span>
+        </div>
+
+        <div class="poster-preview" style="height:auto;aspect-ratio:3/4.5;margin:8px 0;">
+          <div style="font-size:10px;color:var(--frost-dim);letter-spacing:3px;">PERSONALITY ATLAS</div>
+          <div style="font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--neon-cyan),var(--cyber-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">人格图鉴</div>
+          <div class="poster-grade">B+</div>
+          <div style="font-size:13px;font-weight:600;">关系边界建设者</div>
+          <div style="width:100%;height:1px;background:rgba(124,58,237,0.3);margin:8px 0;"></div>
+          <div style="display:flex;gap:16px;font-size:12px;">
+            <div style="text-align:center;"><div style="font-weight:700;color:var(--emerald);">75</div><div style="color:var(--frost-dim);font-size:10px;">自尊值</div></div>
+            <div style="text-align:center;"><div style="font-weight:700;color:var(--neon-cyan);">62</div><div style="color:var(--frost-dim);font-size:10px;">洞察力</div></div>
+            <div style="text-align:center;"><div style="font-weight:700;color:var(--amber);">48</div><div style="color:var(--frost-dim);font-size:10px;">边界感</div></div>
+          </div>
+          <div style="display:flex;gap:4px;margin-top:4px;">
+            <span class="tag tag-rose">NPD 探索</span>
+            <span class="tag tag-purple">INTP</span>
+            <span class="tag tag-cyan">双向障碍</span>
+          </div>
+          <div style="font-size:10px;color:var(--frost-dim);margin-top:6px;">扫码体验你的平行宇宙 →</div>
+          <div style="width:50px;height:50px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-top:4px;">
+            <span style="font-size:24px;">🔳</span>
+          </div>
+          <div class="poster-watermark">#人格图鉴 #平行宇宙 #NPD觉醒</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+          <button class="btn-primary" style="width:100%;">💾 保存到相册</button>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-secondary" style="flex:1;">💬 微信好友</button>
+            <button class="btn-secondary" style="flex:1;">📱 朋友圈</button>
+            <button class="btn-secondary" style="flex:1;">🔗 复制链接</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
