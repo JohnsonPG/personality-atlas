@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识复盘报告 - Apple Design System</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #F2F2F7;
+  font-family: -apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  color: #1C1C1E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 16px 80px;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #1C1C1E;
+  margin-bottom: 8px;
+}
+
+.page-subtitle {
+  font-size: 17px;
+  color: #8E8E93;
+  margin-bottom: 40px;
+}
+
+.screens-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1280px;
+}
+
+/* Phone Frame */
+.phone-frame {
+  width: 375px;
+  height: 812px;
+  background: #F2F2F7;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.08), 0 20px 60px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06);
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 28px;
+  background: #1C1C1E;
+  border-radius: 0 0 20px 20px;
+  z-index: 10;
+}
+
+.phone-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: 44px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.phone-content::-webkit-scrollbar { width: 0; }
+
+/* Status Bar */
+.status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 5;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.status-bar .time { font-weight: 600; }
+.status-bar .icons { display: flex; gap: 6px; align-items: center; }
+
+/* Navigation */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 8px;
+  background: #F2F2F7;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.nav-back {
+  font-size: 17px;
+  color: #007AFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  font-family: inherit;
+}
+
+.nav-back::before { content: '< '; }
+
+.nav-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1C1C1E;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.large-title {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  padding: 4px 20px 8px;
+  color: #1C1C1E;
+  line-height: 1.18;
+}
+
+/* Cards */
+.card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  margin: 0 16px 12px;
+  padding: 16px;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: rgba(52, 199, 89, 0.12);
+  color: #34C759;
+}
+
+/* Secondary text */
+.text-secondary {
+  font-size: 15px;
+  color: #8E8E93;
+  line-height: 1.5;
+}
+
+.text-body {
+  font-size: 17px;
+  color: #1C1C1E;
+  line-height: 1.53;
+}
+
+.text-caption {
+  font-size: 13px;
+  color: #8E8E93;
+  line-height: 1.4;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0 16px 12px;
+}
+
+.stat-item {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1C1C1E;
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #8E8E93;
+  margin-top: 4px;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  padding: 16px 20px 8px;
+  color: #1C1C1E;
+}
+
+/* Progress Bars */
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: #E5E5EA;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.dimension-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.dimension-name {
+  font-size: 15px;
+  color: #1C1C1E;
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.dimension-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1C1C1E;
+  width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.dimension-bar {
+  flex: 1;
+  height: 6px;
+  background: #E5E5EA;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.dimension-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+/* Radar Chart Container */
+.radar-container {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+/* Question Card */
+.question-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  margin: 0 16px 10px;
+  padding: 14px 16px;
+}
+
+.question-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1C1C1E;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+
+.question-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tag-correct {
+  font-size: 13px;
+  font-weight: 600;
+  color: #34C759;
+}
+
+.tag-wrong {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FF3B30;
+}
+
+.tag-global {
+  font-size: 13px;
+  color: #007AFF;
+}
+
+/* Top Stat Card */
+.top-stat-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  margin: 0 16px 16px;
+  padding: 28px 24px;
+  text-align: center;
+}
+
+.top-stat-value {
+  font-size: 48px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #007AFF, #5856D6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.top-stat-label {
+  font-size: 15px;
+  color: #8E8E93;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.top-stat-subtitle {
+  font-size: 13px;
+  color: #AEAEB2;
+  margin-top: 4px;
+}
+
+/* Share Card */
+.share-card {
+  border: 2px dashed #D1D1D6;
+  border-radius: 16px;
+  margin: 0 16px 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: #007AFF;
+  color: #FFFFFF;
+}
+
+.btn-secondary {
+  background: #E5E5EA;
+  color: #1C1C1E;
+}
+
+/* Knowledge Card */
+.knowledge-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  margin: 0 16px 10px;
+  padding: 16px;
+  padding-left: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.knowledge-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.knowledge-card.accent-blue::before { background: #007AFF; }
+.knowledge-card.accent-purple::before { background: #AF52DE; }
+.knowledge-card.accent-red::before { background: #FF3B30; }
+.knowledge-card.accent-green::before { background: #34C759; }
+
+.knowledge-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1C1C1E;
+  margin-bottom: 6px;
+}
+
+.knowledge-desc {
+  font-size: 15px;
+  color: #8E8E93;
+  line-height: 1.5;
+}
+
+/* Poster Preview */
+.poster-preview {
+  background: #FFFFFF;
+  border-radius: 16px;
+  margin: 0 16px 12px;
+  padding: 20px;
+  position: relative;
+}
+
+.poster-inner {
+  background: linear-gradient(180deg, #F2F2F7 0%, #E5E5EA 100%);
+  border-radius: 12px;
+  padding: 24px 16px;
+  text-align: center;
+  position: relative;
+}
+
+.poster-logo {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #007AFF, #5856D6);
+  border-radius: 10px;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.poster-logo-text {
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.poster-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1C1C1E;
+  margin-bottom: 16px;
+}
+
+.poster-stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.poster-stat-num {
+  font-size: 24px;
+  font-weight: 700;
+  color: #007AFF;
+}
+
+.poster-stat-label {
+  font-size: 11px;
+  color: #8E8E93;
+}
+
+.poster-divider {
+  height: 1px;
+  background: #D1D1D6;
+  margin: 12px 0;
+}
+
+.poster-bar-container {
+  padding: 0 8px;
+  text-align: left;
+}
+
+.poster-bar-label {
+  font-size: 11px;
+  color: #8E8E93;
+  margin-bottom: 6px;
+}
+
+/* Buttons Row */
+.buttons-row {
+  display: flex;
+  gap: 12px;
+  margin: 0 16px 24px;
+}
+
+.buttons-row .btn {
+  flex: 1;
+}
+
+/* AI Summary */
+.ai-summary {
+  font-size: 15px;
+  color: #1C1C1E;
+  line-height: 1.6;
+}
+
+.ai-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #007AFF;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.ai-tag-icon {
+  width: 16px;
+  height: 16px;
+  background: #007AFF;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+}
+
+/* Separator */
+.separator {
+  height: 0.5px;
+  background: rgba(0,0,0,0.06);
+  margin: 0 16px 12px;
+}
+
+/* Spacer */
+.spacer { height: 12px; }
+.spacer-sm { height: 8px; }
+</style>
+</head>
+<body>
+
+<div class="page-title">知识复盘报告</div>
+<div class="page-subtitle">Apple HIG Design System Prototype</div>
+
+<div class="screens-grid">
+
+<!-- ==================== Screen 10: Report Overview ==================== -->
+<div class="phone-frame">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <span class="icons">
+      <svg width="16" height="12" viewBox="0 0 16 12"><rect x="0" y="3" width="3" height="9" rx="1" fill="#1C1C1E"/><rect x="5" y="1" width="3" height="11" rx="1" fill="#1C1C1E"/><rect x="10" y="4" width="3" height="8" rx="1" fill="#1C1C1E"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2C10.7 2 13.1 3 15 4.7L8 12 1 4.7C2.9 3 5.3 2 8 2Z" fill="#1C1C1E"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="#1C1C1E" stroke-width="1" fill="none"/><rect x="23" y="4" width="2" height="5" rx="1" fill="#1C1C1E"/><rect x="1.5" y="2.5" width="16" height="7" rx="2" fill="#1C1C1E"/></svg>
+    </span>
+  </div>
+  <div class="phone-content">
+
+    <div class="large-title">知识复盘报告</div>
+
+    <div style="padding: 0 20px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+      <span class="badge badge-success">&#10003; 成功通关</span>
+    </div>
+    <div style="padding: 0 20px 4px;">
+      <span class="text-secondary">NPD + INTJ &middot; 全阶段完成</span>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <!-- AI Summary Card -->
+    <div class="card">
+      <div class="ai-tag">
+        <span class="ai-tag-icon">AI</span>
+        <span>智能分析</span>
+      </div>
+      <div class="ai-summary">
+        你在本次挑战中展现了极强的逻辑推理和情绪觉察能力。在边界管理维度上表现尤为突出，能够清晰识别有毒沟通模式并有效防御。建议在共情表达方面多加练习，尝试用更柔软的方式回应对方的情感需求。
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-value">92</div>
+        <div class="stat-label">得分</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">87%</div>
+        <div class="stat-label">正确率</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">4/4</div>
+        <div class="stat-label">通关</div>
+      </div>
+    </div>
+
+    <!-- Radar Section -->
+    <div class="section-title">五维能力雷达</div>
+    <div class="card">
+      <div class="radar-container">
+        <svg width="240" height="220" viewBox="0 0 240 220">
+          <!-- Pentagon grid lines -->
+          <!-- Level 1 (innermost) -->
+          <polygon points="120,85 139,99 131,122 109,122 101,99" fill="none" stroke="#E5E5EA" stroke-width="1"/>
+          <!-- Level 2 -->
+          <polygon points="120,70 148,93 137,127 103,127 92,93" fill="none" stroke="#E5E5EA" stroke-width="1"/>
+          <!-- Level 3 (outermost) -->
+          <polygon points="120,55 157,86 143,133 97,133 83,86" fill="none" stroke="#E5E5EA" stroke-width="1"/>
+
+          <!-- Axis lines -->
+          <line x1="120" y1="55" x2="120" y2="155" stroke="#E5E5EA" stroke-width="1"/>
+          <line x1="83" y1="86" x2="157" y2="86" stroke="#E5E5EA" stroke-width="1"/>
+          <line x1="97" y1="133" x2="143" y2="133" stroke="#E5E5EA" stroke-width="1"/>
+
+          <!-- Data polygon -->
+          <polygon
+            points="120,68 145,88 138,128 107,122 96,90"
+            fill="rgba(0,122,255,0.1)"
+            stroke="#007AFF"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
+
+          <!-- Data points -->
+          <circle cx="120" cy="68" r="4" fill="#007AFF"/>
+          <circle cx="145" cy="88" r="4" fill="#007AFF"/>
+          <circle cx="138" cy="128" r="4" fill="#007AFF"/>
+          <circle cx="107" cy="122" r="4" fill="#007AFF"/>
+          <circle cx="96" cy="90" r="4" fill="#007AFF"/>
+
+          <!-- Labels -->
+          <text x="120" y="50" text-anchor="middle" font-size="12" fill="#8E8E93" font-family="-apple-system, sans-serif">共情</text>
+          <text x="165" y="86" text-anchor="start" font-size="12" fill="#8E8E93" font-family="-apple-system, sans-serif">边界</text>
+          <text x="148" y="142" text-anchor="start" font-size="12" fill="#8E8E93" font-family="-apple-system, sans-serif">沟通</text>
+          <text x="90" y="142" text-anchor="end" font-size="12" fill="#8E8E93" font-family="-apple-system, sans-serif">觉察</text>
+          <text x="75" y="86" text-anchor="end" font-size="12" fill="#8E8E93" font-family="-apple-system, sans-serif">风险</text>
+        </svg>
+      </div>
+
+      <!-- Dimension Bars -->
+      <div class="separator"></div>
+
+      <div class="dimension-item">
+        <span class="dimension-name">共情</span>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:75%; background:#007AFF;"></div></div>
+        <span class="dimension-value">75</span>
+      </div>
+      <div class="dimension-item">
+        <span class="dimension-name">边界</span>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:90%; background:#34C759;"></div></div>
+        <span class="dimension-value">90</span>
+      </div>
+      <div class="dimension-item">
+        <span class="dimension-name">沟通</span>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:80%; background:#007AFF;"></div></div>
+        <span class="dimension-value">80</span>
+      </div>
+      <div class="dimension-item">
+        <span class="dimension-name">觉察</span>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:70%; background:#AF52DE;"></div></div>
+        <span class="dimension-value">70</span>
+      </div>
+      <div class="dimension-item">
+        <span class="dimension-name">风险</span>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:85%; background:#FF9500;"></div></div>
+        <span class="dimension-value">85</span>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+</div>
+
+
+<!-- ==================== Screen 11: Parallel Universe ==================== -->
+<div class="phone-frame">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <span class="icons">
+      <svg width="16" height="12" viewBox="0 0 16 12"><rect x="0" y="3" width="3" height="9" rx="1" fill="#1C1C1E"/><rect x="5" y="1" width="3" height="11" rx="1" fill="#1C1C1E"/><rect x="10" y="4" width="3" height="8" rx="1" fill="#1C1C1E"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2C10.7 2 13.1 3 15 4.7L8 12 1 4.7C2.9 3 5.3 2 8 2Z" fill="#1C1C1E"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="#1C1C1E" stroke-width="1" fill="none"/><rect x="23" y="4" width="2" height="5" rx="1" fill="#1C1C1E"/><rect x="1.5" y="2.5" width="16" height="7" rx="2" fill="#1C1C1E"/></svg>
+    </span>
+  </div>
+  <div class="phone-content">
+
+    <div class="nav-bar" style="padding-top:0; margin-top:-44px; height:44px;">
+      <button class="nav-back">返回报告</button>
+    </div>
+
+    <div class="large-title" style="font-size:28px;">平行宇宙数据对比</div>
+
+    <!-- Top Stat Card -->
+    <div class="top-stat-card">
+      <div class="top-stat-value">Top 12%</div>
+      <div class="top-stat-label">你超越了全球 88% 的挑战者</div>
+      <div class="top-stat-subtitle">基于 12,847 份有效答卷数据</div>
+    </div>
+
+    <!-- Question 1 - Correct -->
+    <div class="question-card">
+      <div class="question-text">Q1. 当对方说"你太敏感了"时，最恰当的应对策略是？</div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:45%; background:#007AFF;"></div>
+      </div>
+      <div class="question-meta">
+        <span class="tag-correct">你：正确</span>
+        <span style="color:#AEAEB2;">&middot;</span>
+        <span class="tag-global">全球仅 45% 做对</span>
+      </div>
+    </div>
+
+    <!-- Question 2 - Correct -->
+    <div class="question-card">
+      <div class="question-text">Q2. NPD 三角关系中，"拯救者"角色的本质动机是什么？</div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:38%; background:#007AFF;"></div>
+      </div>
+      <div class="question-meta">
+        <span class="tag-correct">你：正确</span>
+        <span style="color:#AEAEB2;">&middot;</span>
+        <span class="tag-global">全球仅 38% 做对</span>
+      </div>
+    </div>
+
+    <!-- Question 3 - Wrong -->
+    <div class="question-card">
+      <div class="question-text">Q3. 以下哪种行为不属于"隐蔽操控"的范畴？</div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:28%; background:#FF3B30;"></div>
+      </div>
+      <div class="question-meta">
+        <span class="tag-wrong">你：失误</span>
+        <span style="color:#AEAEB2;">&middot;</span>
+        <span class="tag-global">全球仅 28% 做对</span>
+      </div>
+    </div>
+
+    <!-- Question 4 - Correct -->
+    <div class="question-card">
+      <div class="question-text">Q4. 在面对"沉默对待"时，推荐的最佳应对方式是？</div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:52%; background:#007AFF;"></div>
+      </div>
+      <div class="question-meta">
+        <span class="tag-correct">你：正确</span>
+        <span style="color:#AEAEB2;">&middot;</span>
+        <span class="tag-global">全球仅 52% 做对</span>
+      </div>
+    </div>
+
+    <!-- Question 5 - Wrong -->
+    <div class="question-card">
+      <div class="question-text">Q5. INTJ 型人格在情感关系中最容易陷入的陷阱是？</div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:22%; background:#FF3B30;"></div>
+      </div>
+      <div class="question-meta">
+        <span class="tag-wrong">你：失误</span>
+        <span style="color:#AEAEB2;">&middot;</span>
+        <span class="tag-global">全球仅 22% 做对</span>
+      </div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <!-- Share Card -->
+    <div class="share-card">
+      <div style="font-size:15px; color:#8E8E93; margin-bottom:12px;">与朋友比拼你的认知水平</div>
+      <button class="btn btn-primary">分享到朋友圈</button>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+</div>
+
+
+<!-- ==================== Screen 12: Knowledge Poster ==================== -->
+<div class="phone-frame">
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <span class="icons">
+      <svg width="16" height="12" viewBox="0 0 16 12"><rect x="0" y="3" width="3" height="9" rx="1" fill="#1C1C1E"/><rect x="5" y="1" width="3" height="11" rx="1" fill="#1C1C1E"/><rect x="10" y="4" width="3" height="8" rx="1" fill="#1C1C1E"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2C10.7 2 13.1 3 15 4.7L8 12 1 4.7C2.9 3 5.3 2 8 2Z" fill="#1C1C1E"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="3" stroke="#1C1C1E" stroke-width="1" fill="none"/><rect x="23" y="4" width="2" height="5" rx="1" fill="#1C1C1E"/><rect x="1.5" y="2.5" width="16" height="7" rx="2" fill="#1C1C1E"/></svg>
+    </span>
+  </div>
+  <div class="phone-content">
+
+    <div class="nav-bar" style="padding-top:0; margin-top:-44px; height:44px;">
+      <button class="nav-back">返回</button>
+    </div>
+
+    <div class="large-title" style="font-size:28px;">核心知识点总结</div>
+
+    <!-- Knowledge Cards -->
+    <div class="knowledge-card accent-blue">
+      <div class="knowledge-title">NPD 自恋型人格核心特征</div>
+      <div class="knowledge-desc">夸大自我重要感、需要过度赞美、缺乏共情能力，以及操控行为模式。识别"三角操控"是自我保护的第一步。</div>
+    </div>
+
+    <div class="knowledge-card accent-purple">
+      <div class="knowledge-title">INTJ 的认知盲区</div>
+      <div class="knowledge-desc">过度依赖逻辑分析，忽视情感信号。在亲密关系中倾向于将问题"理性化"，而错过对方真实的情感需求。</div>
+    </div>
+
+    <div class="knowledge-card accent-red">
+      <div class="knowledge-title">隐蔽操控的 7 种形态</div>
+      <div class="knowledge-desc">煤气灯效应、沉默惩罚、三角关系、情感绑架、未来伪造、间歇强化和善意操控。隐蔽操控最危险的特征是难以识别。</div>
+    </div>
+
+    <div class="knowledge-card accent-green">
+      <div class="knowledge-title">健康边界的建立原则</div>
+      <div class="knowledge-desc">明确表达而非暗示、后果一致执行、区分"帮助"与"拯救"。好的边界是保护自己，而非惩罚他人。</div>
+    </div>
+
+    <div class="spacer-sm"></div>
+
+    <!-- Poster Preview -->
+    <div class="section-title" style="font-size:20px;">海报预览</div>
+    <div class="poster-preview">
+      <div class="poster-inner">
+        <div class="poster-logo">
+          <span class="poster-logo-text">R</span>
+        </div>
+        <div class="poster-title">认知觉醒挑战报告</div>
+        <div class="poster-stats-row">
+          <div>
+            <div class="poster-stat-num">92</div>
+            <div class="poster-stat-label">综合得分</div>
+          </div>
+          <div>
+            <div class="poster-stat-num">Top12%</div>
+            <div class="poster-stat-label">全球排名</div>
+          </div>
+          <div>
+            <div class="poster-stat-num">87%</div>
+            <div class="poster-stat-label">正确率</div>
+          </div>
+        </div>
+        <div class="poster-divider"></div>
+        <div class="poster-bar-container">
+          <div class="poster-bar-label">五维能力综合评估</div>
+          <div class="progress-track" style="height:8px; border-radius:4px;">
+            <div class="progress-fill" style="width:80%; background:linear-gradient(90deg,#007AFF,#5856D6); border-radius:4px;"></div>
+          </div>
+        </div>
+        <div style="margin-top:12px; font-size:11px; color:#AEAEB2;">NPD + INTJ &middot; 全阶段通关</div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="spacer-sm"></div>
+    <div class="buttons-row">
+      <button class="btn btn-secondary">返回首页</button>
+      <button class="btn btn-primary">保存海报</button>
+    </div>
+
+    <div class="spacer"></div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

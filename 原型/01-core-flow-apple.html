@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人格图鉴 - Apple Design System Prototype</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #F2F2F7;
+    --card: #FFFFFF;
+    --text-primary: #1C1C1E;
+    --text-secondary: #8E8E93;
+    --text-tertiary: #AEAEB2;
+    --accent: #007AFF;
+    --separator: #C6C6C8;
+    --destructive: #FF3B30;
+    --success: #34C759;
+    --warning: #FF9500;
+    --mbti-blue: #5B7FFF;
+    --mbti-green: #30D158;
+    --mbti-orange: #FF9F0A;
+    --mbti-gold: #AC8E68;
+    --track: #E5E5EA;
+  }
+
+  body {
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    background: #E8E8ED;
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .page-header {
+    text-align: center;
+    padding: 24px 0 36px;
+  }
+  .page-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+  }
+  .page-header p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    letter-spacing: 0.2px;
+  }
+
+  .prototype-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .phone-wrapper { flex: 0 0 auto; }
+
+  .phone-frame {
+    width: 375px;
+    height: 812px;
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    background: var(--bg);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.08), 0 20px 60px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  .phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 126px; height: 28px;
+    background: #1C1C1E;
+    border-radius: 0 0 18px 18px;
+    z-index: 100;
+  }
+
+  .phone-content {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .screen-label {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .screen-label span {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ========== Status Bar ========== */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px 0;
+    height: 44px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    position: relative;
+    z-index: 50;
+  }
+  .status-bar.dark { color: #FFFFFF; }
+  .status-bar .time { font-size: 15px; font-weight: 700; }
+  .status-bar .icons { display: flex; gap: 5px; align-items: center; }
+  .status-bar .icons svg { width: 16px; height: 16px; fill: currentColor; }
+
+  /* ========== Large Title Nav ========== */
+  .nav-back {
+    font-size: 17px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 0;
+    cursor: pointer;
+  }
+  .nav-back svg { width: 20px; height: 20px; fill: var(--accent); }
+  .large-title {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 0.37px;
+    line-height: 1.18;
+    color: var(--text-primary);
+    padding: 4px 0 8px;
+  }
+
+  /* ========== iOS List Group ========== */
+  .list-group {
+    background: var(--card);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .list-item {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    min-height: 60px;
+  }
+  .list-item + .list-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 60px; right: 0;
+    height: 0.5px;
+    background: var(--separator);
+  }
+  .list-item .chevron {
+    margin-left: auto;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+  }
+  .list-item .chevron svg { width: 14px; height: 14px; fill: var(--text-tertiary); }
+
+  /* ========== SCREEN 1: Home / Splash ========== */
+  .screen-home {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #FFFFFF;
+  }
+  .home-status {
+    background: #FFFFFF;
+  }
+  .home-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 40px;
+    text-align: center;
+  }
+  .home-logo-icon {
+    width: 88px; height: 88px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--accent), #5856D6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(0,122,255,0.25);
+  }
+  .home-title {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .home-subtitle {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    letter-spacing: 0.2px;
+  }
+  .home-tagline {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .home-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+  .btn-primary {
+    width: 100%;
+    max-width: 320px;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    cursor: pointer;
+    background: var(--accent);
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0,122,255,0.25);
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .home-footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    padding: 20px 0 40px;
+  }
+
+  /* ========== SCREEN 2: Primary Tag Selection ========== */
+  .screen-tag-select {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+  }
+  .tag-header {
+    padding: 0 24px 8px;
+  }
+  .tag-body {
+    flex: 1;
+    padding: 8px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .tag-card {
+    background: var(--card);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    gap: 14px;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.15s;
+  }
+  .tag-card:hover { transform: scale(1.01); }
+  .tag-card:active { transform: scale(0.99); }
+  .tag-card-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .tag-card-npd .tag-card-icon {
+    background: #FFF0F0;
+  }
+  .tag-card-bipolar .tag-card-icon {
+    background: #F0F5FF;
+  }
+  .tag-card-info { flex: 1; }
+  .tag-card-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+  .tag-card-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .tag-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .tag-badge-hot {
+    background: #FFF3E0;
+    color: var(--warning);
+  }
+  .tag-badge-new {
+    background: #E8F0FE;
+    color: var(--accent);
+  }
+  .tag-card .chevron { flex-shrink: 0; }
+  .tag-card .chevron svg { width: 18px; height: 18px; fill: var(--text-tertiary); }
+  .tag-hint {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-top: 16px;
+  }
+
+  /* ========== SCREEN 3: MBTI Selection ========== */
+  .screen-mbti {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+  }
+  .mbti-header { padding: 0 24px 8px; }
+  .mbti-selected-pill {
+    margin: 0 24px 12px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #F0F0F5;
+    font-size: 14px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+  }
+  .mbti-legend {
+    display: flex;
+    gap: 16px;
+    padding: 4px 24px 12px;
+    justify-content: center;
+  }
+  .mbti-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .mbti-legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .mbti-grid {
+    flex: 1;
+    padding: 0 20px 12px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    align-content: start;
+  }
+  .mbti-item {
+    aspect-ratio: 5/6;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+    position: relative;
+    padding: 6px;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .mbti-item::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 55%;
+    background: linear-gradient(to top, rgba(28,28,30,0.82), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .mbti-item > * { position: relative; z-index: 1; }
+  .mbti-item:hover { transform: scale(1.03); }
+  .mbti-item.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0,122,255,0.3);
+  }
+  .mbti-code {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #FFFFFF;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  .mbti-check {
+    position: absolute;
+    top: 5px; right: 5px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .mbti-check svg { width: 12px; height: 12px; fill: #FFFFFF; }
+  .mbti-item.selected .mbti-check { display: flex; }
+  .mbti-start-btn {
+    margin: 8px 24px 40px;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--accent);
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0,122,255,0.25);
+  }
+
+  /* ========== SCREEN 4: AI Loading ========== */
+  .screen-ai-loading {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+  }
+  .ai-loading-content {
+    text-align: center;
+    padding: 0 40px;
+  }
+  .ai-spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--track);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 32px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .ai-loading-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+  .ai-loading-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+  }
+  .ai-progress-track {
+    width: 200px;
+    height: 4px;
+    background: var(--track);
+    border-radius: 4px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .ai-progress-fill {
+    height: 100%;
+    width: 65%;
+    background: var(--accent);
+    border-radius: 4px;
+    animation: progress-pulse 2s ease-in-out infinite;
+  }
+  @keyframes progress-pulse {
+    0% { width: 20%; }
+    50% { width: 85%; }
+    100% { width: 20%; }
+  }
+  .ai-hint {
+    margin-top: 24px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: var(--bg);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ========== SCREEN 5: Game Play ========== */
+  .screen-game {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+  }
+  .game-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px 8px;
+  }
+  .game-stage-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--card);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .game-question-num {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .game-scene-wrap {
+    margin: 0 16px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+  }
+  .game-scene-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+  .game-score-area {
+    padding: 14px 20px 6px;
+  }
+  .game-score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .game-score-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .game-score-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .game-score-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+  }
+  .game-score-change {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .game-score-change.negative {
+    color: var(--destructive);
+    background: #FFF0F0;
+  }
+  .game-score-change.positive {
+    color: var(--success);
+    background: #F0FFF4;
+  }
+  .game-score-bar {
+    height: 6px;
+    background: var(--track);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .game-score-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+  .game-score-bar.danger .game-score-fill {
+    background: var(--destructive);
+  }
+  .game-stage-progress {
+    display: flex;
+    gap: 6px;
+    padding: 10px 20px;
+    justify-content: center;
+  }
+  .game-stage-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--track);
+  }
+  .game-stage-dot.done { background: var(--accent); }
+  .game-stage-dot.current {
+    width: 20px;
+    border-radius: 4px;
+    background: var(--accent);
+  }
+
+  .game-dialogue {
+    margin: 8px 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--card);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .game-dialogue-speaker {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .game-dialogue-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-primary);
+  }
+
+  .game-options {
+    padding: 8px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    justify-content: flex-end;
+  }
+  .game-option {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--separator);
+    background: var(--card);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.15s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .game-option:hover { background: #F9F9FB; }
+  .game-option.selected {
+    border-color: var(--accent);
+    background: #F0F5FF;
+  }
+  .game-option-letter {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+    background: var(--bg);
+    color: var(--text-secondary);
+  }
+  .game-option.selected .game-option-letter {
+    background: var(--accent);
+    color: #FFFFFF;
+  }
+  .game-option-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-primary);
+  }
+
+  /* ========== SCREEN 6: Feedback Modal ========== */
+  .screen-feedback {
+    width: 100%; height: 100%;
+    position: relative;
+    background: var(--bg);
+  }
+  .feedback-bg-blur {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .feedback-sheet {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: var(--card);
+    border-radius: 20px 20px 0 0;
+    padding: 12px 20px 48px;
+    z-index: 20;
+    max-height: 78%;
+    box-shadow: 0 -4px 30px rgba(0,0,0,0.1);
+  }
+  .feedback-handle {
+    width: 36px; height: 5px;
+    border-radius: 5px;
+    background: var(--track);
+    margin: 0 auto 20px;
+  }
+  .feedback-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+  }
+  .feedback-icon svg { width: 28px; height: 28px; }
+  .feedback-correct .feedback-icon {
+    background: #E8FAF0;
+    border: 2px solid var(--success);
+  }
+  .feedback-correct .feedback-icon svg { fill: var(--success); }
+  .feedback-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.2px;
+  }
+  .feedback-correct .feedback-title { color: var(--success); }
+  .feedback-score-change {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+  }
+  .feedback-score-change .plus {
+    color: var(--success);
+    font-weight: 600;
+  }
+  .feedback-knowledge {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #F0F5FF;
+    margin-bottom: 12px;
+  }
+  .feedback-knowledge-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .feedback-knowledge-text {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-primary);
+  }
+  .feedback-advice {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #FFFBF0;
+    border-left: 3px solid var(--warning);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+  .feedback-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--accent);
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0,122,255,0.25);
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h2>人格图鉴 - Apple Design System</h2>
+  <p>iOS Human Interface Guidelines Style / 核心流程原型</p>
+</div>
+
+<div class="prototype-grid">
+
+  <!-- SCREEN 1: Home / Splash -->
+  <div class="phone-wrapper">
+    <div class="phone-frame">
+      <div class="phone-content">
+        <div class="screen-home">
+          <div class="home-status">
+            <div class="status-bar">
+              <span class="time">9:41</span>
+              <div class="icons">
+                <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="home-body">
+            <div class="home-logo-icon">🎭</div>
+            <div class="home-title">人格图鉴</div>
+            <div class="home-subtitle">沉浸式关系生存模拟器</div>
+            <div class="home-tagline">在虚拟情感中低成本试错<br>将心理学知识变成肌肉记忆</div>
+            <div class="home-desc">AI 驱动的动态互动小说，让你在虚拟的恋爱/社交生死局中演练人际交往，识破操控，建立边界。</div>
+            <button class="btn-primary">开始挑战</button>
+            <div class="home-footer">已更新至 v1.0 · 32 种人格组合</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label"><span>01</span> 启动页 / 首页</div>
+  </div>
+
+  <!-- SCREEN 2: Primary Tag Selection -->
+  <div class="phone-wrapper">
+    <div class="phone-frame">
+      <div class="phone-content">
+        <div class="screen-tag-select">
+          <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="icons">
+              <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="tag-header">
+            <div class="nav-back">
+              <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              返回
+            </div>
+            <div class="large-title">选择人格类型</div>
+          </div>
+          <div class="tag-body">
+            <div class="tag-card tag-card-npd">
+              <div class="tag-card-icon">🎭</div>
+              <div class="tag-card-info">
+                <div class="tag-card-name">NPD 自恋型人格</div>
+                <div class="tag-card-desc">识别操控、煤气灯效应、情感吸血</div>
+              </div>
+              <div class="tag-badge tag-badge-hot">HOT</div>
+              <div class="chevron"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+            </div>
+            <div class="tag-card tag-card-bipolar">
+              <div class="tag-card-icon">🌊</div>
+              <div class="tag-card-info">
+                <div class="tag-card-name">双向/抑郁情绪</div>
+                <div class="tag-card-desc">理解情绪波动与边界守护</div>
+              </div>
+              <div class="tag-badge tag-badge-new">NEW</div>
+              <div class="chevron"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+            </div>
+            <div class="tag-hint">更多人格类型即将解锁...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label"><span>02</span> 主标签选择（NPD / 双向）</div>
+  </div>
+
+  <!-- SCREEN 3: MBTI Selection -->
+  <div class="phone-wrapper">
+    <div class="phone-frame">
+      <div class="phone-content">
+        <div class="screen-mbti">
+          <div class="status-bar">
+            <span class="time">9:42</span>
+            <div class="icons">
+              <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="mbti-header">
+            <div class="nav-back">
+              <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              返回
+            </div>
+            <div class="large-title">选择 MBTI 人格</div>
+          </div>
+          <div class="mbti-selected-pill">
+            <span>🎭</span> 已选：NPD 自恋型人格
+          </div>
+          <div class="mbti-legend">
+            <div class="mbti-legend-item"><div class="mbti-legend-dot" style="background:var(--mbti-blue)"></div>分析师</div>
+            <div class="mbti-legend-item"><div class="mbti-legend-dot" style="background:var(--mbti-green)"></div>外交家</div>
+            <div class="mbti-legend-item"><div class="mbti-legend-dot" style="background:var(--mbti-orange)"></div>探险家</div>
+            <div class="mbti-legend-item"><div class="mbti-legend-dot" style="background:var(--mbti-gold)"></div>守卫者</div>
+          </div>
+          <div class="mbti-grid">
+            <div class="mbti-item selected" style="background-image:url('assets/mbti-crops/mbti-intj.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">INTJ</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-intp.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">INTP</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-entj.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ENTJ</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-entp.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ENTP</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-infj.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">INFJ</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-infp.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">INFP</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-enfj.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ENFJ</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-enfp.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ENFP</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-istp.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ISTP</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-isfp.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ISFP</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-estp.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ESTP</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-esfp.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ESFP</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-istj.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ISTJ</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-isfj.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ISFJ</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-estj.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ESTJ</div></div>
+            <div class="mbti-item" style="background-image:url('assets/mbti-crops/mbti-esfj.png')"><div class="mbti-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="mbti-code">ESFJ</div></div>
+          </div>
+          <button class="mbti-start-btn">NPD + INTJ · 开始模拟</button>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label"><span>03</span> MBTI 16 型人格选择</div>
+  </div>
+
+  <!-- SCREEN 4: AI Loading -->
+  <div class="phone-wrapper">
+    <div class="phone-frame">
+      <div class="phone-content">
+        <div class="screen-ai-loading">
+          <div class="status-bar" style="position:absolute;top:0;left:0;right:0;">
+            <span class="time">9:42</span>
+            <div class="icons">
+              <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="ai-loading-content">
+            <div class="ai-spinner"></div>
+            <div class="ai-loading-text">AI 正在编织你的命运...</div>
+            <div class="ai-loading-sub">NPD + INTJ · 相识阶段剧本生成中</div>
+            <div class="ai-progress-track">
+              <div class="ai-progress-fill"></div>
+            </div>
+            <div class="ai-hint">正在构建「相识破冰」场景<br>生成动漫场景与对话</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label"><span>04</span> AI 剧本生成过渡页</div>
+  </div>
+
+  <!-- SCREEN 5: Game Play -->
+  <div class="phone-wrapper">
+    <div class="phone-frame">
+      <div class="phone-content">
+        <div class="screen-game">
+          <div class="status-bar">
+            <span class="time">9:43</span>
+            <div class="icons">
+              <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+            </div>
+          </div>
+          <div class="game-top-bar">
+            <div class="game-stage-badge">相识破冰</div>
+            <div class="game-question-num">第 2/3 题</div>
+          </div>
+          <div class="game-scene-wrap">
+            <img class="game-scene-img" src="assets/apple-meet.jpg" alt="scene">
+          </div>
+          <div class="game-score-area">
+            <div class="game-score-row">
+              <span class="game-score-label">自尊值</span>
+              <div class="game-score-right">
+                <span class="game-score-change negative">-15</span>
+                <span class="game-score-value">72</span>
+              </div>
+            </div>
+            <div class="game-score-bar danger">
+              <div class="game-score-fill" style="width:72%"></div>
+            </div>
+          </div>
+          <div class="game-stage-progress">
+            <div class="game-stage-dot done"></div>
+            <div class="game-stage-dot current"></div>
+            <div class="game-stage-dot"></div>
+            <div class="game-stage-dot"></div>
+          </div>
+          <div class="game-dialogue">
+            <div class="game-dialogue-speaker">场景 · 咖啡厅</div>
+            <div class="game-dialogue-text">
+              对方笑着说："你今天穿得真好看，不像平时那么随意。" 但你注意到TA的眼神在审视你的衣着，语气里带着一丝不易察觉的评判。你会怎么做？
+            </div>
+          </div>
+          <div class="game-options">
+            <div class="game-option">
+              <div class="game-option-letter">A</div>
+              <div class="game-option-text">开心接受赞美，觉得对方很会说话</div>
+            </div>
+            <div class="game-option selected">
+              <div class="game-option-letter">B</div>
+              <div class="game-option-text">礼貌回应，但内心留意对方的评价模式</div>
+            </div>
+            <div class="game-option">
+              <div class="game-option-letter">C</div>
+              <div class="game-option-text">反问"随意有什么不好？"试探对方的真实想法</div>
+            </div>
+            <div class="game-option">
+              <div class="game-option-letter">D</div>
+              <div class="game-option-text">忽略这个细节，继续聊其他话题</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label"><span>05</span> 生存闯关主页面</div>
+  </div>
+
+  <!-- SCREEN 6: Feedback Modal -->
+  <div class="phone-wrapper">
+    <div class="phone-frame">
+      <div class="phone-content">
+        <div class="screen-feedback">
+          <div class="feedback-bg-blur"></div>
+          <div class="feedback-sheet feedback-correct">
+            <div class="feedback-handle"></div>
+            <div class="feedback-icon">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <div class="feedback-title">选择正确</div>
+            <div class="feedback-score-change">自尊值 <span class="plus">+12</span>（当前 84）</div>
+            <div class="feedback-knowledge">
+              <div class="feedback-knowledge-label">心理学知识 · NPD 识别</div>
+              <div class="feedback-knowledge-text">
+                NPD（自恋型人格障碍）常通过"含蓄贬低"的方式建立优越感。表面是赞美，实际暗含对你"平时"状态的否定。这种模式叫"暗贬操控"，是 NPD 常见的初期行为特征。
+              </div>
+            </div>
+            <div class="feedback-advice">
+              避雷建议：当你感受到"被夸奖但不舒服"时，请注意这可能是操控信号。健康的赞美不会附带比较和否定。
+            </div>
+            <button class="feedback-btn">继续下一题</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label"><span>06</span> 即时反馈弹窗（正确）</div>
+  </div>
+
+</div>
+
+</body>
+</html>

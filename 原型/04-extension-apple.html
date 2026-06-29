@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apple HIG Design System - Extension Screens</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #E5E5EA;
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .phone-frame {
+    width: 375px;
+    height: 812px;
+    background: #F2F2F7;
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 0 0 3px #1C1C1E, 0 20px 60px rgba(0,0,0,0.18);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .phone-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 0;
+    position: relative;
+  }
+
+  .phone-content::-webkit-scrollbar { width: 0; }
+
+  .status-bar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1C1C1E;
+    background: transparent;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .status-bar .time { font-size: 15px; font-weight: 600; }
+  .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+  .status-bar .icons svg { width: 18px; height: 18px; fill: #1C1C1E; }
+
+  /* ========== Screen 13: History/Review Center ========== */
+  .screen-13 .phone-content { padding-top: 0; }
+
+  .large-title {
+    font-size: 34px;
+    font-weight: 700;
+    color: #1C1C1E;
+    padding: 0 20px 8px;
+    line-height: 1.2;
+  }
+
+  .segmented-control {
+    margin: 8px 20px 16px;
+    background: rgba(118,118,128,0.12);
+    border-radius: 9px;
+    padding: 2px;
+    display: flex;
+    position: relative;
+  }
+
+  .segmented-control .segment {
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1C1C1E;
+    padding: 6px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 1;
+    position: relative;
+  }
+
+  .segmented-control .segment.active {
+    color: #1C1C1E;
+  }
+
+  .segmented-control .segment:not(.active) {
+    color: #1C1C1E;
+  }
+
+  .segmented-control .segment-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(33.333% - 2px);
+    height: calc(100% - 4px);
+    background: #FFFFFF;
+    border-radius: 7px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0.5px 1px rgba(0,0,0,0.04);
+    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .segmented-control .segment-slider.pos-1 { transform: translateX(100%); }
+  .segmented-control .segment-slider.pos-2 { transform: translateX(200%); }
+
+  .record-list {
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .record-card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+
+  .record-card:active { transform: scale(0.98); }
+
+  .record-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .record-icon.pass { background: rgba(52,199,89,0.12); }
+  .record-icon.fail { background: rgba(255,59,48,0.12); }
+
+  .record-icon svg { width: 22px; height: 22px; }
+  .record-icon.pass svg { fill: #34C759; }
+  .record-icon.fail svg { fill: #FF3B30; }
+
+  .record-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .record-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1C1C1E;
+    margin-bottom: 3px;
+  }
+
+  .record-meta {
+    font-size: 13px;
+    color: #8E8E93;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag-pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+
+  .tag-pill.npd { background: rgba(255,59,48,0.1); color: #FF3B30; }
+  .tag-pill.dual { background: rgba(0,122,255,0.1); color: #007AFF; }
+  .tag-pill.healthy { background: rgba(52,199,89,0.1); color: #34C759; }
+  .tag-pill.strategic { background: rgba(175,82,222,0.1); color: #AF52DE; }
+
+  .record-score {
+    font-size: 22px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .record-score.high { color: #34C759; }
+  .record-score.low { color: #FF3B30; }
+
+  .record-score-label {
+    font-size: 11px;
+    color: #AEAEB2;
+    text-align: center;
+    margin-top: -2px;
+  }
+
+  .bottom-actions {
+    padding: 16px 20px 40px;
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .btn-gray {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    color: #007AFF;
+    background: rgba(0,122,255,0.08);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .btn-blue {
+    flex: 1.4;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: #007AFF;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .btn-blue:active { background: #0062CC; }
+  .btn-gray:active { background: rgba(0,122,255,0.14); }
+
+  /* ========== Screen 14: Personal Center ========== */
+  .screen-14 .phone-content { padding-top: 0; }
+
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 20px 20px;
+  }
+
+  .avatar-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #E5E5EA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .avatar-circle svg { width: 32px; height: 32px; fill: #8E8E93; }
+
+  .profile-info .profile-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1C1C1E;
+  }
+
+  .profile-info .profile-id {
+    font-size: 15px;
+    color: #8E8E93;
+    margin-top: 2px;
+  }
+
+  .stats-row {
+    display: flex;
+    padding: 0 20px 20px;
+    gap: 0;
+  }
+
+  .stat-item {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+
+  .stat-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 0.5px;
+    background: rgba(0,0,0,0.08);
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1C1C1E;
+    line-height: 1.1;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: #8E8E93;
+    margin-top: 4px;
+  }
+
+  .vip-card {
+    margin: 0 16px 20px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vip-card::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255,149,0,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .vip-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #FF9500;
+    margin-bottom: 8px;
+  }
+
+  .vip-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1C1C1E;
+    margin-bottom: 4px;
+  }
+
+  .vip-desc {
+    font-size: 13px;
+    color: #8E8E93;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    max-width: 240px;
+  }
+
+  .vip-btn {
+    display: inline-flex;
+    padding: 9px 24px;
+    border-radius: 20px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: #FF9500;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .vip-btn:active { background: #E08600; }
+
+  .settings-group {
+    margin: 0 16px 16px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .settings-group .settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .settings-group .settings-item:active { background: #F2F2F7; }
+
+  .settings-group .settings-item:not(:last-child) {
+    border-bottom: 0.5px solid rgba(0,0,0,0.06);
+  }
+
+  .settings-item-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .settings-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .settings-icon svg { width: 17px; height: 17px; fill: #FFFFFF; }
+
+  .settings-icon.blue { background: #007AFF; }
+  .settings-icon.purple { background: #AF52DE; }
+  .settings-icon.green { background: #34C759; }
+  .settings-icon.orange { background: #FF9500; }
+  .settings-icon.gray { background: #8E8E93; }
+  .settings-icon.teal { background: #5AC8FA; }
+
+  .settings-item-label {
+    font-size: 17px;
+    color: #1C1C1E;
+  }
+
+  .chevron {
+    width: 8px;
+    height: 13px;
+    fill: #C7C7CC;
+  }
+
+  /* ========== Screen 15: Onboarding Page 2 ========== */
+  .screen-15 .phone-content {
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .onboarding-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+    position: relative;
+    width: 100%;
+  }
+
+  .blob-bg {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .blob-bg.blue {
+    width: 220px;
+    height: 220px;
+    background: rgba(0,122,255,0.12);
+    top: 10%;
+    left: -40px;
+  }
+
+  .blob-bg.purple {
+    width: 180px;
+    height: 180px;
+    background: rgba(175,82,222,0.1);
+    bottom: 15%;
+    right: -30px;
+  }
+
+  .page-dots {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #C7C7CC;
+  }
+
+  .page-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background: #007AFF;
+  }
+
+  .onboarding-emoji {
+    font-size: 72px;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .onboarding-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1C1C1E;
+    text-align: center;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .onboarding-desc {
+    font-size: 17px;
+    color: #8E8E93;
+    text-align: center;
+    line-height: 1.6;
+    max-width: 280px;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .onboarding-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 40px;
+  }
+
+  .cta-blue {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: #007AFF;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .cta-blue:active { background: #0062CC; }
+
+  .skip-link {
+    font-size: 15px;
+    color: #8E8E93;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+    padding: 4px 0;
+  }
+
+  .skip-link:active { color: #AEAEB2; }
+
+  /* Screen label */
+  .screen-label {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8E8E93;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===== Screen 13: History/Review Center ===== -->
+  <div>
+    <div class="phone-frame screen-13">
+      <div class="phone-content">
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+          </span>
+        </div>
+
+        <div class="large-title">复盘中心</div>
+
+        <div class="segmented-control">
+          <div class="segment-slider pos-0"></div>
+          <div class="segment active">全部</div>
+          <div class="segment">已通关</div>
+          <div class="segment">已阵亡</div>
+        </div>
+
+        <div class="record-list">
+          <!-- Record 1: Pass -->
+          <div class="record-card">
+            <div class="record-icon pass">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+            </div>
+            <div class="record-info">
+              <div class="record-title">NPD + INTJ</div>
+              <div class="record-meta">
+                4阶段通关 · 14题对12
+                <span class="tag-pill npd">NPD</span>
+                <span class="tag-pill dual">双向</span>
+              </div>
+            </div>
+            <div>
+              <div class="record-score high">86</div>
+              <div class="record-score-label">分</div>
+            </div>
+          </div>
+
+          <!-- Record 2: Pass -->
+          <div class="record-card">
+            <div class="record-icon pass">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+            </div>
+            <div class="record-info">
+              <div class="record-title">BPD + ENFP</div>
+              <div class="record-meta">
+                5阶段通关 · 18题对15
+                <span class="tag-pill healthy">健康</span>
+                <span class="tag-pill npd">NPD</span>
+              </div>
+            </div>
+            <div>
+              <div class="record-score high">83</div>
+              <div class="record-score-label">分</div>
+            </div>
+          </div>
+
+          <!-- Record 3: Fail -->
+          <div class="record-card">
+            <div class="record-icon fail">
+              <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+            </div>
+            <div class="record-info">
+              <div class="record-title">ASPD + ESTP</div>
+              <div class="record-meta">
+                2阶段阵亡 · 8题对4
+                <span class="tag-pill npd">NPD</span>
+              </div>
+            </div>
+            <div>
+              <div class="record-score low">50</div>
+              <div class="record-score-label">分</div>
+            </div>
+          </div>
+
+          <!-- Record 4: Pass -->
+          <div class="record-card">
+            <div class="record-icon pass">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+            </div>
+            <div class="record-info">
+              <div class="record-title">HPD + ESFJ</div>
+              <div class="record-meta">
+                4阶段通关 · 12题对11
+                <span class="tag-pill dual">双向</span>
+                <span class="tag-pill strategic">策略</span>
+              </div>
+            </div>
+            <div>
+              <div class="record-score high">92</div>
+              <div class="record-score-label">分</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-actions">
+          <button class="btn-gray">查看统计</button>
+          <button class="btn-blue">开始新挑战</button>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Screen 13 - 复盘中心</div>
+  </div>
+
+  <!-- ===== Screen 14: Personal Center ===== -->
+  <div>
+    <div class="phone-frame screen-14">
+      <div class="phone-content">
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+          </span>
+        </div>
+
+        <!-- Profile Header -->
+        <div style="padding: 0 20px 20px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div class="avatar-circle">
+              <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+            <div>
+              <div class="profile-name">探索者 #A7F2</div>
+              <div class="profile-id">ID: 0000A7F2</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">7</div>
+            <div class="stat-label">总挑战</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">3</div>
+            <div class="stat-label">已通关</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">72%</div>
+            <div class="stat-label">通关率</div>
+          </div>
+        </div>
+
+        <!-- VIP Card -->
+        <div class="vip-card">
+          <div class="vip-badge">&#x1F451; VIP 会员</div>
+          <div class="vip-title">升级 VIP 会员</div>
+          <div class="vip-desc">解锁全部人格类型，获取深度分析报告和专属策略建议</div>
+          <button class="vip-btn">开通</button>
+        </div>
+
+        <!-- Settings Group 1 -->
+        <div class="settings-group">
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon blue">
+                <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+              </div>
+              <span class="settings-item-label">复盘中心</span>
+            </div>
+            <svg class="chevron" viewBox="0 0 10 16"><path d="M1 1l8 7-8 7" fill="none" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon purple">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              </div>
+              <span class="settings-item-label">平行宇宙</span>
+            </div>
+            <svg class="chevron" viewBox="0 0 10 16"><path d="M1 1l8 7-8 7" fill="none" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon green">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+              </div>
+              <span class="settings-item-label">我的数据</span>
+            </div>
+            <svg class="chevron" viewBox="0 0 10 16"><path d="M1 1l8 7-8 7" fill="none" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <!-- Settings Group 2 -->
+        <div class="settings-group">
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon orange">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z"/></svg>
+              </div>
+              <span class="settings-item-label">意见反馈</span>
+            </div>
+            <svg class="chevron" viewBox="0 0 10 16"><path d="M1 1l8 7-8 7" fill="none" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon gray">
+                <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+              </div>
+              <span class="settings-item-label">设置</span>
+            </div>
+            <svg class="chevron" viewBox="0 0 10 16"><path d="M1 1l8 7-8 7" fill="none" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="settings-item">
+            <div class="settings-item-left">
+              <div class="settings-icon teal">
+                <svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+              </div>
+              <span class="settings-item-label">关于人格图鉴</span>
+            </div>
+            <svg class="chevron" viewBox="0 0 10 16"><path d="M1 1l8 7-8 7" fill="none" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div style="height: 40px;"></div>
+      </div>
+    </div>
+    <div class="screen-label">Screen 14 - 个人中心</div>
+  </div>
+
+  <!-- ===== Screen 15: Onboarding Page 2 ===== -->
+  <div>
+    <div class="phone-frame screen-15">
+      <div class="phone-content">
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">
+            <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+          </span>
+        </div>
+
+        <div class="onboarding-container">
+          <!-- Subtle gradient blobs -->
+          <div class="blob-bg blue"></div>
+          <div class="blob-bg purple"></div>
+
+          <!-- Page dots -->
+          <div class="page-dots">
+            <div class="page-dot"></div>
+            <div class="page-dot active"></div>
+            <div class="page-dot"></div>
+          </div>
+
+          <!-- Controller emoji -->
+          <div class="onboarding-emoji">&#x1F3AE;</div>
+
+          <!-- Title -->
+          <div class="onboarding-title">选择目标人格<br>开始生存挑战</div>
+
+          <!-- Description -->
+          <div class="onboarding-desc">选择你感兴趣的人格类型，通过情景模拟挑战来测试和提升你的认知能力</div>
+
+          <!-- Actions -->
+          <div class="onboarding-actions">
+            <button class="cta-blue">立即体验</button>
+            <button class="skip-link">跳过引导</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Screen 15 - 引导页 2</div>
+  </div>
+
+</body>
+</html>
