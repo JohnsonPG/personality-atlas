@@ -62,3 +62,16 @@ yarn-error.log*
 .env
 .env.local
 .env.*.local
+
+# ---------- secret & local config ----------
+nest.json
+nest.local.json
+*.local.json
+.volcengine/
+.volc/
+*.secret
+*.pem
+*.key
+id_rsa
+id_ed25519
+.DS_Store
