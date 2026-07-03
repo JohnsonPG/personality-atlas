@@ -1,0 +1,24 @@
+{
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.9",
+      "memory": 256,
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/(.*\\.(css|js|png|jpg|jpeg|svg|gif|ico))$",
+      "dest": "/frontend/dist/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/dist/index.html"
+    }
+  ],
+  "buildCommand": "cd frontend && npm install && npm run build:h5"
+}

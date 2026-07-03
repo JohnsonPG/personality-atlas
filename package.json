@@ -1,0 +1,8 @@
+{
+  "name": "personality-atlas",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build:h5",
+    "deploy": "npm run build && wrangler pages deploy frontend/dist"
+  }
+}

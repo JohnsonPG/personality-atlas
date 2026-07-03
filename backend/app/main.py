@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
+import os
 
 from app.database import init_db
 from app.routers import game, presets, report
@@ -16,15 +18,7 @@ app = FastAPI(title="人格图鉴 API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:10086",
-        "http://localhost:10087",
-        "http://127.0.0.1:10086",
-        "http://127.0.0.1:10087",
-        "http://192.168.1.143:10086",
-        "http://192.168.1.143:10087",
-    ],
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+):\d+",
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -39,3 +33,8 @@ app.include_router(report.router)
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+
+static_dir = os.path.join(os.path.dirname(__file__), '..', 'static')
+if os.path.exists(static_dir):
+    app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
