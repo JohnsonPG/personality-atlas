@@ -15,7 +15,8 @@ api.interceptors.request.use((config) => {
     if (url.startsWith('/api/') || url === '/api' || url === '/api/') {
       const { hostname, protocol, port } = window.location
       const targetPort = '8000'
-      if (port !== targetPort) {
+      const isLocalDev = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.')
+      if (isLocalDev && port !== targetPort) {
         config.url = `${protocol}//${hostname}:${targetPort}${url}`
       }
     }
