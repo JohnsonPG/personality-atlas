@@ -9,7 +9,6 @@
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "preserveConstEnums": true,
-    "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,

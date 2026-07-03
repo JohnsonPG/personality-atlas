@@ -62,13 +62,36 @@ export default defineConfig(async (merge, { command, mode }) => {
     h5: {
       publicPath: '/',
       staticDirectory: 'static',
+      router: {
+        mode: 'browser'
+      },
+      // @ts-ignore
+      html: {
+        template: './public/index.html',
+        filename: 'index.html',
+        title: '人格图鉴',
+        inject: true
+      },
       output: {
-        filename: 'js/[name].[hash:8].js',
-        chunkFilename: 'js/[name].[chunkhash:8].js'
+        filename: 'js/[name].[contenthash:8].js',
+        chunkFilename: 'js/[name].[contenthash:8].js'
+      },
+      // @ts-ignore
+      proxy: {
+        '/api': {
+          target: 'http://localhost:8000',
+          changeOrigin: true,
+          secure: false,
+        },
       },
       devServer: {
+        host: '0.0.0.0',
         port: 10086,
         hot: true,
+        allowedHosts: 'all',
+        client: {
+          webSocketURL: 'auto://0.0.0.0:0/ws',
+        },
         historyApiFallback: {
           index: '/index.html',
         },
@@ -87,8 +110,8 @@ export default defineConfig(async (merge, { command, mode }) => {
       },
       miniCssExtractPluginOption: {
         ignoreOrder: true,
-        filename: 'css/[name].[hash:8].css',
-        chunkFilename: 'css/[name].[chunkhash:8].css'
+        filename: 'css/[name].[contenthash:8].css',
+        chunkFilename: 'css/[name].[contenthash:8].css'
       },
       postcss: {
         autoprefixer: {
@@ -105,6 +128,45 @@ export default defineConfig(async (merge, { command, mode }) => {
       },
       webpackChain(chain) {
         chain.output.set('hashFunction', 'xxhash64')
+        chain.plugin('html')
+          .use(require.resolve('html-webpack-plugin'), [{
+            template: './public/index.html',
+            filename: 'index.html',
+            title: '人格图鉴',
+            inject: true,
+            minify: {
+              removeComments: true,
+              collapseWhitespace: true
+            }
+          }])
+        chain.devServer.set('proxy', {
+          '/api': {
+            target: 'http://localhost:8000',
+            changeOrigin: true,
+            secure: false,
+          },
+        })
+        if (mode === 'development') {
+          chain.merge({
+            performance: {
+              hints: false,
+            },
+          })
+        } else {
+          chain.merge({
+            performance: {
+              hints: 'warning',
+              maxAssetSize: 300 * 1024,
+              maxEntrypointSize: 512 * 1024,
+              assetFilter(assetFilename) {
+                if (/\.(jpe?g|png|webp|gif|svg|ico|woff2?|ttf|otf|eot)$/i.test(assetFilename)) {
+                  return false
+                }
+                return true
+              },
+            },
+          })
+        }
       }
     }
   }
