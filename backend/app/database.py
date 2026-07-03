@@ -3,9 +3,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.pool import StaticPool
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "personality.db")
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
+if os.environ.get("VERCEL") == "1":
+    SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    DB_PATH = os.path.join(BASE_DIR, "personality.db")
+    SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
