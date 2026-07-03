@@ -1,0 +1,173 @@
+.screen-08 {
+  min-height: 100vh;
+  background: var(--bg-system);
+  padding: 48px 24px 24px;
+  display: flex;
+  flex-direction: column;
+
+  .center-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 24px;
+    width: 100%;
+  }
+
+  .pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+
+  .redline-badge {
+    background: var(--fill-light-red);
+    background: rgba(255, 59, 48, 0.1);
+    color: var(--accent-red);
+  }
+
+  .heartbreak-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255,59,48,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-top: 24px;
+    margin-bottom: 20px;
+  }
+
+  .death-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent-red);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .death-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    line-height: 1.5;
+    max-width: 280px;
+  }
+
+  .score-bar-container {
+    width: 100%;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .score-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .score-bar-value {
+    font-weight: 600;
+    color: var(--accent-red);
+  }
+
+  .score-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: var(--fill-gray);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg,#FF3B30,#FF453A,#FF3B30);
+    border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+
+  .score-bar-caption {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--accent-red);
+    text-align: left;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border-radius: var(--card-radius);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    padding: 16px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .reason-card {
+    border-left: 4px solid var(--accent-red);
+    background: #FFF5F5;
+  }
+
+  .knowledge-card {
+    border-left: 4px solid var(--accent-blue);
+    background: #F0F5FF;
+    margin-top: 12px;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+
+    &.card-title-red { color: var(--accent-red); }
+    &.card-title-blue { color: var(--accent-blue); }
+  }
+
+  .card-body {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  .btn-group {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 24px;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s ease;
+    width: 100%;
+
+    &:active { opacity: 0.7; }
+  }
+
+  .btn-primary {
+    background: var(--accent-blue);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background: var(--bg-system);
+    background: #F2F2F7;
+    color: var(--text-primary);
+  }
+}

@@ -1,0 +1,223 @@
+.screen-09 {
+  min-height: 100vh;
+  background: var(--bg-system);
+  padding: 48px 24px 24px;
+  display: flex;
+  flex-direction: column;
+
+  .center-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 16px;
+    position: relative;
+    flex: 1;
+    width: 100%;
+  }
+
+  .victory-bg {
+    position: absolute;
+    top: 0;
+    left: -24px;
+    right: -24px;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+    z-index: 0;
+    border-radius: 0 0 32px 32px;
+  }
+
+  .victory-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,1));
+    border-radius: 0 0 32px 32px;
+  }
+
+  .victory-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+
+  .cleared-badge {
+    background: rgba(52,199,89,0.1);
+    color: var(--accent-green);
+  }
+
+  .party-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(52,199,89,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin: 20px auto 16px;
+  }
+
+  .victory-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent-green);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .victory-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border-radius: var(--card-radius);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    padding: 16px;
+  }
+
+  .stats-card {
+    margin-bottom: 16px;
+  }
+
+  .stats-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .stat-col {
+    flex: 1;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+
+    &.stat-green { color: var(--accent-green); }
+    &.stat-blue { color: var(--accent-blue); }
+    &.stat-purple { color: var(--accent-purple); }
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .breakdown-card {
+    text-align: left;
+  }
+
+  .breakdown-header {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+  }
+
+  .breakdown-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #F2F2F7;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .breakdown-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(52,199,89,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 12px;
+  }
+
+  .breakdown-check svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--accent-green);
+    stroke-width: 2.5;
+  }
+
+  .breakdown-info {
+    flex: 1;
+  }
+
+  .breakdown-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .breakdown-detail {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 1px;
+  }
+
+  .breakdown-score {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-green);
+    flex-shrink: 0;
+  }
+
+  .btn-group {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 24px;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s ease;
+    width: 100%;
+
+    &:active { opacity: 0.7; }
+  }
+
+  .btn-primary {
+    background: var(--accent-blue);
+    color: #fff;
+  }
+
+  .btn-secondary-outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1.5px solid var(--fill-gray);
+  }
+}
