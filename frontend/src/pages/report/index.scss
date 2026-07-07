@@ -1,23 +1,23 @@
 .page-report {
   min-height: 100vh;
   background: var(--bg-system);
-  padding-bottom: 48px;
+  padding-bottom: calc(3rem + var(--safe-bottom));
 
   .nav-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 16px 8px;
+    padding: 0.5rem 1rem 0.5rem;
     position: sticky;
     top: 0;
     background: var(--bg-system);
     z-index: 10;
-    padding-top: 52px;
+    padding-top: var(--nav-top-pad);
   }
 
   .nav-back {
     color: var(--accent-blue);
-    font-size: 17px;
+    font-size: var(--fs-md);
     cursor: pointer;
   }
 
@@ -25,7 +25,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 17px;
+    font-size: var(--fs-md);
     font-weight: 600;
     color: var(--text-primary);
     display: none;
@@ -33,49 +33,49 @@
 
   .nav-share {
     color: var(--accent-blue);
-    font-size: 17px;
+    font-size: var(--fs-md);
     cursor: pointer;
   }
 
   .page-title {
-    font-size: 34px;
+    font-size: 2.125rem;
     font-weight: 700;
     color: var(--text-primary);
-    padding: 4px 20px 8px;
+    padding: 0.25rem 1.25rem 0.5rem;
     letter-spacing: -0.5px;
     line-height: 1.18;
   }
 
   .tag-row {
-    padding: 0 20px;
+    padding: 0 1.25rem;
     margin-top: 0;
   }
 
   .subtitle-row {
-    margin-top: 8px;
+    margin-top: 0.5rem;
   }
 
   .green-badge {
     display: inline-flex;
     align-items: center;
-    padding: 6px 14px;
-    border-radius: 100px;
+    padding: 0.375rem 0.875rem;
+    border-radius: 6.25rem;
     background: rgba(52, 199, 89, 0.12);
     color: var(--accent-green);
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 600;
   }
 
   .subtitle-text {
-    font-size: 15px;
+    font-size: 0.9375rem;
     color: var(--text-secondary);
   }
 
   .ai-card {
     background: var(--bg-card);
-    border-radius: 16px;
-    margin: 0 16px 12px;
-    padding: 16px;
+    border-radius: 1rem;
+    margin: 0 1rem 0.75rem;
+    padding: 1rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     position: relative;
   }
@@ -83,62 +83,62 @@
   .ai-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .ai-blue-badge {
     background: #007AFF;
     color: #FFFFFF;
-    border-radius: 6px;
-    padding: 3px 7px;
-    font-size: 11px;
+    border-radius: 0.375rem;
+    padding: 0.1875rem 0.4375rem;
+    font-size: 0.6875rem;
     font-weight: 700;
   }
 
   .ai-header-text {
-    font-size: 13px;
+    font-size: var(--fs-sm);
     color: var(--text-secondary);
   }
 
   .ai-summary-title {
-    font-size: 17px;
+    font-size: var(--fs-md);
     font-weight: 600;
     color: var(--text-primary);
-    margin-top: 12px;
+    margin-top: 0.75rem;
   }
 
   .ai-summary-text {
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 400;
     color: var(--text-primary);
     line-height: 1.53;
-    margin-top: 8px;
+    margin-top: 0.5rem;
   }
 
   .ai-footer {
     text-align: right;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: var(--text-tertiary);
-    margin-top: 8px;
+    margin-top: 0.5rem;
   }
 
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 0 16px 12px;
+    gap: 0.75rem;
+    margin: 0 1rem 0.75rem;
   }
 
   .stat-card {
     background: var(--bg-card);
-    border-radius: 16px;
-    padding: 16px 12px;
+    border-radius: 1rem;
+    padding: 1rem 0.75rem;
     text-align: center;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
 
   .stat-value {
-    font-size: 28px;
+    font-size: 1.75rem;
     font-weight: 700;
     line-height: 1.1;
 
@@ -148,9 +148,9 @@
   }
 
   .stat-label {
-    font-size: 13px;
+    font-size: var(--fs-sm);
     color: var(--text-secondary);
-    margin-top: 4px;
+    margin-top: 0.25rem;
   }
 
   .radar-section {
@@ -161,12 +161,12 @@
   .radar-container {
     display: flex;
     justify-content: center;
-    padding: 12px 0;
+    padding: 0.75rem 0;
   }
 
   .radar-wrapper {
-    width: 320px;
-    height: 320px;
+    width: 20rem;
+    height: 20rem;
     margin: 0 auto;
     background: transparent;
     border-radius: 0;
@@ -183,9 +183,9 @@
 
   .dimension-list {
     background: var(--bg-card);
-    border-radius: 16px;
-    margin: 0 16px 12px;
-    padding: 0 16px;
+    border-radius: 1rem;
+    margin: 0 1rem 0.75rem;
+    padding: 0 1rem;
     display: flex;
     flex-direction: column;
   }
@@ -194,66 +194,66 @@
   .dimension-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 0;
+    gap: 0.75rem;
+    padding: 0.625rem 0;
   }
 
   .dim-name,
   .dimension-name {
-    font-size: 15px;
+    font-size: 0.9375rem;
     color: var(--text-primary);
-    width: 60px;
+    width: 3.75rem;
     flex-shrink: 0;
   }
 
   .dim-bar,
   .dimension-bar {
     flex: 1;
-    height: 6px;
+    height: 0.375rem;
     background: var(--fill-gray);
-    border-radius: 3px;
+    border-radius: 0.1875rem;
     overflow: hidden;
   }
 
   .dim-fill,
   .dimension-fill {
     height: 100%;
-    border-radius: 3px;
+    border-radius: 0.1875rem;
   }
 
   .dim-value,
   .dimension-value {
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 600;
     color: var(--text-primary);
-    width: 42px;
+    width: 2.625rem;
     text-align: right;
     flex-shrink: 0;
   }
 
   .info-card {
     background: var(--bg-card);
-    border-radius: 16px;
-    margin: 0 16px 12px;
-    padding: 16px;
+    border-radius: 1rem;
+    margin: 0 1rem 0.75rem;
+    padding: 1rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
 
   .info-header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 0.625rem;
+    margin-bottom: 0.75rem;
   }
 
   .info-icon-box {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.625rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: var(--fs-base);
 
     &.strengths-icon { background: rgba(52,199,89,0.08); }
     &.weaknesses-icon { background: rgba(255,149,0,0.08); }
@@ -262,7 +262,7 @@
   }
 
   .info-title {
-    font-size: 17px;
+    font-size: var(--fs-md);
     font-weight: 700;
 
     &.strengths-title { color: var(--accent-green); }
@@ -274,14 +274,14 @@
   .info-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .info-item {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
-    font-size: 15px;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
     color: var(--text-primary);
     line-height: 1.55;
   }
@@ -289,15 +289,15 @@
   .bullet {
     color: var(--text-secondary);
     font-weight: 700;
-    margin-top: 1px;
+    margin-top: 0.0625rem;
   }
 
   .bullet-number {
     color: var(--text-secondary);
     font-weight: 600;
-    font-size: 15px;
+    font-size: 0.9375rem;
     flex-shrink: 0;
-    margin-top: 1px;
+    margin-top: 0.0625rem;
   }
 
   .info-text {
@@ -306,16 +306,16 @@
   }
 
   .advice-text {
-    font-size: 17px;
+    font-size: var(--fs-md);
     color: var(--text-primary);
     line-height: 1.53;
   }
 
   .btn-group {
-    padding: 16px 20px 40px;
+    padding: 1rem 1.25rem 2.5rem;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0.75rem;
     margin-top: 0;
   }
 
@@ -323,9 +323,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 32px;
-    border-radius: 12px;
-    font-size: 17px;
+    padding: 0.75rem 2rem;
+    border-radius: 0.75rem;
+    font-size: var(--fs-md);
     font-weight: 600;
     cursor: pointer;
     font-family: inherit;

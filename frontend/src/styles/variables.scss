@@ -1,5 +1,19 @@
+html,
+page {
+  font-size: clamp(13px, 4.2666667vw, 17px);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (min-width: 461px) {
+  html,
+  page {
+    font-size: 16px;
+  }
+}
+
 :root {
   --bg-system: #F2F2F7;
+  --bg-system-outer: #E8E8ED;
   --bg-card:   #FFFFFF;
   --text-primary:   #1C1C1E;
   --text-secondary: #8E8E93;
@@ -16,7 +30,6 @@
   --mbti-green:     #30D158;
   --mbti-orange:    #FF9F0A;
   --mbti-gold:      #AC8E68;
-  --card-radius:    16px;
 
   --fill-light-red:    #FFF0F0;
   --fill-light-blue:   #F0F5FF;
@@ -25,4 +38,35 @@
   --fill-light-purple: rgba(175,82,222,0.08);
   --fill-light-warn:   #FFFBF0;
   --pill-bg:           #F0F0F5;
+
+  --page-max-w: 60rem;
+
+  --fs-xs:   0.75rem;
+  --fs-sm:   0.8125rem;
+  --fs-base: 1rem;
+  --fs-md:   1.0625rem;
+  --fs-lg:   1.1875rem;
+  --fs-xl:   1.5625rem;
+  --fs-2xl:  2rem;
+  --fs-3xl:  2.625rem;
+
+  --sp-1: 0.3125rem;
+  --sp-2: 0.4375rem;
+  --sp-3: 0.625rem;
+  --sp-4: 0.875rem;
+  --sp-5: 1.125rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2.125rem;
+
+  --card-radius: 1rem;
+  --btn-min-h:   2.75rem;
+  --touch-min:   2.75rem;
+
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+
+  --status-bar-h: max(2.75rem, var(--safe-top));
+  --nav-top-pad: calc(var(--status-bar-h) + 0.5rem);
 }

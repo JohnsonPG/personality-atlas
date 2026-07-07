@@ -429,21 +429,6 @@ def get_parallel_stats(session_id: str, db: Session = Depends(get_db)):
             "global_avg": global_avg,
         })
 
-    questions_comparison = []
-    for idx, r in enumerate(records):
-        qtext = r.question_text or ""
-        if len(qtext) > 60:
-            qtext = qtext[:60]
-        global_correct_pct = _generate_global_correct_pct(r)
-        choice_dist = _generate_choice_distribution(global_correct_pct, seed_val=idx + hash(session_id) % 10000)
-        questions_comparison.append(schemas.QuestionComparison(
-            question_index=r.question_index,
-            question_text=qtext,
-            is_correct=r.is_correct,
-            global_correct_pct=_clamp(global_correct_pct, 5, 95),
-            choice_distribution=choice_dist,
-        ))
-
     higher_than_players = int(total_players * (100 - top_percentile) / 100)
     return schemas.ParallelStatsResponse(
         session_id=session.session_id,
@@ -452,5 +437,4 @@ def get_parallel_stats(session_id: str, db: Session = Depends(get_db)):
         higher_than_players=higher_than_players,
         radar_data=radar_data,
         average_scores=average_scores,
-        questions_comparison=questions_comparison,
     )

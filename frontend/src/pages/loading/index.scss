@@ -1,26 +1,29 @@
 .screen-ai-loading {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #FFFFFF;
+  padding-top: var(--nav-top-pad);
+  padding-bottom: var(--safe-bottom);
 }
 
 .ai-loading-content {
   text-align: center;
-  padding: 0 40px;
+  padding: 0 2.5rem;
 }
 
 .ai-spinner {
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   border: 3px solid var(--fill-gray);
   border-top-color: var(--accent-blue);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  margin: 0 auto 32px;
+  margin: 0 auto 2rem;
 }
 
 @keyframes spin {
@@ -31,25 +34,25 @@
 
 .ai-loading-text {
   display: block;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
   letter-spacing: -0.2px;
 }
 
 .ai-loading-sub {
   display: block;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  margin-bottom: 28px;
+  margin-bottom: 1.75rem;
 }
 
 .ai-progress-track {
-  width: 200px;
-  height: 4px;
+  width: 12.5rem;
+  height: 0.25rem;
   background: var(--fill-gray);
-  border-radius: 4px;
+  border-radius: 0.25rem;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -58,7 +61,7 @@
   height: 100%;
   width: 65%;
   background: var(--accent-blue);
-  border-radius: 4px;
+  border-radius: 0.25rem;
   animation: progress-pulse 2s ease-in-out infinite;
 }
 
@@ -75,13 +78,13 @@
 }
 
 .ai-hint {
-  margin-top: 24px;
-  padding: 10px 16px;
-  border-radius: 10px;
+  margin-top: 1.5rem;
+  padding: 0.625rem 1rem;
+  border-radius: 0.625rem;
   background: var(--bg-system);
   Text {
     display: block;
-    font-size: 13px;
+    font-size: var(--fs-sm);
     color: var(--text-secondary);
     line-height: 1.5;
   }

@@ -84,9 +84,8 @@ def test_path_a_npd_intj_full_victory(client, test_db):
     pb = par.json()
     assert 1 <= pb['top_percentile'] <= 99
     assert pb['total_players'] >= 1000
-    assert len(pb['questions_comparison']) >= 3
-    for qc in pb['questions_comparison']:
-        assert 5 <= qc['global_correct_pct'] <= 95
+    assert isinstance(pb['average_scores'], list)
+    assert len(pb['average_scores']) >= 2
 
 
 # ─── 路径 B: 双向+ENFP 第 2 阶段红线答错 game_over ─────────────────────────

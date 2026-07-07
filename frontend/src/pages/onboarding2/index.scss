@@ -1,10 +1,13 @@
 .screen-15 {
   min-height: 100vh;
+  min-height: 100dvh;
   background: #FAFAFB;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
 }
 
 .blob-bg {
@@ -23,10 +26,10 @@
 }
 
 .blob-a {
-  width: 320px;
-  height: 320px;
-  top: -80px;
-  left: -40px;
+  width: 20rem;
+  height: 20rem;
+  top: -5rem;
+  left: -2.5rem;
 
   &.blob-blue   { background: #5AC8FA; }
   &.blob-purple { background: #BF5AF2; }
@@ -34,10 +37,10 @@
 }
 
 .blob-b {
-  width: 280px;
-  height: 280px;
-  top: 120px;
-  right: -80px;
+  width: 17.5rem;
+  height: 17.5rem;
+  top: 7.5rem;
+  right: -5rem;
 
   &.blob-blue   { background: #0A84FF; }
   &.blob-purple { background: #5E5CE6; }
@@ -50,22 +53,22 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 52px 24px 40px;
+  padding: 3.25rem 1.5rem 2.5rem;
 }
 
 .top-actions {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 2.5rem;
 }
 
 .skip-btn {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--text-secondary);
-  padding: 6px 12px;
+  padding: 0.375rem 0.75rem;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   transition: background 0.15s ease;
 
   &:active {
@@ -80,17 +83,17 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 .emoji-big {
-  width: 120px;
-  height: 120px;
-  border-radius: 32px;
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
   transition: background 0.3s ease;
 
   &.accent-blue   { background: rgba(90,200,250,0.15); }
@@ -99,39 +102,39 @@
 }
 
 .hero-title {
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.5px;
   line-height: 1.2;
-  padding: 0 8px;
+  padding: 0 0.5rem;
 }
 
 .hero-desc {
-  font-size: 17px;
+  font-size: var(--fs-md);
   line-height: 1.5;
   color: var(--text-secondary);
-  padding: 0 4px;
-  max-width: 340px;
+  padding: 0 0.25rem;
+  max-width: 21.25rem;
 }
 
 .page-dots {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin: 32px 0 24px;
+  gap: 0.5rem;
+  margin: 2rem 0 1.5rem;
 }
 
 .page-dot {
-  width: 7px;
-  height: 7px;
+  width: 0.4375rem;
+  height: 0.4375rem;
   border-radius: 50%;
   background: var(--fill-gray);
   transition: width 0.25s ease, background 0.25s ease;
 
   &.active {
-    width: 24px;
-    border-radius: 4px;
+    width: 1.5rem;
+    border-radius: 0.25rem;
     background: var(--accent-blue);
   }
 }
@@ -140,13 +143,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 1rem;
   margin-top: auto;
 }
 
 .nav-btn {
-  width: 52px;
-  height: 52px;
+  width: 3.25rem;
+  height: 3.25rem;
   border-radius: 50%;
   background: rgba(118, 118, 128, 0.12);
   color: var(--text-secondary);
@@ -169,19 +172,19 @@
 }
 
 .next-btn {
-  padding: 16px 30px;
-  border-radius: 28px;
+  padding: 1rem 1.875rem;
+  border-radius: 1.75rem;
   background: var(--accent-blue);
   color: #FFFFFF;
-  font-size: 17px;
+  font-size: var(--fs-md);
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(0, 122, 255, 0.35);
+  box-shadow: 0 4px 0.875rem rgba(0, 122, 255, 0.35);
   cursor: pointer;
   transition: transform 0.1s ease, opacity 0.1s ease;
-  min-width: 170px;
+  min-width: 10.625rem;
   letter-spacing: 0.2px;
 
   &:active {

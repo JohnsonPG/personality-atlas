@@ -124,14 +124,6 @@ class ReportResponse(BaseModel):
     key_learnings: list[str]
 
 
-class QuestionComparison(BaseModel):
-    question_index: int
-    question_text: str
-    is_correct: bool
-    global_correct_pct: int
-    choice_distribution: dict[str, int]
-
-
 class ParallelStatsResponse(BaseModel):
     session_id: str
     top_percentile: int
@@ -139,4 +131,3 @@ class ParallelStatsResponse(BaseModel):
     higher_than_players: int
     radar_data: RadarData
     average_scores: list[dict]
-    questions_comparison: list[QuestionComparison]

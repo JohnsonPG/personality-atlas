@@ -212,9 +212,6 @@ def test_parallel_top_percentile_matches_score(client, test_db):
         data = resp.json()
         assert check(data["top_percentile"]), f"score={target_score}, percentile={data['top_percentile']}"
         assert data["total_players"] == 12847
-        for qc in data["questions_comparison"]:
-            assert 5 <= qc["global_correct_pct"] <= 95
-            dist = qc["choice_distribution"]
-            assert "0" in dist and "1" in dist and "2" in dist and "3" in dist
-            for k in ["0", "1", "2", "3"]:
-                assert isinstance(dist[k], int)
+        assert isinstance(data["average_scores"], list)
+        for s in data["average_scores"]:
+            assert "stage" in s and "your_score" in s and "global_avg" in s

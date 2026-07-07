@@ -124,12 +124,6 @@ export interface ReportResponse {
   key_learnings: string[]
 }
 
-export interface QuestionComparison {
-  question_index: number
-  is_correct: boolean
-  global_correct_pct: number
-}
-
 export interface ParallelResponse {
   session_id: string
   top_percentile: number
@@ -137,7 +131,6 @@ export interface ParallelResponse {
   higher_than_players: number
   radar_data: ReportRadarData
   average_scores: { stage: string; your_score: number; global_avg: number }[]
-  questions_comparison: QuestionComparison[]
 }
 
 export async function getReport(sessionId: string): Promise<ReportResponse> {

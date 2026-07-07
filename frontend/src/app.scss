@@ -1,51 +1,207 @@
 @use './styles/variables.scss' as *;
 
-:root {
-  --bg-system: #F2F2F7;
-  --bg-card:   #FFFFFF;
-  --text-primary:   #1C1C1E;
-  --text-secondary: #8E8E93;
-  --text-tertiary:  #AEAEB2;
-  --accent-blue:    #007AFF;
-  --accent-red:     #FF3B30;
-  --accent-green:   #34C759;
-  --accent-orange:  #FF9500;
-  --accent-purple:  #AF52DE;
-  --fill-gray:      #E5E5EA;
-  --separator:      #C6C6C8;
-  --mbti-blue:      #5B7FFF;
-  --mbti-green:     #30D158;
-  --mbti-orange:    #FF9F0A;
-  --mbti-gold:      #AC8E68;
-  --card-radius:    16px;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+html,
+body,
+#app,
+page {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
 
 body {
-  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-  background: var(--bg-system);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+    'PingFang SC', 'Helvetica Neue', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: var(--bg-system-outer);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-size: var(--fs-base);
+  line-height: 1.45;
+  letter-spacing: -0.00625rem;
+  overflow-x: hidden;
 }
 
-page, #app {
+page,
+#app {
   background: var(--bg-system);
+}
+
+#app {
+  width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  display: block;
+}
+
+.app-container {
+  width: 100%;
+  max-width: var(--page-max-w);
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg-system);
+  position: relative;
+  overflow-x: hidden;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  box-shadow:
+    0 0 1px rgba(0, 0, 0, 0.04),
+    0 0 2.5rem rgba(0, 0, 0, 0.06);
+}
+
+@media (min-width: 461px) {
+  body {
+    background: var(--bg-system-outer);
+  }
+
+  .app-container {
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.05),
+      0 0.5rem 2.5rem rgba(0, 0, 0, 0.08);
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: var(--fs-base);
+  color: inherit;
+}
+
+input,
+select,
+textarea {
+  font-size: 1rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.btn-primary,
+button,
+.nav-back,
+.cta-btn,
+.settings-item,
+.option-btn,
+.tag-card,
+.record-card,
+.segment,
+.profile-header,
+.stats-row,
+.knowledge-card {
+  touch-action: manipulation;
+}
+
+.btn-primary,
+.btn-blue,
+.btn-gray,
+.cta-btn,
+.nav-back,
+.nav-settings,
+.nav-profile {
+  min-height: var(--btn-min-h);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }
 
 .btn-primary {
   width: 100%;
-  max-width: 320px;
-  padding: 16px;
-  border: none;
-  border-radius: 14px;
-  font-size: 17px;
+  max-width: 21.25rem;
+  padding: 0 1.25rem;
+  height: var(--btn-min-h);
+  line-height: var(--btn-min-h);
+  border-radius: 0.875rem;
+  font-size: var(--fs-md);
   font-weight: 600;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.0125rem;
   background: var(--accent-blue);
   color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(0,122,255,0.25);
-  transition: opacity 0.15s;
-  &:active { opacity: 0.7; }
+  box-shadow: 0 0.125rem 0.625rem rgba(0, 122, 255, 0.28);
+  transition: opacity 0.15s ease, transform 0.1s ease;
+
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+.btn-blue,
+.btn-gray {
+  min-height: var(--btn-min-h);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.25rem;
+  border-radius: 0.875rem;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.1s ease, opacity 0.1s ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.85;
+  }
+}
+
+.btn-blue {
+  background: var(--accent-blue);
+  color: #FFFFFF;
+}
+
+.btn-gray {
+  background: rgba(0, 122, 255, 0.09);
+  color: var(--accent-blue);
+}
+
+img,
+.game-scene-img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+.large-title,
+.page-title {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.03125rem;
+  line-height: 1.18;
+}
+
+.safe-bottom-pad {
+  padding-bottom: calc(var(--safe-bottom) + 1rem);
+}
+
+.safe-top-pad {
+  padding-top: var(--safe-top);
 }

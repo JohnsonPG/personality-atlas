@@ -23,16 +23,6 @@ const mockParallel: ParallelResponse = {
     { stage: '热恋博弈', your_score: 86, global_avg: 54 },
     { stage: '长期承诺', your_score: 88, global_avg: 51 },
   ],
-  questions_comparison: [
-    { question_index: 1, is_correct: true, global_correct_pct: 45 },
-    { question_index: 2, is_correct: true, global_correct_pct: 38 },
-    { question_index: 3, is_correct: false, global_correct_pct: 28 },
-    { question_index: 4, is_correct: true, global_correct_pct: 52 },
-    { question_index: 5, is_correct: false, global_correct_pct: 22 },
-    { question_index: 6, is_correct: true, global_correct_pct: 61 },
-    { question_index: 7, is_correct: true, global_correct_pct: 33 },
-    { question_index: 8, is_correct: false, global_correct_pct: 19 },
-  ],
 }
 
 const DIMENSION_LABELS = ['共情力', '沟通力', '边界感', '自我觉察', '风险识别']
@@ -45,16 +35,6 @@ const GLOBAL_AVG: ReportRadarData = {
   risk_detection: 49,
 }
 
-const QUESTION_TEXTS = [
-  '当对方贬低你的爱好时，最恰当的应对策略是？',
-  'NPD 三角关系中，"拯救者"角色的本质动机是什么？',
-  '以下哪种行为不属于"隐蔽操控"的范畴？',
-  '在面对"沉默对待"时，推荐的最佳应对方式是？',
-  'INTJ 型人格在情感关系中最容易陷入的陷阱是？',
-  '"爱情轰炸"行为最核心的危险信号是？',
-  '关于健康边界，以下哪种描述是正确的？',
-  '当对方说"你太敏感了"时，这属于哪种操控模式？',
-]
 
 export default function ParallelPage() {
   const sessionId = useGameStore((s) => s.sessionId)
@@ -76,7 +56,6 @@ export default function ParallelPage() {
         risk_detection: typeof radar.risk_detection === 'number' ? radar.risk_detection : mockParallel.radar_data.risk_detection,
       },
       average_scores: Array.isArray(raw.average_scores) ? raw.average_scores : mockParallel.average_scores,
-      questions_comparison: Array.isArray(raw.questions_comparison) ? raw.questions_comparison : mockParallel.questions_comparison,
     }
   }
 
@@ -134,34 +113,6 @@ export default function ParallelPage() {
         <View className="top-stat-label">你超过了全球 {formatNumber(parallel.higher_than_players)} 位玩家</View>
         <View className="top-stat-subtitle">共 {formatNumber(parallel.total_players)} 位同人格副本玩家参与</View>
       </View>
-
-      <View className="section-title">题目表现对比</View>
-
-      {parallel.questions_comparison.map((qc, i) => {
-        const qText = QUESTION_TEXTS[qc.question_index - 1] || `题目 ${qc.question_index}`
-        const pct = qc.global_correct_pct
-        const fillColor = pct <= 40 ? '#FF3B30' : '#34C759'
-        return (
-          <View key={`qc-${i}`} className="question-card">
-            <View className="question-text">
-              Q{qc.question_index} · {qText}
-            </View>
-            <View className="question-progress">
-              <View
-                className="question-progress-fill"
-                style={{ width: `${pct}%`, background: fillColor }}
-              />
-            </View>
-            <View className="question-meta">
-              <View className={`tag-result ${qc.is_correct ? 'tag-correct' : 'tag-wrong'}`}>
-                {qc.is_correct ? '你 ✓' : '你 ✗'}
-              </View>
-              <View className="tag-dot">·</View>
-              <View className="tag-global">全球仅 {pct}% 做对</View>
-            </View>
-          </View>
-        )
-      })}
 
       <View className="share-card">
         <View className="share-icon">📢</View>

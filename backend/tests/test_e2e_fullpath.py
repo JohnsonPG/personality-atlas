@@ -131,18 +131,11 @@ def _assert_parallel_schema(data, session_id):
     assert data["total_players"] >= 1000
     assert "higher_than_players" in data
     assert isinstance(data["higher_than_players"], int)
-    assert isinstance(data["questions_comparison"], list)
-    for qc in data["questions_comparison"]:
-        assert "question_index" in qc
-        assert "question_text" in qc
-        assert "is_correct" in qc
-        assert isinstance(qc["is_correct"], bool)
-        assert 5 <= qc["global_correct_pct"] <= 95
-        assert "choice_distribution" in qc
-        dist = qc["choice_distribution"]
-        for key in ["0", "1", "2", "3"]:
-            assert key in dist
-            assert isinstance(dist[key], int)
+    assert isinstance(data["average_scores"], list)
+    for s in data["average_scores"]:
+        assert "stage" in s
+        assert "your_score" in s
+        assert "global_avg" in s
 
 
 def test_path_a_victory_all_correct_4_stages(client, test_db):
@@ -225,8 +218,6 @@ def test_path_a_victory_all_correct_4_stages(client, test_db):
     parallel = parallel_resp.json()
     _assert_parallel_schema(parallel, session_id)
     assert parallel["top_percentile"] <= 20
-    for qc in parallel["questions_comparison"]:
-        assert qc["is_correct"] is True
 
 
 def test_path_b_redline_death_bipolar_enfp(client, test_db):
