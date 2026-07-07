@@ -129,62 +129,10 @@ export default function ParallelPage() {
         {formatNumber(parallel.total_players)} 位玩家 · 同一人格副本
       </View>
 
-      <View className="top-percentile-card">
-        <View className="top-percentile-value">Top {parallel.top_percentile}%</View>
-        <View className="top-percentile-label">你超过了全球</View>
-        <View className="top-percentile-subs">
-          <View className="sub-line">{formatNumber(parallel.total_players)} 位玩家</View>
-          <View className="sub-line">{formatNumber(parallel.higher_than_players)} 位不如你</View>
-        </View>
-      </View>
-
-      <View className="section-title">五维能力对比</View>
-
-      <View className="dim-compare-list">
-        {DIMENSION_LABELS.map((name, i) => {
-          const key = DIMENSION_KEYS[i]
-          const yourVal = parallel.radar_data[key]
-          const avgVal = GLOBAL_AVG[key]
-          return (
-            <View key={`dmc-${i}`} className="dim-compare-item">
-              <View className="dim-compare-name">{name}</View>
-              <View className="dim-compare-bars">
-                <View className="compare-row">
-                  <View className="compare-label you-label">你 {yourVal}</View>
-                  <View className="compare-bar">
-                    <View className="compare-fill you-fill" style={{ width: `${yourVal}%` }} />
-                  </View>
-                </View>
-                <View className="compare-row">
-                  <View className="compare-label avg-label">Avg {avgVal}</View>
-                  <View className="compare-bar">
-                    <View className="compare-fill avg-fill" style={{ width: `${avgVal}%` }} />
-                  </View>
-                </View>
-              </View>
-            </View>
-          )
-        })}
-      </View>
-
-      <View className="section-title">阶段得分对比</View>
-
-      <View className="stage-compare-card">
-        {parallel.average_scores.map((s, i) => (
-          <View key={`stg-${i}`} className="stage-compare-row">
-            <View className="stage-name">{s.stage}</View>
-            <View className="stage-bars">
-              <View className="stage-bar-row">
-                <View className="stage-bar-fill you-fill" style={{ width: `${s.your_score}%` }} />
-                <View className="stage-bar-val you-val">{s.your_score}</View>
-              </View>
-              <View className="stage-bar-row">
-                <View className="stage-bar-fill avg-fill" style={{ width: `${s.global_avg}%` }} />
-                <View className="stage-bar-val avg-val">{s.global_avg}</View>
-              </View>
-            </View>
-          </View>
-        ))}
+      <View className="top-stat-card">
+        <View className="top-stat-value">Top {parallel.top_percentile}%</View>
+        <View className="top-stat-label">你超过了全球 {formatNumber(parallel.higher_than_players)} 位玩家</View>
+        <View className="top-stat-subtitle">共 {formatNumber(parallel.total_players)} 位同人格副本玩家参与</View>
       </View>
 
       <View className="section-title">题目表现对比</View>

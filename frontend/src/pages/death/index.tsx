@@ -29,10 +29,20 @@ export default function DeathPage() {
     <View className="screen-08">
       <View className="center-area">
         <View className="pill-badge redline-badge">
-          ⚠ REDLINE 触发
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="#FF3B30">
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+          </svg>
+          REDLINE 触发
         </View>
 
-        <View className="heartbreak-icon">💔</View>
+        <View className="heartbreak-icon">
+          <svg viewBox="0 0 24 24" width="40" height="40" fill="#FF3B30">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            <path d="M16.5 3c-.44 0-.89.08-1.32.23-.26.09-.5.22-.73.39l-.45.32-.45-.32c-.23-.17-.47-.3-.73-.39C12.39 3.08 11.94 3 11.5 3v.01L16.5 9l5-5.99v-.01C20.09 5.59 18.45 4 16.5 4z" opacity="0"/>
+            <path d="M16.5 4L11.5 9v.01L16.5 3C14.07 3 12.17 4.53 11.5 6.7L11.5 9 16.5 4z" fill="#FFFFFF" opacity="0.4"/>
+            <line x1="3" y1="21" x2="21" y2="3" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        </View>
 
         <View className="death-title">模拟结束</View>
         <View className="death-subtitle">你的自尊值降至危险阈值以下，本次恋爱模拟终止</View>

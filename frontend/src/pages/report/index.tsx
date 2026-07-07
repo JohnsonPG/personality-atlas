@@ -242,7 +242,7 @@ export default function ReportPage() {
         </View>
       </View>
 
-      <View className="radar-section">
+      <View className="radar-container">
         <View className="radar-wrapper">
           <svg viewBox="0 0 320 320" width="320" height="320">
             <polygon points={innerPts} stroke="#E5E5EA" fill="none" strokeWidth="1" />

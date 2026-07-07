@@ -7,19 +7,18 @@
   <style>
     /* === Apple HIG Design Tokens === */
     :root {
-      --bg-system: #F2F2F7;
-      --bg-card: #FFFFFF;
+      --bg: #F2F2F7;
+      --card: #FFFFFF;
       --text-primary: #1C1C1E;
       --text-secondary: #8E8E93;
       --text-tertiary: #AEAEB2;
-      --accent-blue: #007AFF;
-      --accent-red: #FF3B30;
-      --accent-green: #34C759;
-      --accent-orange: #FF9500;
-      --fill-gray: #E5E5EA;
+      --accent: #007AFF;
+      --destructive: #FF3B30;
+      --success: #34C759;
+      --warning: #FF9500;
+      --track: #E5E5EA;
       --fill-light-red: #FFF0F0;
       --card-radius: 16px;
-      --card-shadow: 0 2px 12px rgba(0,0,0,0.06);
       --font-stack: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
     }
 
@@ -27,13 +26,14 @@
 
     body {
       font-family: var(--font-stack);
-      background: var(--bg-system);
+      background: var(--bg);
       color: var(--text-primary);
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 40px 20px 60px;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
     .page-title {
@@ -61,9 +61,9 @@
     .phone-frame {
       width: 375px;
       height: 812px;
-      background: var(--bg-card);
+      background: var(--card);
       border-radius: 44px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 20px 60px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06);
       overflow: hidden;
       position: relative;
       flex-shrink: 0;
@@ -75,11 +75,11 @@
       top: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 120px;
+      width: 126px;
       height: 28px;
       background: #1C1C1E;
       border-radius: 0 0 18px 18px;
-      z-index: 10;
+      z-index: 100;
     }
 
     .phone-content {
@@ -104,22 +104,23 @@
     /* === Shared Components === */
 
     .card {
-      background: var(--bg-card);
+      background: var(--card);
       border-radius: var(--card-radius);
-      box-shadow: var(--card-shadow);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
       padding: 16px;
     }
 
     .pill-badge {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       padding: 6px 14px;
       border-radius: 100px;
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.2px;
     }
+    .pill-badge svg { width: 16px; height: 16px; }
 
     .section-title {
       font-size: 20px;
@@ -154,22 +155,16 @@
       z-index: 2;
     }
 
-    .progress-node.done {
-      background: var(--accent-green);
-    }
-
+    .progress-node.done { background: var(--success); }
     .progress-node.done svg { stroke: #fff; }
 
     .progress-node.active {
-      background: var(--accent-blue);
+      background: var(--accent);
       box-shadow: 0 0 0 4px rgba(0,122,255,0.2);
     }
-
     .progress-node.active svg { stroke: #fff; }
 
-    .progress-node.pending {
-      background: var(--fill-gray);
-    }
+    .progress-node.pending { background: var(--track); }
 
     .progress-node svg {
       width: 14px;
@@ -184,9 +179,9 @@
       flex-shrink: 0;
     }
 
-    .progress-connector.done { background: var(--accent-green); }
-    .progress-connector.active { background: var(--accent-blue); }
-    .progress-connector.pending { background: var(--fill-gray); }
+    .progress-connector.done { background: var(--success); }
+    .progress-connector.active { background: var(--accent); }
+    .progress-connector.pending { background: var(--track); }
 
     /* === Difficulty Dots === */
     .difficulty-dots {
@@ -199,12 +194,10 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: var(--fill-gray);
+      background: var(--track);
     }
 
-    .difficulty-dot.filled {
-      background: var(--accent-orange);
-    }
+    .difficulty-dot.filled { background: var(--warning); }
 
     /* === Buttons === */
     .btn {
@@ -217,29 +210,29 @@
       font-weight: 600;
       cursor: pointer;
       border: none;
-      transition: opacity 0.15s ease;
+      transition: transform 0.1s ease, opacity 0.1s ease;
     }
 
-    .btn:active { opacity: 0.7; }
+    .btn:active { transform: scale(0.98); opacity: 0.7; }
 
     .btn-primary {
-      background: var(--accent-blue);
+      background: var(--accent);
       color: #fff;
     }
 
     .btn-secondary {
-      background: var(--fill-gray);
+      background: var(--track);
       color: var(--text-primary);
     }
 
     .btn-secondary-outline {
       background: transparent;
       color: var(--text-secondary);
-      border: 1.5px solid var(--fill-gray);
+      border: 1.5px solid var(--track);
     }
 
     .btn-green {
-      background: var(--accent-green);
+      background: var(--success);
       color: #fff;
     }
 
@@ -288,9 +281,7 @@
       padding: 16px 8px;
     }
 
-    .screen-07 .score-col {
-      flex: 1;
-    }
+    .screen-07 .score-col { flex: 1; }
 
     .screen-07 .score-value {
       font-size: 24px;
@@ -336,26 +327,27 @@
 
     .screen-08 .redline-badge {
       background: var(--fill-light-red);
-      color: var(--accent-red);
+      color: var(--destructive);
     }
 
-    .screen-08 .heartbreak-icon {
+    .screen-08 .icon-circle {
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background: rgba(255,59,48,0.08);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
       margin-top: 24px;
       margin-bottom: 20px;
     }
+    .screen-08 .icon-circle svg { width: 36px; height: 36px; }
+    .screen-08 .icon-circle.red { background: rgba(255,59,48,0.08); }
+    .screen-08 .icon-circle.red svg { stroke: var(--destructive); fill: none; }
 
     .screen-08 .death-title {
       font-size: 28px;
       font-weight: 700;
-      color: var(--accent-red);
+      color: var(--destructive);
       letter-spacing: -0.5px;
       margin-bottom: 6px;
     }
@@ -376,7 +368,7 @@
     .screen-08 .score-bar-bg {
       width: 100%;
       height: 6px;
-      background: var(--fill-gray);
+      background: var(--track);
       border-radius: 3px;
       overflow: hidden;
       margin-top: 8px;
@@ -385,9 +377,8 @@
     .screen-08 .score-bar-fill {
       height: 100%;
       width: 8%;
-      background: var(--accent-red);
+      background: var(--destructive);
       border-radius: 3px;
-      transition: width 0.6s ease;
     }
 
     .screen-08 .score-bar-label {
@@ -398,7 +389,7 @@
     }
 
     .screen-08 .reason-card {
-      border-left: 4px solid var(--accent-red);
+      border-left: 4px solid var(--destructive);
       text-align: left;
     }
 
@@ -416,7 +407,7 @@
     }
 
     .screen-08 .knowledge-card {
-      border-left: 4px solid var(--accent-blue);
+      border-left: 4px solid var(--accent);
       text-align: left;
     }
 
@@ -440,9 +431,7 @@
       margin-top: 20px;
     }
 
-    .screen-08 .btn-row .btn {
-      flex: 1;
-    }
+    .screen-08 .btn-row .btn { flex: 1; }
 
     /* ============================================
        SCREEN 09 - Victory
@@ -486,10 +475,10 @@
 
     .screen-09 .cleared-badge {
       background: rgba(52,199,89,0.1);
-      color: var(--accent-green);
+      color: var(--success);
     }
 
-    .screen-09 .party-icon {
+    .screen-09 .icon-circle.green {
       width: 80px;
       height: 80px;
       border-radius: 50%;
@@ -497,15 +486,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
       margin-top: 20px;
       margin-bottom: 16px;
     }
+    .screen-09 .icon-circle.green svg { width: 36px; height: 36px; fill: var(--success); }
 
     .screen-09 .victory-title {
       font-size: 28px;
       font-weight: 700;
-      color: var(--accent-green);
+      color: var(--success);
       letter-spacing: -0.5px;
       margin-bottom: 6px;
     }
@@ -553,12 +542,10 @@
       display: flex;
       align-items: center;
       padding: 10px 0;
-      border-bottom: 1px solid #F2F2F7;
+      border-bottom: 1px solid var(--bg);
     }
 
-    .screen-09 .breakdown-row:last-child {
-      border-bottom: none;
-    }
+    .screen-09 .breakdown-row:last-child { border-bottom: none; }
 
     .screen-09 .breakdown-check {
       width: 24px;
@@ -575,13 +562,11 @@
     .screen-09 .breakdown-check svg {
       width: 14px;
       height: 14px;
-      stroke: var(--accent-green);
+      stroke: var(--success);
       stroke-width: 2.5;
     }
 
-    .screen-09 .breakdown-info {
-      flex: 1;
-    }
+    .screen-09 .breakdown-info { flex: 1; }
 
     .screen-09 .breakdown-name {
       font-size: 15px;
@@ -598,7 +583,7 @@
     .screen-09 .breakdown-score {
       font-size: 15px;
       font-weight: 600;
-      color: var(--accent-green);
+      color: var(--success);
       flex-shrink: 0;
     }
 
@@ -610,15 +595,18 @@
       width: 100%;
     }
 
-    .screen-09 .btn-group .btn {
-      width: 100%;
+    .screen-09 .btn-group .btn { width: 100%; }
+
+    /* ========== Reduced Motion ========== */
+    @media (prefers-reduced-motion: reduce) {
+      .btn:active { transform: none; }
     }
   </style>
 </head>
 <body>
 
-  <div class="page-title">Stage System</div>
-  <div class="page-subtitle">Apple HIG Design Prototype — 3 Screens</div>
+  <div class="page-title">阶段系统</div>
+  <div class="page-subtitle">Apple HIG Design / 3 个界面原型</div>
 
   <div class="phone-grid">
 
@@ -631,7 +619,6 @@
 
               <div class="prev-stage-label">「相识破冰」阶段完成</div>
 
-              <!-- Down Arrow Icon -->
               <svg class="arrow-icon" viewBox="0 0 32 32" fill="none">
                 <path d="M16 6 L16 22" stroke="#AEAEB2" stroke-width="2" stroke-linecap="round"/>
                 <path d="M10 17 L16 23 L22 17" stroke="#AEAEB2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -640,7 +627,6 @@
               <div class="new-stage-title">热恋博弈</div>
               <div class="new-stage-sub">进入更高难度的情感博弈挑战</div>
 
-              <!-- Progress Nodes -->
               <div class="progress-track">
                 <div class="progress-node done">
                   <svg viewBox="0 0 14 14" fill="none"><polyline points="2.5,7 5.5,10 11.5,4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
@@ -657,7 +643,6 @@
                 <div class="progress-node pending"></div>
               </div>
 
-              <!-- Score Summary -->
               <div class="card score-summary" style="margin-top:8px; width: calc(100% - 16px);">
                 <div class="score-col">
                   <div class="score-value">84</div>
@@ -673,7 +658,6 @@
                 </div>
               </div>
 
-              <!-- Difficulty Indicator -->
               <div class="difficulty-row">
                 <span class="difficulty-label">难度</span>
                 <div class="difficulty-dots">
@@ -691,7 +675,7 @@
           </div>
         </div>
       </div>
-      <div class="screen-label">Screen 07 — Stage Transition</div>
+      <div class="screen-label">07 阶段过渡页</div>
     </div>
 
     <!-- ========== SCREEN 08: Redline / Death ========== -->
@@ -701,41 +685,38 @@
           <div class="screen-08">
             <div class="center-area">
 
-              <!-- Red Warning Badge -->
               <div class="pill-badge redline-badge">
-                &#x26A0; REDLINE 触发
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                REDLINE 触发
               </div>
 
-              <!-- Heartbreak Icon -->
-              <div class="heartbreak-icon">&#x1F494;</div>
+              <div class="icon-circle red">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              </div>
 
               <div class="death-title">模拟结束</div>
               <div class="death-subtitle">你的自尊值降至危险阈值以下，本次恋爱模拟终止</div>
 
-              <!-- Score Bar -->
               <div class="score-bar-container">
                 <div class="score-bar-label">
                   <span>自尊值</span>
-                  <span style="font-weight:600; color:var(--accent-red);">8 / 100</span>
+                  <span style="font-weight:600; color:var(--destructive);">8 / 100</span>
                 </div>
                 <div class="score-bar-bg">
                   <div class="score-bar-fill"></div>
                 </div>
               </div>
 
-              <!-- Trigger Reason Card -->
               <div class="card reason-card">
                 <div class="card-title">触发原因</div>
                 <div class="card-body">在连续的冲突场景中选择了回避和逃避，导致伴侣信任值急剧下降。累计三次回避行为后触发 Redline 机制。</div>
               </div>
 
-              <!-- Knowledge Card -->
               <div class="card knowledge-card" style="margin-top:12px;">
                 <div class="card-title">心理学知识</div>
                 <div class="card-body">研究表明，亲密关系中的回避行为会激活伴侣的"焦虑-抗议"循环。John Gottman 的研究发现，习惯性回避冲突的伴侣，关系满意度降低 62%。</div>
               </div>
 
-              <!-- Button Row -->
               <div class="btn-row">
                 <button class="btn btn-secondary">查看报告</button>
                 <button class="btn btn-primary">再来一局</button>
@@ -745,7 +726,7 @@
           </div>
         </div>
       </div>
-      <div class="screen-label">Screen 08 — Redline / Death</div>
+      <div class="screen-label">08 红线触发 / 阵亡</div>
     </div>
 
     <!-- ========== SCREEN 09: Victory ========== -->
@@ -758,18 +739,18 @@
 
               <div class="victory-content">
 
-                <!-- Cleared Badge -->
                 <div class="pill-badge cleared-badge">
-                  &#x1F3C6; ALL STAGES CLEARED
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5C7 4 7 7 7 7"/><path d="M18 9h1.5a2.5 2.5 0 000-5C17 4 17 7 17 7"/><path d="M4 22h16"/><path d="M10 22V2h4v20"/><path d="M8 22h8"/></svg>
+                  全部通关
                 </div>
 
-                <!-- Party Icon -->
-                <div class="party-icon">&#x1F389;</div>
+                <div class="icon-circle green">
+                  <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>
+                </div>
 
                 <div class="victory-title">成功通关</div>
                 <div class="victory-subtitle">恭喜！你已完美通过所有恋爱博弈阶段</div>
 
-                <!-- Stats Row -->
                 <div class="card" style="margin-bottom:16px;">
                   <div class="stats-row">
                     <div class="stat-col">
@@ -787,7 +768,6 @@
                   </div>
                 </div>
 
-                <!-- Stage Breakdown -->
                 <div class="card breakdown-card">
                   <div class="card-header">阶段详情</div>
 
@@ -836,7 +816,6 @@
                   </div>
                 </div>
 
-                <!-- Buttons -->
                 <div class="btn-group">
                   <button class="btn btn-primary">查看完整报告</button>
                   <button class="btn btn-secondary-outline">分享战绩</button>
@@ -847,7 +826,7 @@
           </div>
         </div>
       </div>
-      <div class="screen-label">Screen 09 — Victory</div>
+      <div class="screen-label">09 成功通关</div>
     </div>
 
   </div>

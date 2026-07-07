@@ -1,0 +1,215 @@
+.screen-review {
+  min-height: 100vh;
+  background: var(--bg-system);
+  padding-bottom: 40px;
+
+  .review-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px 8px;
+    padding-top: 52px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-system);
+    z-index: 10;
+  }
+
+  .nav-back {
+    font-size: 17px;
+    color: var(--accent-blue);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+  }
+
+  .nav-placeholder {
+    width: 22px;
+  }
+
+  .nav-profile {
+    color: var(--accent-blue);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .large-title {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--text-primary);
+    padding: 0 20px 8px;
+    line-height: 1.2;
+  }
+
+  .segmented-control {
+    margin: 8px 20px 16px;
+    background: rgba(118,118,128,0.12);
+    border-radius: 9px;
+    padding: 2px;
+    display: flex;
+    position: relative;
+  }
+
+  .segment-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(33.333% - 2px);
+    height: calc(100% - 4px);
+    background: var(--bg-card);
+    border-radius: 7px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+    z-index: 0;
+  }
+
+  .segment {
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    z-index: 1;
+    position: relative;
+  }
+
+  .record-list {
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .record-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+
+    &:active { transform: scale(0.98); }
+  }
+
+  .record-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &.pass { background: rgba(52,199,89,0.12); }
+    &.fail { background: rgba(255,59,48,0.12); }
+  }
+
+  .record-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .record-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+
+  .record-meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag-pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-block;
+
+    &.npd { background: rgba(255,59,48,0.1); color: var(--accent-red); }
+    &.dual { background: rgba(0,122,255,0.1); color: var(--accent-blue); }
+    &.healthy { background: rgba(52,199,89,0.1); color: var(--accent-green); }
+    &.strategic { background: rgba(175,82,222,0.1); color: var(--accent-purple); }
+  }
+
+  .meta-dot {
+    color: var(--text-tertiary);
+  }
+
+  .record-score-wrap {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .record-score {
+    font-size: 22px;
+    font-weight: 700;
+
+    &.high { color: var(--accent-green); }
+    &.low { color: var(--accent-red); }
+  }
+
+  .record-score-label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-align: center;
+    margin-top: -2px;
+  }
+
+  .bottom-actions {
+    padding: 16px 20px 40px;
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .btn-gray {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    background: rgba(0,122,255,0.08);
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+    text-align: center;
+
+    &:active { transform: scale(0.98); opacity: 0.7; }
+  }
+
+  .btn-blue {
+    flex: 1.4;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: var(--accent-blue);
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+    text-align: center;
+
+    &:active { transform: scale(0.98); opacity: 0.7; }
+  }
+}

@@ -9,6 +9,10 @@
       "dest": "/api/index"
     },
     {
+      "src": "/health",
+      "dest": "/api/index"
+    },
+    {
       "handle": "filesystem"
     },
     {

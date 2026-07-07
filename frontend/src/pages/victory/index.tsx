@@ -68,10 +68,18 @@ export default function VictoryPage() {
 
         <View className="victory-content">
           <View className="pill-badge cleared-badge">
-            ✅ ALL STAGES CLEARED
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#34C759">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            ALL STAGES CLEARED
           </View>
 
-          <View className="party-icon">🎉</View>
+          <View className="party-icon">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="#34C759">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <path d="M10 15.586L6.707 12.293l-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z" opacity="0"/>
+            </svg>
+          </View>
 
           <View className="victory-title">成功通关</View>
           <View className="victory-subtitle">恭喜！你已完美通过所有恋爱博弈阶段</View>

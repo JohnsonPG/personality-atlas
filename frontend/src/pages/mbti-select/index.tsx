@@ -50,8 +50,8 @@ const MBTI_IMAGES: Record<string, string> = {
 }
 
 const PRIMARY_LABEL: Record<string, string> = {
-  npd: '🎭 已选：NPD 自恋型人格',
-  bipolar: '🌊 已选：双向/抑郁情绪',
+  npd: '已选：NPD 自恋型人格',
+  bipolar: '已选：双向/抑郁情绪',
 }
 
 const PRIMARY_SHORT: Record<string, string> = {
@@ -89,6 +89,7 @@ export default function MbtiSelectPage() {
         <View className="large-title">选择 MBTI 人格</View>
       </View>
       <View className="mbti-selected-pill">
+        <View className="mbti-selected-dot" />
         <Text>{primaryDisplay}</Text>
       </View>
       <View className="mbti-legend">
@@ -115,10 +116,9 @@ export default function MbtiSelectPage() {
           return (
             <View
               key={mbti.code}
-              className={`mbti-item ${selected ? 'selected' : ''} group-${mbti.group}`}
+              className={`mbti-item ${selected ? 'selected' : ''}`}
               style={{
                 backgroundImage: `url(${MBTI_IMAGES[mbti.code]})`,
-                borderLeft: `4px solid ${GROUP_COLOR[mbti.group]}`,
               }}
               onClick={() => setCurrentMbti(mbti.code)}
             >

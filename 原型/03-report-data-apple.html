@@ -7,28 +7,43 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+  --bg: #F2F2F7;
+  --card: #FFFFFF;
+  --text-primary: #1C1C1E;
+  --text-secondary: #8E8E93;
+  --text-tertiary: #AEAEB2;
+  --accent: #007AFF;
+  --destructive: #FF3B30;
+  --success: #34C759;
+  --warning: #FF9500;
+  --purple: #AF52DE;
+  --track: #E5E5EA;
+}
+
 body {
-  background: #F2F2F7;
+  background: var(--bg);
   font-family: -apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
-  color: #1C1C1E;
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px 16px 80px;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 .page-title {
   font-size: 34px;
   font-weight: 700;
   letter-spacing: -0.5px;
-  color: #1C1C1E;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .page-subtitle {
   font-size: 17px;
-  color: #8E8E93;
+  color: var(--text-secondary);
   margin-bottom: 40px;
 }
 
@@ -45,10 +60,10 @@ body {
 .phone-frame {
   width: 375px;
   height: 812px;
-  background: #F2F2F7;
-  border-radius: 40px;
+  background: var(--bg);
+  border-radius: 44px;
   overflow: hidden;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.08), 0 20px 60px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 20px 60px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06);
   flex-shrink: 0;
   position: relative;
   display: flex;
@@ -61,10 +76,10 @@ body {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 150px;
+  width: 126px;
   height: 28px;
   background: #1C1C1E;
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 18px 18px;
   z-index: 10;
 }
 
@@ -102,7 +117,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 8px 16px 8px;
-  background: #F2F2F7;
+  background: var(--bg);
   position: sticky;
   top: 0;
   z-index: 5;
@@ -110,7 +125,7 @@ body {
 
 .nav-back {
   font-size: 17px;
-  color: #007AFF;
+  color: var(--accent);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -125,7 +140,7 @@ body {
 .nav-title {
   font-size: 17px;
   font-weight: 600;
-  color: #1C1C1E;
+  color: var(--text-primary);
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -136,16 +151,17 @@ body {
   font-weight: 700;
   letter-spacing: -0.5px;
   padding: 4px 20px 8px;
-  color: #1C1C1E;
+  color: var(--text-primary);
   line-height: 1.18;
 }
 
 /* Cards */
 .card {
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 16px;
   margin: 0 16px 12px;
   padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 /* Badge */
@@ -160,25 +176,25 @@ body {
 
 .badge-success {
   background: rgba(52, 199, 89, 0.12);
-  color: #34C759;
+  color: var(--success);
 }
 
 /* Secondary text */
 .text-secondary {
   font-size: 15px;
-  color: #8E8E93;
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
 .text-body {
   font-size: 17px;
-  color: #1C1C1E;
+  color: var(--text-primary);
   line-height: 1.53;
 }
 
 .text-caption {
   font-size: 13px;
-  color: #8E8E93;
+  color: var(--text-secondary);
   line-height: 1.4;
 }
 
@@ -191,22 +207,23 @@ body {
 }
 
 .stat-item {
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 16px;
   padding: 16px 12px;
   text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .stat-value {
   font-size: 28px;
   font-weight: 700;
-  color: #1C1C1E;
+  color: var(--text-primary);
   line-height: 1.1;
 }
 
 .stat-label {
   font-size: 13px;
-  color: #8E8E93;
+  color: var(--text-secondary);
   margin-top: 4px;
 }
 
@@ -215,14 +232,14 @@ body {
   font-size: 22px;
   font-weight: 700;
   padding: 16px 20px 8px;
-  color: #1C1C1E;
+  color: var(--text-primary);
 }
 
 /* Progress Bars */
 .progress-track {
   width: 100%;
   height: 6px;
-  background: #E5E5EA;
+  background: var(--track);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -242,7 +259,7 @@ body {
 
 .dimension-name {
   font-size: 15px;
-  color: #1C1C1E;
+  color: var(--text-primary);
   width: 40px;
   flex-shrink: 0;
 }
@@ -250,7 +267,7 @@ body {
 .dimension-value {
   font-size: 15px;
   font-weight: 600;
-  color: #1C1C1E;
+  color: var(--text-primary);
   width: 30px;
   text-align: right;
   flex-shrink: 0;
@@ -259,7 +276,7 @@ body {
 .dimension-bar {
   flex: 1;
   height: 6px;
-  background: #E5E5EA;
+  background: var(--track);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -278,16 +295,17 @@ body {
 
 /* Question Card */
 .question-card {
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 16px;
   margin: 0 16px 10px;
   padding: 14px 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .question-text {
   font-size: 15px;
   font-weight: 500;
-  color: #1C1C1E;
+  color: var(--text-primary);
   line-height: 1.45;
   margin-bottom: 10px;
 }
@@ -302,49 +320,47 @@ body {
 .tag-correct {
   font-size: 13px;
   font-weight: 600;
-  color: #34C759;
+  color: var(--success);
 }
 
 .tag-wrong {
   font-size: 13px;
   font-weight: 600;
-  color: #FF3B30;
+  color: var(--destructive);
 }
 
 .tag-global {
   font-size: 13px;
-  color: #007AFF;
+  color: var(--accent);
 }
 
 /* Top Stat Card */
 .top-stat-card {
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 20px;
   margin: 0 16px 16px;
   padding: 28px 24px;
   text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .top-stat-value {
   font-size: 48px;
   font-weight: 800;
-  background: linear-gradient(135deg, #007AFF, #5856D6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent);
   line-height: 1.1;
 }
 
 .top-stat-label {
   font-size: 15px;
-  color: #8E8E93;
+  color: var(--text-secondary);
   margin-top: 8px;
   line-height: 1.5;
 }
 
 .top-stat-subtitle {
   font-size: 13px;
-  color: #AEAEB2;
+  color: var(--text-tertiary);
   margin-top: 4px;
 }
 
@@ -368,27 +384,31 @@ body {
   border: none;
   cursor: pointer;
   font-family: inherit;
+  transition: transform 0.1s ease, opacity 0.1s ease;
 }
 
+.btn:active { transform: scale(0.98); opacity: 0.7; }
+
 .btn-primary {
-  background: #007AFF;
+  background: var(--accent);
   color: #FFFFFF;
 }
 
 .btn-secondary {
-  background: #E5E5EA;
-  color: #1C1C1E;
+  background: var(--track);
+  color: var(--text-primary);
 }
 
 /* Knowledge Card */
 .knowledge-card {
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 16px;
   margin: 0 16px 10px;
   padding: 16px;
   padding-left: 20px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .knowledge-card::before {
@@ -400,35 +420,36 @@ body {
   width: 4px;
 }
 
-.knowledge-card.accent-blue::before { background: #007AFF; }
-.knowledge-card.accent-purple::before { background: #AF52DE; }
-.knowledge-card.accent-red::before { background: #FF3B30; }
-.knowledge-card.accent-green::before { background: #34C759; }
+.knowledge-card.accent-blue::before { background: var(--accent); }
+.knowledge-card.accent-purple::before { background: var(--purple); }
+.knowledge-card.accent-red::before { background: var(--destructive); }
+.knowledge-card.accent-green::before { background: var(--success); }
 
 .knowledge-title {
   font-size: 17px;
   font-weight: 600;
-  color: #1C1C1E;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
 .knowledge-desc {
   font-size: 15px;
-  color: #8E8E93;
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
 /* Poster Preview */
 .poster-preview {
-  background: #FFFFFF;
+  background: var(--card);
   border-radius: 16px;
   margin: 0 16px 12px;
   padding: 20px;
   position: relative;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .poster-inner {
-  background: linear-gradient(180deg, #F2F2F7 0%, #E5E5EA 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--track) 100%);
   border-radius: 12px;
   padding: 24px 16px;
   text-align: center;
@@ -438,7 +459,7 @@ body {
 .poster-logo {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #007AFF, #5856D6);
+  background: var(--accent);
   border-radius: 10px;
   margin: 0 auto 12px;
   display: flex;
@@ -455,7 +476,7 @@ body {
 .poster-title {
   font-size: 20px;
   font-weight: 700;
-  color: #1C1C1E;
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
 
@@ -469,12 +490,12 @@ body {
 .poster-stat-num {
   font-size: 24px;
   font-weight: 700;
-  color: #007AFF;
+  color: var(--accent);
 }
 
 .poster-stat-label {
   font-size: 11px;
-  color: #8E8E93;
+  color: var(--text-secondary);
 }
 
 .poster-divider {
@@ -490,7 +511,7 @@ body {
 
 .poster-bar-label {
   font-size: 11px;
-  color: #8E8E93;
+  color: var(--text-secondary);
   margin-bottom: 6px;
 }
 
@@ -508,7 +529,7 @@ body {
 /* AI Summary */
 .ai-summary {
   font-size: 15px;
-  color: #1C1C1E;
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
@@ -517,7 +538,7 @@ body {
   align-items: center;
   gap: 4px;
   font-size: 13px;
-  color: #007AFF;
+  color: var(--accent);
   font-weight: 500;
   margin-bottom: 8px;
 }
@@ -525,7 +546,7 @@ body {
 .ai-tag-icon {
   width: 16px;
   height: 16px;
-  background: #007AFF;
+  background: var(--accent);
   border-radius: 4px;
   display: inline-flex;
   align-items: center;
@@ -544,6 +565,12 @@ body {
 /* Spacer */
 .spacer { height: 12px; }
 .spacer-sm { height: 8px; }
+
+/* ========== Reduced Motion ========== */
+@media (prefers-reduced-motion: reduce) {
+  .progress-fill { transition: none; }
+  .btn:active { transform: none; }
+}
 </style>
 </head>
 <body>
@@ -571,7 +598,7 @@ body {
       <span class="badge badge-success">&#10003; 成功通关</span>
     </div>
     <div style="padding: 0 20px 4px;">
-      <span class="text-secondary">NPD + INTJ &middot; 全阶段完成</span>
+      <span class="text-secondary">NPD + INTJ / 全阶段完成</span>
     </div>
 
     <div class="spacer-sm"></div>
@@ -608,36 +635,18 @@ body {
     <div class="card">
       <div class="radar-container">
         <svg width="240" height="220" viewBox="0 0 240 220">
-          <!-- Pentagon grid lines -->
-          <!-- Level 1 (innermost) -->
           <polygon points="120,85 139,99 131,122 109,122 101,99" fill="none" stroke="#E5E5EA" stroke-width="1"/>
-          <!-- Level 2 -->
           <polygon points="120,70 148,93 137,127 103,127 92,93" fill="none" stroke="#E5E5EA" stroke-width="1"/>
-          <!-- Level 3 (outermost) -->
           <polygon points="120,55 157,86 143,133 97,133 83,86" fill="none" stroke="#E5E5EA" stroke-width="1"/>
-
-          <!-- Axis lines -->
           <line x1="120" y1="55" x2="120" y2="155" stroke="#E5E5EA" stroke-width="1"/>
           <line x1="83" y1="86" x2="157" y2="86" stroke="#E5E5EA" stroke-width="1"/>
           <line x1="97" y1="133" x2="143" y2="133" stroke="#E5E5EA" stroke-width="1"/>
-
-          <!-- Data polygon -->
-          <polygon
-            points="120,68 145,88 138,128 107,122 96,90"
-            fill="rgba(0,122,255,0.1)"
-            stroke="#007AFF"
-            stroke-width="2"
-            stroke-linejoin="round"
-          />
-
-          <!-- Data points -->
+          <polygon points="120,68 145,88 138,128 107,122 96,90" fill="rgba(0,122,255,0.1)" stroke="#007AFF" stroke-width="2" stroke-linejoin="round"/>
           <circle cx="120" cy="68" r="4" fill="#007AFF"/>
           <circle cx="145" cy="88" r="4" fill="#007AFF"/>
           <circle cx="138" cy="128" r="4" fill="#007AFF"/>
           <circle cx="107" cy="122" r="4" fill="#007AFF"/>
           <circle cx="96" cy="90" r="4" fill="#007AFF"/>
-
-          <!-- Labels -->
           <text x="120" y="50" text-anchor="middle" font-size="12" fill="#8E8E93" font-family="-apple-system, sans-serif">共情</text>
           <text x="165" y="86" text-anchor="start" font-size="12" fill="#8E8E93" font-family="-apple-system, sans-serif">边界</text>
           <text x="148" y="142" text-anchor="start" font-size="12" fill="#8E8E93" font-family="-apple-system, sans-serif">沟通</text>
@@ -646,32 +655,31 @@ body {
         </svg>
       </div>
 
-      <!-- Dimension Bars -->
       <div class="separator"></div>
 
       <div class="dimension-item">
         <span class="dimension-name">共情</span>
-        <div class="dimension-bar"><div class="dimension-fill" style="width:75%; background:#007AFF;"></div></div>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:75%; background:var(--accent);"></div></div>
         <span class="dimension-value">75</span>
       </div>
       <div class="dimension-item">
         <span class="dimension-name">边界</span>
-        <div class="dimension-bar"><div class="dimension-fill" style="width:90%; background:#34C759;"></div></div>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:90%; background:var(--success);"></div></div>
         <span class="dimension-value">90</span>
       </div>
       <div class="dimension-item">
         <span class="dimension-name">沟通</span>
-        <div class="dimension-bar"><div class="dimension-fill" style="width:80%; background:#007AFF;"></div></div>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:80%; background:var(--accent);"></div></div>
         <span class="dimension-value">80</span>
       </div>
       <div class="dimension-item">
         <span class="dimension-name">觉察</span>
-        <div class="dimension-bar"><div class="dimension-fill" style="width:70%; background:#AF52DE;"></div></div>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:70%; background:var(--purple);"></div></div>
         <span class="dimension-value">70</span>
       </div>
       <div class="dimension-item">
         <span class="dimension-name">风险</span>
-        <div class="dimension-bar"><div class="dimension-fill" style="width:85%; background:#FF9500;"></div></div>
+        <div class="dimension-bar"><div class="dimension-fill" style="width:85%; background:var(--warning);"></div></div>
         <span class="dimension-value">85</span>
       </div>
     </div>
@@ -710,11 +718,11 @@ body {
     <div class="question-card">
       <div class="question-text">Q1. 当对方说"你太敏感了"时，最恰当的应对策略是？</div>
       <div class="progress-track">
-        <div class="progress-fill" style="width:45%; background:#007AFF;"></div>
+        <div class="progress-fill" style="width:45%; background:var(--accent);"></div>
       </div>
       <div class="question-meta">
         <span class="tag-correct">你：正确</span>
-        <span style="color:#AEAEB2;">&middot;</span>
+        <span style="color:var(--text-tertiary);">/</span>
         <span class="tag-global">全球仅 45% 做对</span>
       </div>
     </div>
@@ -723,11 +731,11 @@ body {
     <div class="question-card">
       <div class="question-text">Q2. NPD 三角关系中，"拯救者"角色的本质动机是什么？</div>
       <div class="progress-track">
-        <div class="progress-fill" style="width:38%; background:#007AFF;"></div>
+        <div class="progress-fill" style="width:38%; background:var(--accent);"></div>
       </div>
       <div class="question-meta">
         <span class="tag-correct">你：正确</span>
-        <span style="color:#AEAEB2;">&middot;</span>
+        <span style="color:var(--text-tertiary);">/</span>
         <span class="tag-global">全球仅 38% 做对</span>
       </div>
     </div>
@@ -736,11 +744,11 @@ body {
     <div class="question-card">
       <div class="question-text">Q3. 以下哪种行为不属于"隐蔽操控"的范畴？</div>
       <div class="progress-track">
-        <div class="progress-fill" style="width:28%; background:#FF3B30;"></div>
+        <div class="progress-fill" style="width:28%; background:var(--destructive);"></div>
       </div>
       <div class="question-meta">
         <span class="tag-wrong">你：失误</span>
-        <span style="color:#AEAEB2;">&middot;</span>
+        <span style="color:var(--text-tertiary);">/</span>
         <span class="tag-global">全球仅 28% 做对</span>
       </div>
     </div>
@@ -749,11 +757,11 @@ body {
     <div class="question-card">
       <div class="question-text">Q4. 在面对"沉默对待"时，推荐的最佳应对方式是？</div>
       <div class="progress-track">
-        <div class="progress-fill" style="width:52%; background:#007AFF;"></div>
+        <div class="progress-fill" style="width:52%; background:var(--accent);"></div>
       </div>
       <div class="question-meta">
         <span class="tag-correct">你：正确</span>
-        <span style="color:#AEAEB2;">&middot;</span>
+        <span style="color:var(--text-tertiary);">/</span>
         <span class="tag-global">全球仅 52% 做对</span>
       </div>
     </div>
@@ -762,11 +770,11 @@ body {
     <div class="question-card">
       <div class="question-text">Q5. INTJ 型人格在情感关系中最容易陷入的陷阱是？</div>
       <div class="progress-track">
-        <div class="progress-fill" style="width:22%; background:#FF3B30;"></div>
+        <div class="progress-fill" style="width:22%; background:var(--destructive);"></div>
       </div>
       <div class="question-meta">
         <span class="tag-wrong">你：失误</span>
-        <span style="color:#AEAEB2;">&middot;</span>
+        <span style="color:var(--text-tertiary);">/</span>
         <span class="tag-global">全球仅 22% 做对</span>
       </div>
     </div>
@@ -775,7 +783,7 @@ body {
 
     <!-- Share Card -->
     <div class="share-card">
-      <div style="font-size:15px; color:#8E8E93; margin-bottom:12px;">与朋友比拼你的认知水平</div>
+      <div style="font-size:15px; color:var(--text-secondary); margin-bottom:12px;">与朋友比拼你的认知水平</div>
       <button class="btn btn-primary">分享到朋友圈</button>
     </div>
 
@@ -851,10 +859,10 @@ body {
         <div class="poster-bar-container">
           <div class="poster-bar-label">五维能力综合评估</div>
           <div class="progress-track" style="height:8px; border-radius:4px;">
-            <div class="progress-fill" style="width:80%; background:linear-gradient(90deg,#007AFF,#5856D6); border-radius:4px;"></div>
+            <div class="progress-fill" style="width:80%; background:var(--accent); border-radius:4px;"></div>
           </div>
         </div>
-        <div style="margin-top:12px; font-size:11px; color:#AEAEB2;">NPD + INTJ &middot; 全阶段通关</div>
+        <div style="margin-top:12px; font-size:11px; color:var(--text-tertiary);">NPD + INTJ / 全阶段通关</div>
       </div>
     </div>
 

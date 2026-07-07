@@ -11,6 +11,9 @@ export default {
     'pages/report/index',
     'pages/parallel/index',
     'pages/knowledge/index',
+    'pages/review/index',
+    'pages/profile/index',
+    'pages/onboarding2/index',
   ],
   window: {
     backgroundTextStyle: 'light',

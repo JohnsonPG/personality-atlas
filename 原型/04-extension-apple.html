@@ -6,11 +6,26 @@
 <title>Apple HIG Design System - Extension Screens</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #F2F2F7;
+    --card: #FFFFFF;
+    --text-primary: #1C1C1E;
+    --text-secondary: #8E8E93;
+    --text-tertiary: #AEAEB2;
+    --accent: #007AFF;
+    --destructive: #FF3B30;
+    --success: #34C759;
+    --warning: #FF9500;
+    --purple: #AF52DE;
+    --teal: #5AC8FA;
+    --track: #E5E5EA;
+  }
+
   body {
-    background: #E5E5EA;
+    background: var(--bg);
     font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -23,12 +38,25 @@
   .phone-frame {
     width: 375px;
     height: 812px;
-    background: #F2F2F7;
+    background: var(--bg);
     border-radius: 44px;
     overflow: hidden;
-    box-shadow: 0 0 0 3px #1C1C1E, 0 20px 60px rgba(0,0,0,0.18);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 20px 60px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06);
     position: relative;
     flex-shrink: 0;
+  }
+
+  .phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 126px;
+    height: 28px;
+    background: #1C1C1E;
+    border-radius: 0 0 18px 18px;
+    z-index: 10;
   }
 
   .phone-content {
@@ -49,7 +77,7 @@
     padding: 0 24px;
     font-size: 15px;
     font-weight: 600;
-    color: #1C1C1E;
+    color: var(--text-primary);
     background: transparent;
     position: sticky;
     top: 0;
@@ -58,7 +86,7 @@
 
   .status-bar .time { font-size: 15px; font-weight: 600; }
   .status-bar .icons { display: flex; gap: 6px; align-items: center; }
-  .status-bar .icons svg { width: 18px; height: 18px; fill: #1C1C1E; }
+  .status-bar .icons svg { width: 18px; height: 18px; fill: var(--text-primary); }
 
   /* ========== Screen 13: History/Review Center ========== */
   .screen-13 .phone-content { padding-top: 0; }
@@ -66,7 +94,7 @@
   .large-title {
     font-size: 34px;
     font-weight: 700;
-    color: #1C1C1E;
+    color: var(--text-primary);
     padding: 0 20px 8px;
     line-height: 1.2;
   }
@@ -85,21 +113,12 @@
     text-align: center;
     font-size: 13px;
     font-weight: 500;
-    color: #1C1C1E;
+    color: var(--text-primary);
     padding: 6px 12px;
     border-radius: 7px;
     cursor: pointer;
-    transition: all 0.2s;
     z-index: 1;
     position: relative;
-  }
-
-  .segmented-control .segment.active {
-    color: #1C1C1E;
-  }
-
-  .segmented-control .segment:not(.active) {
-    color: #1C1C1E;
   }
 
   .segmented-control .segment-slider {
@@ -108,9 +127,9 @@
     left: 2px;
     width: calc(33.333% - 2px);
     height: calc(100% - 4px);
-    background: #FFFFFF;
+    background: var(--card);
     border-radius: 7px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0.5px 1px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
@@ -125,14 +144,15 @@
   }
 
   .record-card {
-    background: #FFFFFF;
+    background: var(--card);
     border-radius: 16px;
     padding: 14px 16px;
     display: flex;
     align-items: center;
     gap: 12px;
     cursor: pointer;
-    transition: transform 0.15s;
+    transition: transform 0.1s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
 
   .record-card:active { transform: scale(0.98); }
@@ -151,8 +171,8 @@
   .record-icon.fail { background: rgba(255,59,48,0.12); }
 
   .record-icon svg { width: 22px; height: 22px; }
-  .record-icon.pass svg { fill: #34C759; }
-  .record-icon.fail svg { fill: #FF3B30; }
+  .record-icon.pass svg { fill: var(--success); }
+  .record-icon.fail svg { fill: var(--destructive); }
 
   .record-info {
     flex: 1;
@@ -162,13 +182,13 @@
   .record-title {
     font-size: 17px;
     font-weight: 600;
-    color: #1C1C1E;
+    color: var(--text-primary);
     margin-bottom: 3px;
   }
 
   .record-meta {
     font-size: 13px;
-    color: #8E8E93;
+    color: var(--text-secondary);
     display: flex;
     align-items: center;
     gap: 6px;
@@ -183,10 +203,10 @@
     display: inline-block;
   }
 
-  .tag-pill.npd { background: rgba(255,59,48,0.1); color: #FF3B30; }
-  .tag-pill.dual { background: rgba(0,122,255,0.1); color: #007AFF; }
-  .tag-pill.healthy { background: rgba(52,199,89,0.1); color: #34C759; }
-  .tag-pill.strategic { background: rgba(175,82,222,0.1); color: #AF52DE; }
+  .tag-pill.npd { background: rgba(255,59,48,0.1); color: var(--destructive); }
+  .tag-pill.dual { background: rgba(0,122,255,0.1); color: var(--accent); }
+  .tag-pill.healthy { background: rgba(52,199,89,0.1); color: var(--success); }
+  .tag-pill.strategic { background: rgba(175,82,222,0.1); color: var(--purple); }
 
   .record-score {
     font-size: 22px;
@@ -194,12 +214,12 @@
     flex-shrink: 0;
   }
 
-  .record-score.high { color: #34C759; }
-  .record-score.low { color: #FF3B30; }
+  .record-score.high { color: var(--success); }
+  .record-score.low { color: var(--destructive); }
 
   .record-score-label {
     font-size: 11px;
-    color: #AEAEB2;
+    color: var(--text-tertiary);
     text-align: center;
     margin-top: -2px;
   }
@@ -218,10 +238,11 @@
     border: none;
     font-size: 17px;
     font-weight: 600;
-    color: #007AFF;
+    color: var(--accent);
     background: rgba(0,122,255,0.08);
     cursor: pointer;
     font-family: inherit;
+    transition: transform 0.1s ease, opacity 0.1s ease;
   }
 
   .btn-blue {
@@ -232,13 +253,14 @@
     font-size: 17px;
     font-weight: 600;
     color: #FFFFFF;
-    background: #007AFF;
+    background: var(--accent);
     cursor: pointer;
     font-family: inherit;
+    transition: transform 0.1s ease, opacity 0.1s ease;
   }
 
-  .btn-blue:active { background: #0062CC; }
-  .btn-gray:active { background: rgba(0,122,255,0.14); }
+  .btn-blue:active { transform: scale(0.98); opacity: 0.7; }
+  .btn-gray:active { transform: scale(0.98); opacity: 0.7; }
 
   /* ========== Screen 14: Personal Center ========== */
   .screen-14 .phone-content { padding-top: 0; }
@@ -254,24 +276,24 @@
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: #E5E5EA;
+    background: var(--track);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
 
-  .avatar-circle svg { width: 32px; height: 32px; fill: #8E8E93; }
+  .avatar-circle svg { width: 32px; height: 32px; fill: var(--text-secondary); }
 
   .profile-info .profile-name {
     font-size: 22px;
     font-weight: 700;
-    color: #1C1C1E;
+    color: var(--text-primary);
   }
 
   .profile-info .profile-id {
     font-size: 15px;
-    color: #8E8E93;
+    color: var(--text-secondary);
     margin-top: 2px;
   }
 
@@ -300,23 +322,24 @@
   .stat-value {
     font-size: 28px;
     font-weight: 700;
-    color: #1C1C1E;
+    color: var(--text-primary);
     line-height: 1.1;
   }
 
   .stat-label {
     font-size: 13px;
-    color: #8E8E93;
+    color: var(--text-secondary);
     margin-top: 4px;
   }
 
   .vip-card {
     margin: 0 16px 20px;
-    background: #FFFFFF;
+    background: var(--card);
     border-radius: 16px;
     padding: 18px;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
 
   .vip-card::before {
@@ -336,20 +359,21 @@
     gap: 4px;
     font-size: 13px;
     font-weight: 600;
-    color: #FF9500;
+    color: var(--warning);
     margin-bottom: 8px;
   }
+  .vip-badge svg { width: 16px; height: 16px; fill: var(--warning); }
 
   .vip-title {
     font-size: 20px;
     font-weight: 700;
-    color: #1C1C1E;
+    color: var(--text-primary);
     margin-bottom: 4px;
   }
 
   .vip-desc {
     font-size: 13px;
-    color: #8E8E93;
+    color: var(--text-secondary);
     line-height: 1.5;
     margin-bottom: 14px;
     max-width: 240px;
@@ -363,18 +387,20 @@
     font-size: 15px;
     font-weight: 600;
     color: #FFFFFF;
-    background: #FF9500;
+    background: var(--warning);
     cursor: pointer;
     font-family: inherit;
+    transition: transform 0.1s ease, opacity 0.1s ease;
   }
 
-  .vip-btn:active { background: #E08600; }
+  .vip-btn:active { transform: scale(0.98); opacity: 0.7; }
 
   .settings-group {
     margin: 0 16px 16px;
-    background: #FFFFFF;
+    background: var(--card);
     border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
 
   .settings-group .settings-item {
@@ -386,7 +412,7 @@
     transition: background 0.15s;
   }
 
-  .settings-group .settings-item:active { background: #F2F2F7; }
+  .settings-group .settings-item:active { background: var(--bg); }
 
   .settings-group .settings-item:not(:last-child) {
     border-bottom: 0.5px solid rgba(0,0,0,0.06);
@@ -409,27 +435,27 @@
 
   .settings-icon svg { width: 17px; height: 17px; fill: #FFFFFF; }
 
-  .settings-icon.blue { background: #007AFF; }
-  .settings-icon.purple { background: #AF52DE; }
-  .settings-icon.green { background: #34C759; }
-  .settings-icon.orange { background: #FF9500; }
-  .settings-icon.gray { background: #8E8E93; }
-  .settings-icon.teal { background: #5AC8FA; }
+  .settings-icon.blue { background: var(--accent); }
+  .settings-icon.purple { background: var(--purple); }
+  .settings-icon.green { background: var(--success); }
+  .settings-icon.orange { background: var(--warning); }
+  .settings-icon.gray { background: var(--text-secondary); }
+  .settings-icon.teal { background: var(--teal); }
 
   .settings-item-label {
     font-size: 17px;
-    color: #1C1C1E;
+    color: var(--text-primary);
   }
 
   .chevron {
     width: 8px;
     height: 13px;
-    fill: #C7C7CC;
+    fill: var(--text-tertiary);
   }
 
   /* ========== Screen 15: Onboarding Page 2 ========== */
   .screen-15 .phone-content {
-    background: #FFFFFF;
+    background: var(--card);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -488,20 +514,27 @@
   .page-dot.active {
     width: 24px;
     border-radius: 4px;
-    background: #007AFF;
+    background: var(--accent);
   }
 
-  .onboarding-emoji {
-    font-size: 72px;
+  .onboarding-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(0,122,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 28px;
     position: relative;
     z-index: 1;
   }
+  .onboarding-icon svg { width: 40px; height: 40px; fill: var(--accent); }
 
   .onboarding-title {
     font-size: 26px;
     font-weight: 700;
-    color: #1C1C1E;
+    color: var(--text-primary);
     text-align: center;
     line-height: 1.3;
     margin-bottom: 16px;
@@ -511,7 +544,7 @@
 
   .onboarding-desc {
     font-size: 17px;
-    color: #8E8E93;
+    color: var(--text-secondary);
     text-align: center;
     line-height: 1.6;
     max-width: 280px;
@@ -539,16 +572,17 @@
     font-size: 17px;
     font-weight: 600;
     color: #FFFFFF;
-    background: #007AFF;
+    background: var(--accent);
     cursor: pointer;
     font-family: inherit;
+    transition: transform 0.1s ease, opacity 0.1s ease;
   }
 
-  .cta-blue:active { background: #0062CC; }
+  .cta-blue:active { transform: scale(0.98); opacity: 0.7; }
 
   .skip-link {
     font-size: 15px;
-    color: #8E8E93;
+    color: var(--text-secondary);
     cursor: pointer;
     border: none;
     background: none;
@@ -556,7 +590,7 @@
     padding: 4px 0;
   }
 
-  .skip-link:active { color: #AEAEB2; }
+  .skip-link:active { color: var(--text-tertiary); }
 
   /* Screen label */
   .screen-label {
@@ -564,8 +598,18 @@
     margin-top: 16px;
     font-size: 14px;
     font-weight: 600;
-    color: #8E8E93;
+    color: var(--text-secondary);
     letter-spacing: 0.3px;
+  }
+
+  /* ========== Reduced Motion ========== */
+  @media (prefers-reduced-motion: reduce) {
+    .segmented-control .segment-slider { transition: none; }
+    .record-card:active,
+    .btn-blue:active,
+    .btn-gray:active,
+    .vip-btn:active,
+    .cta-blue:active { transform: none; }
   }
 </style>
 </head>
@@ -593,7 +637,6 @@
         </div>
 
         <div class="record-list">
-          <!-- Record 1: Pass -->
           <div class="record-card">
             <div class="record-icon pass">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
@@ -601,7 +644,7 @@
             <div class="record-info">
               <div class="record-title">NPD + INTJ</div>
               <div class="record-meta">
-                4阶段通关 · 14题对12
+                4阶段通关 / 14题对12
                 <span class="tag-pill npd">NPD</span>
                 <span class="tag-pill dual">双向</span>
               </div>
@@ -612,7 +655,6 @@
             </div>
           </div>
 
-          <!-- Record 2: Pass -->
           <div class="record-card">
             <div class="record-icon pass">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
@@ -620,7 +662,7 @@
             <div class="record-info">
               <div class="record-title">BPD + ENFP</div>
               <div class="record-meta">
-                5阶段通关 · 18题对15
+                5阶段通关 / 18题对15
                 <span class="tag-pill healthy">健康</span>
                 <span class="tag-pill npd">NPD</span>
               </div>
@@ -631,7 +673,6 @@
             </div>
           </div>
 
-          <!-- Record 3: Fail -->
           <div class="record-card">
             <div class="record-icon fail">
               <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
@@ -639,7 +680,7 @@
             <div class="record-info">
               <div class="record-title">ASPD + ESTP</div>
               <div class="record-meta">
-                2阶段阵亡 · 8题对4
+                2阶段阵亡 / 8题对4
                 <span class="tag-pill npd">NPD</span>
               </div>
             </div>
@@ -649,7 +690,6 @@
             </div>
           </div>
 
-          <!-- Record 4: Pass -->
           <div class="record-card">
             <div class="record-icon pass">
               <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
@@ -657,7 +697,7 @@
             <div class="record-info">
               <div class="record-title">HPD + ESFJ</div>
               <div class="record-meta">
-                4阶段通关 · 12题对11
+                4阶段通关 / 12题对11
                 <span class="tag-pill dual">双向</span>
                 <span class="tag-pill strategic">策略</span>
               </div>
@@ -675,7 +715,7 @@
         </div>
       </div>
     </div>
-    <div class="screen-label">Screen 13 - 复盘中心</div>
+    <div class="screen-label">13 复盘中心</div>
   </div>
 
   <!-- ===== Screen 14: Personal Center ===== -->
@@ -721,7 +761,10 @@
 
         <!-- VIP Card -->
         <div class="vip-card">
-          <div class="vip-badge">&#x1F451; VIP 会员</div>
+          <div class="vip-badge">
+            <svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+            VIP 会员
+          </div>
           <div class="vip-title">升级 VIP 会员</div>
           <div class="vip-desc">解锁全部人格类型，获取深度分析报告和专属策略建议</div>
           <button class="vip-btn">开通</button>
@@ -792,7 +835,7 @@
         <div style="height: 40px;"></div>
       </div>
     </div>
-    <div class="screen-label">Screen 14 - 个人中心</div>
+    <div class="screen-label">14 个人中心</div>
   </div>
 
   <!-- ===== Screen 15: Onboarding Page 2 ===== -->
@@ -808,27 +851,23 @@
         </div>
 
         <div class="onboarding-container">
-          <!-- Subtle gradient blobs -->
           <div class="blob-bg blue"></div>
           <div class="blob-bg purple"></div>
 
-          <!-- Page dots -->
           <div class="page-dots">
             <div class="page-dot"></div>
             <div class="page-dot active"></div>
             <div class="page-dot"></div>
           </div>
 
-          <!-- Controller emoji -->
-          <div class="onboarding-emoji">&#x1F3AE;</div>
+          <div class="onboarding-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          </div>
 
-          <!-- Title -->
           <div class="onboarding-title">选择目标人格<br>开始生存挑战</div>
 
-          <!-- Description -->
           <div class="onboarding-desc">选择你感兴趣的人格类型，通过情景模拟挑战来测试和提升你的认知能力</div>
 
-          <!-- Actions -->
           <div class="onboarding-actions">
             <button class="cta-blue">立即体验</button>
             <button class="skip-link">跳过引导</button>
@@ -836,7 +875,7 @@
         </div>
       </div>
     </div>
-    <div class="screen-label">Screen 15 - 引导页 2</div>
+    <div class="screen-label">15 引导页 2</div>
   </div>
 
 </body>
